@@ -1,0 +1,14 @@
+Summary:
+
+Looks through every single catalog component and attempts the following:
+
+1) Looks though all vulnerabilities
+2) If more than one vulnerability exists, determines the highest severity.
+3) Assigns this severity to a custom attribute specified by the user.
+4) If no vulnerabilities exist, resets the custom attribute to a blank value.
+
+Execution:
+
+- Create a highsev.properties with the required Code Center credential (use provided example)
+- Specify the 'highsev.custom.attribute.name' with the name of the attribute.
+- Run the batch/shell script with the argument: -config [location of your config file]

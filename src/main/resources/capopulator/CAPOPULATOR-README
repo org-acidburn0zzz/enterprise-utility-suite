@@ -1,0 +1,25 @@
+Custom Attribute Populator
+
+Summary:
+
+Reads in a CSV file, and populates custom attributes based on user provided data.
+
+Usage:
+
+[Required] Create a capop.properties with Code Center credentials (use provided example). 
+[Required] Run the batch/shell script with the argument: -config [location of your config file]
+[Required] Provide full path of mapping file as an argument.
+[Example] CaPopulator.sh -config /myfiles/capop_config.properties /myfiles/mappings/mappings.csv
+
+Mapping File Format:
+
+The expected format of the file is as follows.
+
+Header: ID,Custom Attribute Name 1,Custom Attribute Name x
+Remaining row: Application Id/Name, Value for custom attribute 1, Value for custom attribute x
+
+The first column must contain the name/id of your Code Center application.  The application will be
+looked up based on a search.  Make sure the name you provide is unique.
+
+The second column and every column after that, should have the name of the custom attribute
+All rows under neath must contain the respective values.

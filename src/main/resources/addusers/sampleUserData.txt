@@ -1,0 +1,12 @@
+# username;projectname;role
+
+# This will fail because the specified user and app don't exist
+FAKEUSER;FAKE-APP
+
+# This will work. The roles specified here are used instead of the default role specified in the config file
+test@bds.com;18963-TRDSuite-VB;Application Administrator
+
+# These will work and use the default role specified in the config file
+test1@bds.com;22855-ECCS-OmniVoice;;
+test@bds.com;22855-ECCS-OmniVoice;
+test1@bds.com;18963-TRDSuite-VB;	

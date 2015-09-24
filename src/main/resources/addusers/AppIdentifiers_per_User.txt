@@ -1,0 +1,25 @@
+# AppIdentifiers per User data file
+#
+# Sample input file for the the add user utility -app-identifiers-per-user-file mode. This mode
+# lets you specify a list of AppIdentifiers per user. It will grant the user access to applications
+# associated with those AppIdentifiers.
+#
+# The add user utility runs in this mode when you include on the command line:
+#	-app-identifiers-per-user-file <AppIdentifiers per username data filename>
+#
+# Format of each non-comment line in this file: a user's username, followed by one or more
+# AppIdentifiers. Fields are separated with a semicolon (;).
+#
+# For example, if you want to grant access to AppIdentifier 123 for user a123456, you
+# would include the following line:
+#	a123456;123
+# To grant access to AppIdentifier 123 and AppIdentifier 456 for user a123456, you
+# would include the following line:
+#	a123456;123;456
+# You can include any number of AppIdentifiers on a line (as long as they are separated
+# with semicolons).
+#
+# Comment lines (lines that start with #) and blank/empty lines are ignored.
+
+a234567;234567
+c000000;234567;345678
