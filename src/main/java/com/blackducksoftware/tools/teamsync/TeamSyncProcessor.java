@@ -31,6 +31,14 @@ import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.tools.common.EntAppName;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * For each application in the given list, figure out what team it should have
+ * by aggregating the teams of other apps with the same appIdentifier, and then
+ * update the application's team to be that aggregated team.
+ *
+ * @author sbillings
+ *
+ */
 public class TeamSyncProcessor {
     private final Logger log = LoggerFactory.getLogger(this.getClass()
 	    .getName());
@@ -45,6 +53,13 @@ public class TeamSyncProcessor {
 	newAppNames = config.getNewAppList();
     }
 
+    /**
+     * For each application in the given list, figure out what team it should
+     * have by aggregating the teams of other apps with the same appIdentifier,
+     * and then update the application's team to be that aggregated team.
+     *
+     * @throws Exception
+     */
     public void execute() throws Exception {
 
 	for (String newAppName : newAppNames) {

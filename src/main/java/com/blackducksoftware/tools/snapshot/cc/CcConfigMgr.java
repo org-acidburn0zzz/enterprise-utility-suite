@@ -25,6 +25,12 @@ import java.util.Properties;
 import com.blackducksoftware.tools.snapshot.SnapshotConfigMgr;
 import com.blackducksoftware.tools.snapshot.SnapshotException;
 
+/**
+ * The Code Center configuration manager for the snapshot utility.
+ *
+ * @author sbillings
+ *
+ */
 public class CcConfigMgr extends SnapshotConfigMgr {
     private static final String CC_APP_VERSION_PROPERTY = "cc.app.version";
     private static final String CC_CLONED_APP_WORKFLOW_PROPERTY = "cc.cloned.app.workflow";

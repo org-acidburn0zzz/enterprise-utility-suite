@@ -22,6 +22,13 @@ import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * An factory that creates AppListProcessors that implement the "LOB adjust"
+ * algorithm.
+ * 
+ * @author sbillings
+ *
+ */
 public class AppListProcessorFactoryLobAdjust implements
 	AppListProcessorFactory {
     private final CodeCenterServerWrapper codeCenterServerWrapper;
@@ -36,6 +43,10 @@ public class AppListProcessorFactoryLobAdjust implements
 	this.userManager = userManager;
     }
 
+    /**
+     * Create an AppListProcessor that implement the "LOB adjust" algorithm.
+     *
+     */
     @Override
     public AppListProcessor createAppListProcessor() {
 	AppListProcessor processor = new AppListProcessorLobAdjust(

@@ -26,6 +26,9 @@ import java.io.File;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 
 /**
+ * The configuration manager for the "Identify the Highest Severity
+ * vulnerability for each component". utility.
+ *
  * @author Ari Kamen
  * @date Jul 22, 2014
  *

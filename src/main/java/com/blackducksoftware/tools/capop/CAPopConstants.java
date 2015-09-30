@@ -17,6 +17,12 @@
  *******************************************************************************/
 package com.blackducksoftware.tools.capop;
 
+/**
+ * CAPop constant values.
+ *
+ * @author sbillings
+ *
+ */
 public class CAPopConstants {
 
     // Properties

@@ -28,6 +28,12 @@ import com.blackducksoftware.tools.common.EntAppNameConfigMgrDelegate;
 import com.blackducksoftware.tools.common.EntAppNameConfigurationManager;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 
+/**
+ * The configuration manager for the TeamSync utility.
+ *
+ * @author sbillings
+ *
+ */
 public class TeamSyncConfig extends ConfigurationManager implements
 	EntAppNameConfigurationManager {
     private static final String APP_VERSION_PROPERTY = "app.version";

@@ -18,6 +18,12 @@
 
 package com.blackducksoftware.tools.snapshot;
 
+/**
+ * Snapshot utility exception.
+ *
+ * @author sbillings
+ *
+ */
 public class SnapshotException extends Exception {
 
     public SnapshotException(String msg) {

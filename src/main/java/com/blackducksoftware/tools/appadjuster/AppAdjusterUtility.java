@@ -18,6 +18,12 @@
 
 package com.blackducksoftware.tools.appadjuster;
 
+/**
+ * The Main class for the AppAdjuster utility.
+ *
+ * @author sbillings
+ *
+ */
 public class AppAdjusterUtility {
 
     private static final int STATUS_SUCCESS = 0;

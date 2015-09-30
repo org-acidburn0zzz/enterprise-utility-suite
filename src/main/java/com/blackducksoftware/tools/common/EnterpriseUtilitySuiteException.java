@@ -20,6 +20,12 @@ package com.blackducksoftware.tools.common;
 
 import java.io.Serializable;
 
+/**
+ * Exception type thrown by utilities in the Entrprise suite.
+ *
+ * @author sbillings
+ *
+ */
 public class EnterpriseUtilitySuiteException extends Exception implements
 	Serializable {
 

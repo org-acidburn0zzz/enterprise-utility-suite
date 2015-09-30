@@ -80,6 +80,13 @@ public class CcApp {
 	return app;
     }
 
+    /**
+     * Set custom attributes on this application as specified by the given map
+     * of attribute name/values.
+     *
+     * @param appAttrUpdates
+     * @throws CommonFrameworkException
+     */
     public void setCustomAttributes(Map<String, String> appAttrUpdates)
 	    throws CommonFrameworkException {
 	ApplicationUpdate appUpdate = new ApplicationUpdate();

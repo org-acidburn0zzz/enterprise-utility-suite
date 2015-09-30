@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Common harness for the various suites
+ * Common harness (Main class methods) for the various utilities.
  *
  * @author akamen
  *
@@ -31,12 +31,22 @@ public abstract class CommonHarness {
     private static final String CONFIG_PREFIX = "-config";
     private static File configFile;
 
+    /**
+     * Process and remove the first two arguments (-config <configfile>), and
+     * return the rest.
+     *
+     * @param args
+     * @return
+     * @throws Exception
+     */
     public static String[] processConfig(String args[]) throws Exception {
 	return processConfig(args, "");
     }
 
     /**
-     * Takes in main args and processes out the config file
+     * Process and remove the first two arguments (-config <configfile>), and
+     * return the rest. Use the given usageInfo string in the exception message
+     * if the -config <configfile> is missing.
      *
      * @param args
      * @return

@@ -24,12 +24,42 @@ import java.util.Set;
 import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.lobuseradjust.UserStatus;
 
+/**
+ * A UserManager can create users, add users to an application, and delete users
+ * from an application.
+ *
+ * @author sbillings
+ *
+ */
 public interface UserManager {
+    /**
+     * Add the given users to the given app.
+     *
+     * @param app
+     * @param usersToAdd
+     * @return
+     * @throws Exception
+     */
     List<String> addUsers(Application app, Set<String> usersToAdd)
 	    throws Exception;
 
+    /**
+     * Create user accounts for the given usernames.
+     *
+     * @param usersToCreate
+     * @return
+     * @throws Exception
+     */
     List<String> createUsers(Set<String> usersToCreate) throws Exception;
 
+    /**
+     * Remove the given users from the given application.
+     *
+     * @param app
+     * @param usersToDelete
+     * @return
+     * @throws Exception
+     */
     List<UserStatus> deleteUsers(Application app, Set<String> usersToDelete)
 	    throws Exception;
 }

@@ -23,6 +23,12 @@ import com.blackducksoftware.tools.commonframework.core.config.ConfigurationMana
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * The Main class for the TeamSync utility.
+ *
+ * @author sbillings
+ *
+ */
 public class TeamSync extends CommonHarness {
     private static final String USAGE = "Expecting -config <path to config file>";
 

@@ -18,6 +18,12 @@
 
 package com.blackducksoftware.tools.snapshot;
 
+/**
+ * Project not found exception.
+ *
+ * @author sbillings
+ *
+ */
 public class SnapshotExceptionProjectNotFound extends SnapshotException {
 
     public SnapshotExceptionProjectNotFound(String msg) {

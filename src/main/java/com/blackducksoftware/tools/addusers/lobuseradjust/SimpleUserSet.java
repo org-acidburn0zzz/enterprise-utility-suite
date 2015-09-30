@@ -33,6 +33,12 @@ import org.slf4j.LoggerFactory;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+/**
+ * A set of usernames.
+ *
+ * @author sbillings
+ *
+ */
 public class SimpleUserSet implements Iterable<String> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
 	    .getName());
@@ -42,6 +48,13 @@ public class SimpleUserSet implements Iterable<String> {
 	userSet = new HashSet<String>();
     }
 
+    /**
+     * Construct a set of usernames from the given comma-separated list of
+     * usernames.
+     *
+     * @param commaSeparatedUserList
+     * @throws Exception
+     */
     public SimpleUserSet(String commaSeparatedUserList) throws Exception {
 	List<String> userList = Arrays
 		.asList(commaSeparatedUserList.split(","));
@@ -65,6 +78,12 @@ public class SimpleUserSet implements Iterable<String> {
 
     }
 
+    /**
+     * Construct a set of usernames from the given CSV file.
+     *
+     * @param csvFile
+     * @throws Exception
+     */
     public SimpleUserSet(File csvFile) throws Exception {
 	List<String> userList = new ArrayList<String>();
 
@@ -156,14 +175,31 @@ public class SimpleUserSet implements Iterable<String> {
 	return false;
     }
 
+    /**
+     * Construct a user set from the given Set of usernames.
+     *
+     * @param userSet
+     */
     public SimpleUserSet(Set<String> userSet) {
 	this.userSet = userSet;
     }
 
+    /**
+     * Returns the set of users in the form of a Set.
+     *
+     * @return
+     */
     public Set<String> getUserSet() {
 	return userSet;
     }
 
+    /**
+     * Given a set of possibly-new users, returns the subset that are actually
+     * new (do not already exist in this user set).
+     *
+     * @param newUsers
+     * @return
+     */
     public SimpleUserSet getUsersToAdd(SimpleUserSet newUsers) {
 	SimpleUserSet usersToAdd = new SimpleUserSet();
 	if (newUsers == null) {
@@ -178,6 +214,13 @@ public class SimpleUserSet implements Iterable<String> {
 	return usersToAdd;
     }
 
+    /**
+     * Given a set of possibly-removed users, returns the subset that actually
+     * should be removed (do exist in this user set).
+     * 
+     * @param newUsers
+     * @return
+     */
     public SimpleUserSet getUsersToDelete(SimpleUserSet newUsers) {
 	SimpleUserSet usersToDelete = new SimpleUserSet();
 	if (newUsers == null) {
@@ -192,6 +235,12 @@ public class SimpleUserSet implements Iterable<String> {
 	return usersToDelete;
     }
 
+    /**
+     * Returns true if this user set contains the given username.
+     *
+     * @param s
+     * @return
+     */
     public boolean contains(String s) {
 	return userSet.contains(s);
     }
@@ -201,10 +250,20 @@ public class SimpleUserSet implements Iterable<String> {
 	return userSet.iterator();
     }
 
+    /**
+     * Add the given username to this user set.
+     *
+     * @param s
+     */
     public void add(String s) {
 	userSet.add(s);
     }
 
+    /**
+     * returns the size of the user set (# users).
+     *
+     * @return
+     */
     public int size() {
 	return userSet.size();
     }

@@ -23,6 +23,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+/**
+ * An application name, format described by the configuration. Consists of:
+ * appIdentifier, optional description, followed by zero or more suffixes
+ * (depending on the configuration). The format of each component and the
+ * separator between them are configurable. A non-conformant boolean is true if
+ * the application name conforms to the configured format, false otherwise.
+ *
+ * @author sbillings
+ *
+ */
 public class EntAppName {
     private final EntAppNameConfigurationManager config;
     private final String appName;

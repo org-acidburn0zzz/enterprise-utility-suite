@@ -23,6 +23,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
+/**
+ * A configuration manager that specifies the format of application names.
+ *
+ * @author sbillings
+ *
+ */
 public class EntAppNameConfigMgrDelegate implements
 	EntAppNameConfigurationManager {
 

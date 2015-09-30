@@ -22,6 +22,8 @@
 package com.blackducksoftware.tools.highsev;
 
 /**
+ * Constant values.
+ *
  * @author Ari Kamen
  * @date Jul 22, 2014
  *

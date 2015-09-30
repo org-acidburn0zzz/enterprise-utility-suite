@@ -21,6 +21,12 @@ import java.io.File;
 
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 
+/**
+ * The Custom Attribute Populator configuration manager.
+ *
+ * @author sbillings
+ *
+ */
 public class CAPopConfigManager extends ConfigurationManager {
 
     // The method by which we look up the applications

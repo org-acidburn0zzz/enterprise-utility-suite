@@ -24,6 +24,13 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcess
 import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * An AppListProcessorFactory that produces AppIdentifiersPerUser
+ * AppListProcessors.
+ *
+ * @author sbillings
+ *
+ */
 public class AppListProcessorFactoryAppIdentifiersPerUser implements
 	AppListProcessorFactory {
     private final CodeCenterServerWrapper codeCenterServerWrapper;
@@ -40,6 +47,14 @@ public class AppListProcessorFactoryAppIdentifiersPerUser implements
 	appIdentifierUserListMap = config.getAppIdentifierUserListMap();
     }
 
+    /**
+     * Create an AppListProcessor that executes the AppIdentifiersPerUser
+     * algorithm.
+     *
+     * @param codeCenterServerWrapper
+     * @param config
+     * @param userManager
+     */
     @Override
     public AppListProcessor createAppListProcessor() {
 	AppListProcessor processor = new AppListProcessorAppIdentifiersPerUser(

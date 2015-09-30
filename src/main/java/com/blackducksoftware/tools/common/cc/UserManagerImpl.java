@@ -44,6 +44,13 @@ import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.UserStatus;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * The default UserManager. If it encounters a locked application that it has
+ * been asked to change, it throws an exeption.
+ *
+ * @author sbillings
+ *
+ */
 public class UserManagerImpl implements UserManager {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
 	    .getName());

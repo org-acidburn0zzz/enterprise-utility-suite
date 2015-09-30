@@ -25,6 +25,12 @@ import java.util.Properties;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.dao.CodeCenterDaoConfigManager;
 
+/**
+ * The configuration manager for the Remediation Data Loader utility.
+ *
+ * @author sbillings
+ *
+ */
 public class RemDataConfigManager extends ConfigurationManager implements
 	CodeCenterDaoConfigManager {
     private static final String CC_APP_VERSION_PROPERTY = "cc.app.version";

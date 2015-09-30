@@ -44,6 +44,12 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.UserStatus;
 import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * An AppListProcessor that implements the "LOB adjust" mode algorithm.
+ *
+ * @author sbillings
+ *
+ */
 public class AppListProcessorLobAdjust implements AppListProcessor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
 	    .getName());

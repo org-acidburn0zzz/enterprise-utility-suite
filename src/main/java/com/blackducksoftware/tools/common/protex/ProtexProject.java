@@ -44,6 +44,12 @@ import com.blackducksoftware.tools.commonframework.standard.protex.ProtexProject
 import com.blackducksoftware.tools.snapshot.SnapshotException;
 import com.blackducksoftware.tools.snapshot.SnapshotExceptionProjectNotFound;
 
+/**
+ * A Protex project that implements the ProjectOrApp interface.
+ *
+ * @author sbillings
+ *
+ */
 public class ProtexProject implements ProjectOrApp {
     private final Logger log = LoggerFactory.getLogger(this.getClass()
 	    .getName());
@@ -76,8 +82,8 @@ public class ProtexProject implements ProjectOrApp {
 
     /**
      *
-     * appAttrUpdates and associatedProjectId are ignored since this is a projex
-     * project.
+     * Clone operation with attribute updates. appAttrUpdates and
+     * associatedProjectId are ignored since this is a projex project.
      */
     @Override
     public ProjectOrApp clone(String newName,
@@ -86,6 +92,9 @@ public class ProtexProject implements ProjectOrApp {
 	return clone(newName);
     }
 
+    /**
+     * Simple clone operation.
+     */
     @Override
     public ProjectOrApp clone(String newName) throws CommonFrameworkException {
 	log.info("Cloning Protex project " + getName() + " to " + newName);
@@ -119,6 +128,10 @@ public class ProtexProject implements ProjectOrApp {
 	return clone;
     }
 
+    /**
+     * Lock operation: disables RapidId on the project.
+     *
+     */
     @Override
     public void lock() throws CommonFrameworkException {
 	try {
@@ -128,6 +141,10 @@ public class ProtexProject implements ProjectOrApp {
 	}
     }
 
+    /**
+     * Rename operation.
+     *
+     */
     @Override
     public void rename(String newName) throws CommonFrameworkException {
 	ProjectRequest projectUpdateRequest = new ProjectRequest();

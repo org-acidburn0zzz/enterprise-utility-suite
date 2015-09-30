@@ -42,6 +42,13 @@ import com.blackducksoftware.tools.capop.model.CAPair;
 import com.blackducksoftware.tools.capop.model.CARecord;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * Make application custom attribute value changes according to the given input
+ * file.
+ *
+ * @author sbillings
+ *
+ */
 public class CAPopProcessor {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass()
@@ -64,6 +71,13 @@ public class CAPopProcessor {
 	}
     }
 
+    /**
+     * Make application custom attribute value changes according to the given
+     * input file.
+     *
+     * @param file
+     * @throws Exception
+     */
     public void process(File file) throws Exception {
 	try {
 	    List<AbstractAttribute> attributesToUpdate = new ArrayList<AbstractAttribute>();

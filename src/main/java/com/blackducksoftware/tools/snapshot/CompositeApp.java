@@ -23,6 +23,12 @@ import java.util.Map;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.commonframework.standard.common.ProjectOrApp;
 
+/**
+ * A Code Center app / Protex project pair.
+ *
+ * @author sbillings
+ *
+ */
 public class CompositeApp {
 
     private final ProjectOrApp protexProject;
@@ -33,6 +39,16 @@ public class CompositeApp {
 	this.ccApp = ccApp;
     }
 
+    /**
+     * Clone the app and the project.
+     *
+     * @param suffix
+     * @param suffixToRemove
+     * @param appAttributesToSetOnClone
+     * @param cloneAssociatedProject
+     * @return
+     * @throws CommonFrameworkException
+     */
     public CompositeApp createSnapshot(String suffix, String suffixToRemove,
 	    Map<String, String> appAttributesToSetOnClone,
 	    boolean cloneAssociatedProject) throws CommonFrameworkException {
@@ -41,6 +57,15 @@ public class CompositeApp {
 		appAttributesToSetOnClone, true, cloneAssociatedProject);
     }
 
+    /**
+     * Clone only the app.
+     *
+     * @param suffix
+     * @param suffixToRemove
+     * @param appAttributesToSetOnClone
+     * @return
+     * @throws CommonFrameworkException
+     */
     public CompositeApp createSnapshotAppOnly(String suffix,
 	    String suffixToRemove, Map<String, String> appAttributesToSetOnClone)
 	    throws CommonFrameworkException {
@@ -48,6 +73,12 @@ public class CompositeApp {
 		appAttributesToSetOnClone, false, false);
     }
 
+    /**
+     * Rename the app and the project.
+     *
+     * @param newName
+     * @throws CommonFrameworkException
+     */
     public void rename(String newName) throws CommonFrameworkException {
 	protexProject.rename(newName);
 	ccApp.rename(newName); // TODO: what if this fails. Undo first??

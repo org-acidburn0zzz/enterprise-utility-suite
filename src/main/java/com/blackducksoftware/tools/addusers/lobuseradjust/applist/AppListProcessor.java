@@ -24,6 +24,14 @@ import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 
+/**
+ * An Application List Processor that can load its applications from Code
+ * Center, and process it (add/remove users as dictated by the utility's
+ * configuration/input.
+ *
+ * @author sbillings
+ *
+ */
 public interface AppListProcessor {
 
     /**

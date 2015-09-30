@@ -20,6 +20,12 @@ package com.blackducksoftware.tools.common.cc;
 
 import com.blackducksoftware.sdk.codecenter.application.data.Application;
 
+/**
+ * A Code Center application.
+ *
+ * @author sbillings
+ *
+ */
 public class App {
     private String appName;
     private String appVersion;
@@ -56,9 +62,9 @@ public class App {
 
     public void setApplication(Application application) {
 	this.application = application;
-	this.appName = application.getName();
-	this.appVersion = application.getVersion();
-	this.appKey = application.getId().getId();
+	appName = application.getName();
+	appVersion = application.getVersion();
+	appKey = application.getId().getId();
     }
 
     @Override

@@ -20,6 +20,13 @@ package com.blackducksoftware.tools.common;
 
 import java.util.regex.Pattern;
 
+/**
+ * Configuration managers that manage application name format configuration
+ * implement this interface.
+ *
+ * @author sbillings
+ *
+ */
 public interface EntAppNameConfigurationManager {
     // Property names
     public static final String APPNAME_PATTERN_WITHDESCRIPTIONFORMAT_PROPERTY = "appname.pattern.withdescriptionformat";

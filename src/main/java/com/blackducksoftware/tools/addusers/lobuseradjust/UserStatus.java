@@ -18,6 +18,14 @@
 
 package com.blackducksoftware.tools.addusers.lobuseradjust;
 
+/**
+ * One User's status consisting of the username, a boolean indicating status
+ * (true means OK), and a message that will describe the problem associated with
+ * this user if there is one.
+ *
+ * @author sbillings
+ *
+ */
 public class UserStatus {
     private final String username;
     private final boolean ok;

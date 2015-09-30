@@ -23,6 +23,13 @@ import java.util.List;
 import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
 import com.blackducksoftware.tools.common.EntAppName;
 
+/**
+ * An application team (the list of ApplicationRoleAssignments for the
+ * application).
+ *
+ * @author sbillings
+ *
+ */
 public class AppTeam {
     private final String appName;
     private final String appIdentifier;
@@ -53,6 +60,13 @@ public class AppTeam {
 	return team.size();
     }
 
+    /**
+     * Returns true if this team already contains the given
+     * ApplicationRoleAssignment.
+     * 
+     * @param newRoleAssignment
+     * @return
+     */
     public boolean containsRoleAssignment(
 	    ApplicationRoleAssignment newRoleAssignment) {
 	for (ApplicationRoleAssignment existingRoleAssignment : team) {

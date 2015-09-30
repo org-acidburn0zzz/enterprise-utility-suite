@@ -17,26 +17,26 @@
  *******************************************************************************/
 
 /**
- * 
+ *
  */
 package com.blackducksoftware.tools.highsev;
 
 import com.blackducksoftware.tools.common.CommonHarness;
 
 /**
- * Entry point for the High Severity application.
- * 
+ * Main class for the High Severity application.
+ *
  * Using custom provided 'custom attribute' field, does the following per
  * component:
- * 
+ *
  * Grabs all catalog components and:
- * 
+ *
  * 1. Gets a list of vulnerabilities 2. Determines the highest vulnerability out
- * of them 3. Populates the highest vulnerability to the custom provided
+ * of them 3. Populates the highest vulnerability level to the custom provided
  * attribute.
- * 
+ *
  * Runs against Code Center.
- * 
+ *
  * @author Ari Kamen
  * @date Jul 22, 2014
  *

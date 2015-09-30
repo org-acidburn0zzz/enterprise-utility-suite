@@ -17,6 +17,12 @@
  *******************************************************************************/
 package com.blackducksoftware.tools.appadjuster;
 
+/**
+ * Application not found Exception.
+ *
+ * @author sbillings
+ *
+ */
 public class AppNotFoundException extends Exception {
     public AppNotFoundException(String msg) {
 	super(msg);

@@ -22,12 +22,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.blackducksoftware.tools.commonframework.standard.codecenter.pojo.CcApp;
-
 import com.blackducksoftware.tools.common.protex.ProtexProject;
+import com.blackducksoftware.tools.commonframework.standard.codecenter.pojo.CcApp;
 import com.blackducksoftware.tools.snapshot.cc.CcConfigMgr;
 import com.blackducksoftware.tools.snapshot.protex.ProtexConfigMgr;
 
+/**
+ * The Main class for the snapshot utility.
+ *
+ * @author sbillings
+ *
+ */
 public class SnapshotUtility {
 
     private static final int STATUS_SUCCESS = 0;
@@ -41,7 +46,7 @@ public class SnapshotUtility {
      * pair with the given name (<appname>). Exit codes: 0: Success 1: Protex
      * project does not exist -1: Error (other than Protex project does not
      * exist)
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {

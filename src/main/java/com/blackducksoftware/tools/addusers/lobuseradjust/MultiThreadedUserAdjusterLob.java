@@ -36,6 +36,12 @@ import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistr
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 
+/**
+ * A MultiThreadedUserAdjuster that executes the "users per LOB" algorithm.
+ *
+ * @author sbillings
+ *
+ */
 public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
     private static final String THREAD_FAILED_ERROR_MESSAGE = "One or more threads failed. Please check the log for errors (search for \"ERROR\")";
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
@@ -81,6 +87,10 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
 	}
     }
 
+    /**
+     * Add users to applications based on "users per LOB" input file.
+     *
+     */
     @Override
     public void run(CodeCenterServerWrapper codeCenterServerWrapper,
 	    int numThreads) throws Exception {
@@ -132,6 +142,10 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
 	}
     }
 
+    /**
+     * Returns the report generated during the run() method.
+     *
+     */
     @Override
     public DataTable getReport() {
 	return report.getDataTable();

@@ -28,6 +28,12 @@ import org.slf4j.LoggerFactory;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.dao.CodeCenterDaoConfigManager;
 
+/**
+ * The configuration Manager for the Snapshot utility.
+ *
+ * @author sbillings
+ *
+ */
 public class SnapshotConfigMgr extends ConfigurationManager implements
 	CodeCenterDaoConfigManager {
     private static final String CUSTOM_ATTRIBUTES_APPLICATION_PROPERTY = "custom.attributes.application";

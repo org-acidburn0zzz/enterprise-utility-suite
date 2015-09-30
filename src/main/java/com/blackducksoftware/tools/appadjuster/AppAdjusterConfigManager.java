@@ -24,6 +24,12 @@ import java.util.Properties;
 
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 
+/**
+ * The configuration manager for the AppAdjuster utility.
+ *
+ * @author sbillings
+ *
+ */
 public class AppAdjusterConfigManager extends ConfigurationManager {
     private static final String APP_VERSION_PROPERTY = "app.version";
     private static final String APP_ATTR_PROPERTY_NAME_SUFFIX = "name";

@@ -37,6 +37,12 @@ import com.blackducksoftware.tools.commonframework.standard.datatable.RecordDef;
 import com.blackducksoftware.tools.commonframework.standard.datatable.reader.DataTableReader;
 import com.blackducksoftware.tools.commonframework.standard.datatable.reader.DataTableReaderExcel;
 
+/**
+ * The remediation data loader utility Main class.
+ *
+ * @author sbillings
+ *
+ */
 public class RemDataLoader {
     private final Logger log = LoggerFactory.getLogger(this.getClass()
 	    .getName());
@@ -151,6 +157,11 @@ public class RemDataLoader {
 	return adjustedDate;
     }
 
+    /**
+     * Load the remediation metadata from the input file into Code Center.
+     *
+     * @throws Exception
+     */
     public void load() throws Exception {
 	int failureCount = 0;
 	int successCount = 0;

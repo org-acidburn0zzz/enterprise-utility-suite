@@ -20,6 +20,12 @@ package com.blackducksoftware.tools.common.cc;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A list of Code Center applications, split into valid and invalid lists.
+ *
+ * @author sbillings
+ *
+ */
 public class AppList {
     private boolean userSpecifiedSubset = false;
     private List<App> list;
@@ -36,14 +42,30 @@ public class AppList {
 	invalidList = new ArrayList<App>(10);
     }
 
+    /**
+     * Set the list of valid applications to the given list.
+     *
+     * @param list
+     */
     public void setList(List<App> list) {
 	this.list = list;
     }
 
+    /**
+     * Add the given app to the list of valid applications.
+     *
+     * @param app
+     */
     public void addApp(App app) {
 	list.add(app);
     }
 
+    /**
+     * Add the given app to the list of invalid applications.
+     *
+     * @param appName
+     * @param appVersion
+     */
     public void addInvalidProject(String appName, String appVersion) {
 	App project = new App();
 	project.setAppName(appName);
@@ -51,6 +73,12 @@ public class AppList {
 	invalidList.add(project);
     }
 
+    /**
+     * Returns true if this application list was a subset of applications
+     * specified in the config.
+     *
+     * @return
+     */
     public boolean isUserSpecifiedSubset() {
 	return userSpecifiedSubset;
     }
@@ -59,10 +87,20 @@ public class AppList {
 	this.userSpecifiedSubset = userSpecifiedSubset;
     }
 
+    /**
+     * Get the list of valid applications.
+     *
+     * @return
+     */
     public List<App> getList() {
 	return list;
     }
 
+    /**
+     * Get the list of invalid applications.
+     *
+     * @return
+     */
     public List<App> getInvalidList() {
 	return invalidList;
     }

@@ -19,16 +19,21 @@ package com.blackducksoftware.tools.teamsync;
 
 import java.util.List;
 
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
-
 import com.blackducksoftware.sdk.codecenter.application.data.ApplicationNameVersionToken;
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
+import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * Code Center utility methods.
+ *
+ * @author sbillings
+ *
+ */
 public class CodeCenterUtils {
     /**
      * Get the team for this one app
-     * 
+     *
      * @return
      */
     public static List<ApplicationRoleAssignment> getAppUserRoles(

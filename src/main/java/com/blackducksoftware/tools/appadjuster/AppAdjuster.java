@@ -21,6 +21,13 @@ import java.util.Map;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 
+/**
+ * Sets values of custom attributes on an application. The custom attribute
+ * names and their values are specified by the given configuration.
+ *
+ * @author sbillings
+ *
+ */
 public class AppAdjuster {
     private AppAdjusterConfigManager config;
 
@@ -29,7 +36,7 @@ public class AppAdjuster {
     }
 
     /**
-     * Adjust the app.
+     * Makes the custom attribute value changes on the given app.
      */
     public void adjustApp(String appName) throws CommonFrameworkException,
 	    AppNotFoundException {

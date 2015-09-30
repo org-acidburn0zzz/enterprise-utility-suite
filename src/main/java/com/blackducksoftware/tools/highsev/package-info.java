@@ -18,7 +18,7 @@
 
 /**
  * Classes for the HighSev utility, which identifies the highest severity vulnerability
- * for each application, and writes that severity level into a given custom application
+ * for each catalog component, and writes that severity level into a given custom component
  * attribute.
  *
  * @author Steve Billings

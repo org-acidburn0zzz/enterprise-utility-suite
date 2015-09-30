@@ -25,12 +25,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * A list of application names.
+ *
+ * @author sbillings
+ *
+ */
 public class AppList implements Iterable<String> {
     private final List<String> appNames = new ArrayList<String>();
 
     public AppList() throws IOException {
     }
 
+    /**
+     * Construct the list of app names from the given input text file. The file
+     * contains one app name per line. Leading / trailing whitespace is OK, but
+     * no other text must appear on the line. Empty lines are OK.
+     *
+     * @param filename
+     * @throws IOException
+     */
     public AppList(String filename) throws IOException {
 	BufferedReader br = null;
 

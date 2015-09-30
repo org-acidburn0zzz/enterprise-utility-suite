@@ -20,6 +20,12 @@ package com.blackducksoftware.tools.snapshot.cc;
 
 import java.util.Date;
 
+/**
+ * Remediation dates: target and actual.
+ *
+ * @author sbillings
+ *
+ */
 public class RemediationDates {
     private final Date targetRemediationDate;
     private final Date actualRemediationDate;

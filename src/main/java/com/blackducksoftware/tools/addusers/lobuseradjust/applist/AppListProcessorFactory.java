@@ -18,6 +18,12 @@
 
 package com.blackducksoftware.tools.addusers.lobuseradjust.applist;
 
+/**
+ * An AppListProcessor Factory object.
+ *
+ * @author sbillings
+ *
+ */
 public interface AppListProcessorFactory {
     AppListProcessor createAppListProcessor();
 }

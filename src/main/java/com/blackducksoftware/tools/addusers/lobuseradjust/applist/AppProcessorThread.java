@@ -27,6 +27,12 @@ import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 
+/**
+ * A Runnable object that creates and runs an AppListProcessor in a Thread.
+ *
+ * @author sbillings
+ *
+ */
 public class AppProcessorThread implements Runnable {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
 	    .getName());

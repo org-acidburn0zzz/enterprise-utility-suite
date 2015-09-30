@@ -29,12 +29,24 @@ import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
+/**
+ * A UserManager that circumvents application locks if encountered while adding
+ * users to an app. again.
+ *
+ * @author sbillings
+ *
+ */
 public class UserManagerCircumventsLocks extends UserManagerImpl {
     public UserManagerCircumventsLocks(UserCreatorConfig config,
 	    CodeCenterServerWrapper ccServerWrapper) {
 	super(config, ccServerWrapper);
     }
 
+    /**
+     * Add users to an application, even if the application is locked. If it
+     * encounters a locked application, it unlocks the application, adds the
+     * users, and locks it again.
+     */
     @Override
     protected void addUsers(Application app,
 	    List<UserNameOrIdToken> userNameTokens,

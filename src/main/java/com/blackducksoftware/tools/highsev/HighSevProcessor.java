@@ -41,6 +41,9 @@ import com.blackducksoftware.sdk.codecenter.vulnerability.data.VulnerabilitySumm
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 
 /**
+ * For each catalog component, identify the highest severity level of any
+ * vulnerability by writing that level to a component custom attribute.
+ *
  * @author Ari Kamen
  * @date Jul 22, 2014
  *
@@ -79,6 +82,9 @@ public class HighSevProcessor {
     }
 
     /**
+     * For each catalog component, identify the highest severity level of any
+     * vulnerability by writing that level to a component custom attribute.
+     *
      * @throws Exception
      *
      */
@@ -284,7 +290,7 @@ public class HighSevProcessor {
     }
 
     /**
-     *
+     * Write to the log a summary of what the process() method did.
      */
     public void displaySummary() {
 	log.info("Total components processed: " + totalComponents);

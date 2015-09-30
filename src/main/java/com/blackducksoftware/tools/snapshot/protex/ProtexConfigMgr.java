@@ -22,6 +22,12 @@ import java.util.Properties;
 
 import com.blackducksoftware.tools.snapshot.SnapshotConfigMgr;
 
+/**
+ * The Protex configuration manager for the snapshot utility.
+ *
+ * @author sbillings
+ *
+ */
 public class ProtexConfigMgr extends SnapshotConfigMgr {
 
     private String appNameSuffixTimestampFormat = APPNAME_SUFFIX_TIMESTAMP_FORMAT_DEFAULT;

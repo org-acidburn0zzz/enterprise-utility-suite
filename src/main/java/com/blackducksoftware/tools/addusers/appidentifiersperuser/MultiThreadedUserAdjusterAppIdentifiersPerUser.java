@@ -37,6 +37,13 @@ import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistr
 import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 
+/**
+ * A MultiThreadedUserAdjuster that executes the AppIdentifiersPerUser
+ * algorithm.
+ *
+ * @author sbillings
+ *
+ */
 public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 	MultiThreadedUserAdjuster {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
@@ -66,6 +73,11 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 	}
     }
 
+    /**
+     * Add users to applications based on AppIdentifiers per Username input
+     * file.
+     *
+     */
     @Override
     public void run(CodeCenterServerWrapper codeCenterServerWrapper,
 	    int numThreads) throws Exception {
@@ -126,6 +138,10 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 	}
     }
 
+    /**
+     * Returns the report generated during the run() method.
+     *
+     */
     @Override
     public DataTable getReport() {
 	return report.getDataTable();
