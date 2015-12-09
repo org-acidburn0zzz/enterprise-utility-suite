@@ -8,39 +8,41 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.addusers.lobuseradjust.applist;
 
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.common.cc.UserManager;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * An factory that creates AppListProcessors that implement the "LOB adjust"
  * algorithm.
- * 
+ *
  * @author sbillings
  *
  */
 public class AppListProcessorFactoryLobAdjust implements
-	AppListProcessorFactory {
+        AppListProcessorFactory {
     private final CodeCenterServerWrapper codeCenterServerWrapper;
+
     private final UserCreatorConfig config;
+
     private final UserManager userManager;
 
     public AppListProcessorFactoryLobAdjust(
-	    CodeCenterServerWrapper codeCenterServerWrapper,
-	    UserCreatorConfig config, UserManager userManager) {
-	this.codeCenterServerWrapper = codeCenterServerWrapper;
-	this.config = config;
-	this.userManager = userManager;
+            CodeCenterServerWrapper codeCenterServerWrapper,
+            UserCreatorConfig config, UserManager userManager) {
+        this.codeCenterServerWrapper = codeCenterServerWrapper;
+        this.config = config;
+        this.userManager = userManager;
     }
 
     /**
@@ -49,8 +51,8 @@ public class AppListProcessorFactoryLobAdjust implements
      */
     @Override
     public AppListProcessor createAppListProcessor() {
-	AppListProcessor processor = new AppListProcessorLobAdjust(
-		codeCenterServerWrapper, config, userManager);
-	return processor;
+        AppListProcessor processor = new AppListProcessorLobAdjust(
+                codeCenterServerWrapper, config, userManager);
+        return processor;
     }
 }

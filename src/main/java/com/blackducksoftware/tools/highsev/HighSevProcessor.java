@@ -38,7 +38,7 @@ import com.blackducksoftware.sdk.codecenter.common.data.AttributeValue;
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.sdk.codecenter.vulnerability.data.VulnerabilityPageFilter;
 import com.blackducksoftware.sdk.codecenter.vulnerability.data.VulnerabilitySummary;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * For each catalog component, identify the highest severity level of any

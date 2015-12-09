@@ -28,7 +28,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.tools.commonframework.standard.codecenter.pojo.CcAppCompVulnCopier;
+import com.blackducksoftware.tools.connector.codecenter.pojo.CcAppCompVulnCopier;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.commonframework.standard.datatable.FieldDef;
 import com.blackducksoftware.tools.commonframework.standard.datatable.FieldType;

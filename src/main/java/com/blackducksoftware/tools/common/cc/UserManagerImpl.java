@@ -42,7 +42,7 @@ import com.blackducksoftware.sdk.codecenter.user.data.UserNameToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserUpdate;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.UserStatus;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * The default UserManager. If it encounters a locked application that it has

@@ -40,7 +40,7 @@ import com.blackducksoftware.sdk.codecenter.attribute.data.AttributePageFilter;
 import com.blackducksoftware.sdk.codecenter.common.data.AttributeValue;
 import com.blackducksoftware.tools.capop.model.CAPair;
 import com.blackducksoftware.tools.capop.model.CARecord;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * Make application custom attribute value changes according to the given input

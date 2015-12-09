@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.blackducksoftware.tools.common.protex.ProtexProject;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.pojo.CcApp;
+import com.blackducksoftware.tools.connector.codecenter.pojo.CcApp;
 import com.blackducksoftware.tools.snapshot.cc.CcConfigMgr;
 import com.blackducksoftware.tools.snapshot.protex.ProtexConfigMgr;
 

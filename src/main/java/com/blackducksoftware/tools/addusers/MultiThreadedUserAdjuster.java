@@ -18,8 +18,8 @@
 
 package com.blackducksoftware.tools.addusers;
 
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * A multi-threaded user adjuster strategy (as in strategy pattern).

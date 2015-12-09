@@ -33,8 +33,8 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcess
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppProcessorThread;
 import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * A MultiThreadedUserAdjuster that executes the "users per LOB" algorithm.

@@ -42,7 +42,7 @@ import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.addusers.lobuseradjust.UserStatus;
 import com.blackducksoftware.tools.common.cc.UserManager;
-import com.blackducksoftware.tools.commonframework.standard.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
  * An AppListProcessor that implements the "LOB adjust" mode algorithm.
