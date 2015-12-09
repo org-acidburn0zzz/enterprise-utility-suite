@@ -7,7 +7,7 @@ The Enterprise Utility Suite is a set of Protex and Code Center utilities that c
 
 You can download the latest source from GitHub: https://github.com/blackducksoftware/enterprise-utility-suite.
 
-You can pull the binary from BinTray via Maven: https://bintray.com/bds/tools/enterprise-utility-suite/view
+You can pull the binary from GitHub at: https://github.com/blackducksoftware/enterprise-utility-suite/releases
 
 ## Documentation
 
