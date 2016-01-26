@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.common;
@@ -30,10 +30,15 @@ import java.util.regex.Pattern;
 public interface EntAppNameConfigurationManager {
     // Property names
     public static final String APPNAME_PATTERN_WITHDESCRIPTIONFORMAT_PROPERTY = "appname.pattern.withdescriptionformat";
+
     public static final String APPNAME_PATTERN_WITHOUTDESCRIPTIONFORMAT_PROPERTY = "appname.pattern.withoutdescriptionformat";
+
     public static final String APPNAME_PATTERN_FOLLOWSDESCRIPTION_PROPERTY = "appname.pattern.followsdescription";
+
     public static final String APPNAME_PATTERN_APPIDENTIFIER_PROPERTY = "appname.pattern.appidentifier";
+
     public static final String APPNAME_PATTERN_SUFFIX_PROPERTY_BASE = "appname.pattern.suffix";
+
     public static final String APPNAME_SEPARATOR_PROPERTY = "appname.separator";
 
     String getSeparatorString();

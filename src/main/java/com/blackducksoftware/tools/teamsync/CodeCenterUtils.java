@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 package com.blackducksoftware.tools.teamsync;
 
@@ -34,18 +34,22 @@ public class CodeCenterUtils {
     /**
      * Get the team for this one app
      *
+     * TODO: At first glance, it looks like what ApplicationManager.getAllUsersAssignedToApplication() is equivalent,
+     * via
+     * a diff api. TODO: Would be good to have a test to verify this
+     *
      * @return
      */
     public static List<ApplicationRoleAssignment> getAppUserRoles(
-	    CodeCenterServerWrapper ccServerWrapper, String appName,
-	    String appVersion) throws SdkFault {
-	ApplicationNameVersionToken appToken = new ApplicationNameVersionToken();
-	appToken.setName(appName);
-	appToken.setVersion(appVersion);
-	List<ApplicationRoleAssignment> team = ccServerWrapper
-		.getInternalApiWrapper().getProxy().getRoleApi()
-		.getApplicationRoles(appToken);
-	return team;
+            CodeCenterServerWrapper ccServerWrapper, String appName,
+            String appVersion) throws SdkFault {
+        ApplicationNameVersionToken appToken = new ApplicationNameVersionToken();
+        appToken.setName(appName);
+        appToken.setVersion(appVersion);
+        List<ApplicationRoleAssignment> team = ccServerWrapper
+                .getInternalApiWrapper().getProxy().getRoleApi()
+                .getApplicationRoles(appToken);
+        return team;
     }
 
 }
