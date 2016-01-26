@@ -33,7 +33,6 @@ import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessor;
-import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
@@ -42,19 +41,16 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
 
     private final UserCreatorConfig config;
 
-    private final UserManager userManager;
-
     private CodeCenterServerWrapper codeCenterServerWrapper;
 
     private final AppIdentifierUserListMap appIdentifierUserListMap;
 
     public AppListProcessorAppIdentifiersPerUser(
             CodeCenterServerWrapper codeCenterServerWrapper,
-            UserCreatorConfig config, UserManager userManager,
+            UserCreatorConfig config,
             AppIdentifierUserListMap appIdentifierUserListMap) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
-        this.userManager = userManager;
         this.appIdentifierUserListMap = appIdentifierUserListMap;
     }
 
@@ -133,6 +129,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
                 Set<String> userSet = new HashSet<String>();
                 userSet.addAll(details.getUsernames());
                 List<String> usersAdded = userManager.addUsers(app, userSet);
+
                 report.addRecord(app.getName(), app.getVersion(), true, null,
                         usersAdded, null, null);
             }

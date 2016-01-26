@@ -47,9 +47,6 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessorFactoryLobAdjust;
 import com.blackducksoftware.tools.common.CommonHarness;
-import com.blackducksoftware.tools.common.cc.UserManager;
-import com.blackducksoftware.tools.common.cc.UserManagerCircumventsLocks;
-import com.blackducksoftware.tools.common.cc.UserManagerImpl;
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
@@ -259,36 +256,21 @@ public class UserCreator implements UserAdder {
         }
         if (configProcessor.getMode() == Mode.USERS_PER_LOB) {
             try {
-                UserManager userManager;
-                if (configProcessor.isCircumventLocks()) {
-                    userManager = new UserManagerCircumventsLocks(
-                            configProcessor, codeCenterServerWrapper);
-                } else {
-                    userManager = new UserManagerImpl(configProcessor,
-                            codeCenterServerWrapper);
-                }
                 AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryLobAdjust(
-                        codeCenterServerWrapper, configProcessor, userManager);
+                        codeCenterServerWrapper, configProcessor);
                 adder.setMultiThreadedUserAdjuster(new MultiThreadedUserAdjusterLob(
-                        configProcessor, userManager, appListProcessorFactory));
+                        configProcessor, appListProcessorFactory));
             } catch (Exception e) {
                 logger.error("Error initializing LOB user adjustment mode.", e);
                 System.exit(-1);
             }
         } else if (configProcessor.getMode() == Mode.APPIDENTIFIERS_PER_USER) {
             try {
-                UserManager userManager;
-                if (configProcessor.isCircumventLocks()) {
-                    userManager = new UserManagerCircumventsLocks(
-                            configProcessor, codeCenterServerWrapper);
-                } else {
-                    userManager = new UserManagerImpl(configProcessor,
-                            codeCenterServerWrapper);
-                }
+
                 AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
-                        codeCenterServerWrapper, configProcessor, userManager);
+                        codeCenterServerWrapper, configProcessor);
                 MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
-                        configProcessor, userManager, appListProcessorFactory);
+                        configProcessor, appListProcessorFactory);
                 adder.setMultiThreadedUserAdjuster(adjuster);
             } catch (Exception e) {
                 logger.error(
