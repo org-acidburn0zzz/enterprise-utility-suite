@@ -18,7 +18,7 @@
 
 package com.blackducksoftware.tools.addusers;
 
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 /**
  * A "user adder" interface (allows mocking of the user-creation logic for
@@ -43,7 +43,7 @@ public interface UserAdder {
      * @param numThreads
      * @throws Exception
      */
-    void run(CodeCenterServerWrapper codeCenterServerWrapper, int numThreads)
+    void run(ICodeCenterServerWrapper codeCenterServerWrapper, int numThreads)
             throws Exception;
 
 }

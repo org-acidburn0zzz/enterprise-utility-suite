@@ -31,10 +31,10 @@ import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppProcessorThread;
-import com.blackducksoftware.tools.common.cc.UserManager;
+import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 /**
  * A MultiThreadedUserAdjuster that executes the "users per LOB" algorithm.
@@ -50,8 +50,6 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
 
     private final UserCreatorConfig config;
 
-    private final UserManager userManager;
-
     private final UserAdjustmentReport report;
 
     private final SimpleUserSet newUsers;
@@ -61,10 +59,9 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
     private boolean threadExceptionThrown = false;
 
     public MultiThreadedUserAdjusterLob(UserCreatorConfig config,
-            UserManager userManager,
             AppListProcessorFactory appListProcessorFactory) throws Exception {
         this.config = config;
-        this.userManager = userManager;
+
         this.appListProcessorFactory = appListProcessorFactory;
         report = new UserAdjustmentReport(config,
                 getFilenameSafeString(config.getLob()));
@@ -98,15 +95,15 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
      *
      */
     @Override
-    public void run(CodeCenterServerWrapper codeCenterServerWrapper,
+    public void run(ICodeCenterServerWrapper codeCenterServerWrapper,
             int numThreads) throws Exception {
         logger.info("Adjusting users for LOB " + config.getLob());
-        logger.info("Creating any users that don't already exist.");
-        List<String> usersCreated = userManager.createUsers(newUsers
-                .getUserSet());
-        report.addRecord("<all>", "", true, usersCreated, null, null, null);
-        logger.info("Fetching applications from Code Center");
 
+        logger.info("Creating any users that don't already exist.");
+        List<String> usersCreated = UserUtils.createOrActivateUsers(codeCenterServerWrapper, newUsers.getUserSet(), config.getNewUserPassword());
+        report.addRecord("<all>", "", true, usersCreated, null, null, null);
+
+        logger.info("Fetching applications from Code Center");
         AppListProcessor fullAppListGetter = appListProcessorFactory
                 .createAppListProcessor();
         List<Application> fullAppList = fullAppListGetter.loadApplications();

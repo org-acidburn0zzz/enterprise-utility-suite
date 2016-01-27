@@ -32,10 +32,10 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppProcessorThread;
-import com.blackducksoftware.tools.common.cc.UserManager;
+import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 /**
  * A MultiThreadedUserAdjuster that executes the AppIdentifiersPerUser
@@ -51,8 +51,6 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 
     private static String THREAD_FAILED_ERROR_MESSAGE = "One or more threads failed. Please check the log for errors (search for \"ERROR\")";
 
-    private final UserManager userManager;
-
     private final UserAdjustmentReport report;
 
     private final SimpleUserSet newUsers;
@@ -61,10 +59,13 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 
     private boolean threadExceptionThrown = false;
 
+    private final UserCreatorConfig config;
+
     public MultiThreadedUserAdjusterAppIdentifiersPerUser(
-            UserCreatorConfig config, UserManager userManager,
+            UserCreatorConfig config, ICodeCenterServerWrapper codeCenterServerWrapper,
             AppListProcessorFactory appListProcessorFactory) throws Exception {
-        this.userManager = userManager;
+
+        this.config = config;
         this.appListProcessorFactory = appListProcessorFactory;
         report = new UserAdjustmentReport(config, "report");
         report.setLob("");
@@ -84,12 +85,13 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
      *
      */
     @Override
-    public void run(CodeCenterServerWrapper codeCenterServerWrapper,
+    public void run(ICodeCenterServerWrapper codeCenterServerWrapper,
             int numThreads) throws Exception {
         logger.info("Adding users to applications based on AppIdentifiers per Username input file");
         logger.info("Creating any users that don't already exist.");
-        List<String> usersCreated = userManager.createUsers(newUsers
-                .getUserSet());
+
+        List<String> usersCreated = UserUtils.createOrActivateUsers(codeCenterServerWrapper, newUsers.getUserSet(), config.getNewUserPassword());
+
         report.addRecord("<all>", "", true, usersCreated, null, null, null);
         logger.info("Fetching applications from Code Center");
 

@@ -19,7 +19,6 @@
 package com.blackducksoftware.tools.addusers.lobuseradjust.applist;
 
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
-import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
@@ -35,14 +34,12 @@ public class AppListProcessorFactoryLobAdjust implements
 
     private final UserCreatorConfig config;
 
-    private final UserManager userManager;
-
     public AppListProcessorFactoryLobAdjust(
             CodeCenterServerWrapper codeCenterServerWrapper,
-            UserCreatorConfig config, UserManager userManager) {
+            UserCreatorConfig config) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
-        this.userManager = userManager;
+
     }
 
     /**
@@ -52,7 +49,7 @@ public class AppListProcessorFactoryLobAdjust implements
     @Override
     public AppListProcessor createAppListProcessor() {
         AppListProcessor processor = new AppListProcessorLobAdjust(
-                codeCenterServerWrapper, config, userManager);
+                codeCenterServerWrapper, config);
         return processor;
     }
 }

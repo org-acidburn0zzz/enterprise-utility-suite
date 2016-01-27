@@ -49,6 +49,7 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcess
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 /**
  * The Main class for adduser.
@@ -270,7 +271,7 @@ public class UserCreator implements UserAdder {
                 AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
                         codeCenterServerWrapper, configProcessor);
                 MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
-                        configProcessor, appListProcessorFactory);
+                        configProcessor, codeCenterServerWrapper, appListProcessorFactory);
                 adder.setMultiThreadedUserAdjuster(adjuster);
             } catch (Exception e) {
                 logger.error(
@@ -397,7 +398,7 @@ public class UserCreator implements UserAdder {
      * mode.
      */
     @Override
-    public void run(CodeCenterServerWrapper codeCenterServerWrapper,
+    public void run(ICodeCenterServerWrapper codeCenterServerWrapper,
             int numThreads) throws Exception {
 
         if (configProcessor.getMode() == Mode.USERS_PER_LOB) {
@@ -475,7 +476,7 @@ public class UserCreator implements UserAdder {
      * @throws Exception
      */
     private void createAndAssignUsers(
-            CodeCenterServerWrapper codeCenterServerWrapper) throws Exception {
+            ICodeCenterServerWrapper codeCenterServerWrapper) throws Exception {
         List<UserNameOrIdToken> usersIds = null;
         UserNameToken token = null;
         List<RoleNameOrIdToken> roleIds = null;
@@ -667,7 +668,7 @@ public class UserCreator implements UserAdder {
      * @param codeCenterServerWrapper
      * @throws SdkFault
      */
-    private void processUsers(CodeCenterServerWrapper codeCenterServerWrapper)
+    private void processUsers(ICodeCenterServerWrapper codeCenterServerWrapper)
             throws SdkFault {
         /*
          * List of usernames to submit for the application

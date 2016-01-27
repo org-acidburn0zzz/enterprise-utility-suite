@@ -19,7 +19,7 @@
 package com.blackducksoftware.tools.addusers;
 
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 /**
  * A multi-threaded user adjuster strategy (as in strategy pattern).
@@ -36,7 +36,7 @@ public interface MultiThreadedUserAdjuster {
      * @param numThreads
      * @throws Exception
      */
-    void run(CodeCenterServerWrapper ccWrapper, int numThreads)
+    void run(ICodeCenterServerWrapper ccWrapper, int numThreads)
             throws Exception;
 
     /**

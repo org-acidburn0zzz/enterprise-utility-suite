@@ -126,12 +126,15 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
                 logger.info("Processing app " + app.getName() + " / "
                         + app.getVersion());
                 matchingAppCount++;
-                Set<String> userSet = new HashSet<String>();
-                userSet.addAll(details.getUsernames());
-                List<String> usersAdded = userManager.addUsers(app, userSet);
+                Set<String> userSet = new HashSet<String>(details.getUsernames());
+
+                Set<String> roleNames = new HashSet<>(1);
+                roleNames.add(config.getUserRole());
+                codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId().getId(),
+                        userSet, roleNames, config.isCircumventLocks());
 
                 report.addRecord(app.getName(), app.getVersion(), true, null,
-                        usersAdded, null, null);
+                        details.getUsernames(), null, null);
             }
         }
         if (matchingAppCount == 0) {

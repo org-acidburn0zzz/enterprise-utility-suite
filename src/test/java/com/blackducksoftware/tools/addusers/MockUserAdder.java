@@ -19,7 +19,7 @@
 package com.blackducksoftware.tools.addusers;
 
 import com.blackducksoftware.tools.addusers.UserCreatorConfig.Mode;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 public class MockUserAdder implements UserAdder {
     private UserCreatorConfig configProcessor;
@@ -37,7 +37,7 @@ public class MockUserAdder implements UserAdder {
     }
 
     @Override
-    public void run(CodeCenterServerWrapper codeCenterServerWrapper,
+    public void run(ICodeCenterServerWrapper codeCenterServerWrapper,
             int numThreads) throws Exception {
         if (configProcessor.getMode() == Mode.USERS_PER_LOB) {
             lobUserAdjuster.run(codeCenterServerWrapper, numThreads);

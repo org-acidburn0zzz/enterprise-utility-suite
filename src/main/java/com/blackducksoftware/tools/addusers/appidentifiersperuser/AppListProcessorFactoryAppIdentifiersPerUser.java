@@ -21,7 +21,6 @@ package com.blackducksoftware.tools.addusers.appidentifiersperuser;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessorFactory;
-import com.blackducksoftware.tools.common.cc.UserManager;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
@@ -37,16 +36,13 @@ public class AppListProcessorFactoryAppIdentifiersPerUser implements
 
     private final UserCreatorConfig config;
 
-    private final UserManager userManager;
-
     private final AppIdentifierUserListMap appIdentifierUserListMap;
 
     public AppListProcessorFactoryAppIdentifiersPerUser(
             CodeCenterServerWrapper codeCenterServerWrapper,
-            UserCreatorConfig config, UserManager userManager) {
+            UserCreatorConfig config) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
-        this.userManager = userManager;
         appIdentifierUserListMap = config.getAppIdentifierUserListMap();
     }
 
@@ -61,7 +57,7 @@ public class AppListProcessorFactoryAppIdentifiersPerUser implements
     @Override
     public AppListProcessor createAppListProcessor() {
         AppListProcessor processor = new AppListProcessorAppIdentifiersPerUser(
-                codeCenterServerWrapper, config, userManager,
+                codeCenterServerWrapper, config,
                 appIdentifierUserListMap);
         return processor;
     }

@@ -39,7 +39,7 @@
     
 
     <category name="com.blackducksoftware.tools">
-        <priority value="DEBUG" />
+        <priority value="INFO" />
     </category>
 
 	<category name="soleng">

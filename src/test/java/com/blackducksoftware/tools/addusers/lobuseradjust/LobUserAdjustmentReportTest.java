@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.addusers.lobuseradjust;
@@ -38,6 +38,7 @@ import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.commonframework.standard.datatable.Record;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStdOut;
+import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 public class LobUserAdjustmentReportTest {
 
@@ -51,140 +52,140 @@ public class LobUserAdjustmentReportTest {
 
     @Test
     public void test() throws Exception {
-	Properties props = getBasicProperties();
-	UserCreatorConfig config = new UserCreatorConfig(props);
+        Properties props = getBasicProperties();
+        UserCreatorConfig config = new UserCreatorConfig(props);
 
-	config.setMode(Mode.USERS_PER_LOB);
-	config.setLob("testLOB");
+        config.setMode(Mode.USERS_PER_LOB);
+        config.setLob("testLOB");
 
-	UserAdjustmentReport report = new UserAdjustmentReport(config, "TEST");
-	report.setLob("testLob"); // LOB need only be set once, it persists
+        UserAdjustmentReport report = new UserAdjustmentReport(config, "TEST");
+        report.setLob("testLob"); // LOB need only be set once, it persists
 
-	List<String> createdUserList = new ArrayList<String>();
-	createdUserList.add("createdUser1");
-	createdUserList.add("userCreated2");
-	report.addRecord("testAppName1", "testAppVersion1", true,
-		createdUserList, listify("addedUser1"),
-		userStatusListify("removedUser1"), "");
+        List<String> createdUserList = new ArrayList<String>();
+        createdUserList.add("createdUser1");
+        createdUserList.add("userCreated2");
+        report.addRecord("testAppName1", "testAppVersion1", true,
+                createdUserList, listify("addedUser1"),
+                userStatusListify("removedUser1"), "");
 
-	List<UserStatus> removedUserList = new ArrayList<UserStatus>();
-	removedUserList.add(new UserStatus("removedUser1", true, null));
-	removedUserList.add(new UserStatus("removedUser2", true, null));
-	report.addRecord("testAppName2", "testAppVersion2", false, null,
-		listify("addedUser1"), removedUserList, "test message");
+        List<UserStatus> removedUserList = new ArrayList<UserStatus>();
+        removedUserList.add(new UserStatus("removedUser1", true, null));
+        removedUserList.add(new UserStatus("removedUser2", true, null));
+        report.addRecord("testAppName2", "testAppVersion2", false, null,
+                listify("addedUser1"), removedUserList, "test message");
 
-	DataTable table = report.getDataTable();
-	DataSetWriter writer = new DataSetWriterStdOut();
-	writer.write(table);
+        DataTable table = report.getDataTable();
+        DataSetWriter writer = new DataSetWriterStdOut();
+        writer.write(table);
 
-	// Iterator should get us two records
-	Iterator<Record> dataSetIter = table.iterator();
-	assertTrue(dataSetIter.hasNext());
-	Record record = dataSetIter.next();
-	assertEquals("testLob", record.getStringFieldValue("lob"));
-	assertEquals("testAppName1",
-		record.getStringFieldValue("applicationName"));
-	assertEquals("createdUser1, userCreated2",
-		record.getStringFieldValue("usersCreated"));
+        // Iterator should get us two records
+        Iterator<Record> dataSetIter = table.iterator();
+        assertTrue(dataSetIter.hasNext());
+        Record record = dataSetIter.next();
+        assertEquals("testLob", record.getStringFieldValue("lob"));
+        assertEquals("testAppName1",
+                record.getStringFieldValue("applicationName"));
+        assertEquals("createdUser1, userCreated2",
+                record.getStringFieldValue("usersCreated"));
 
-	// Go to 2nd record
-	assertTrue(dataSetIter.hasNext());
-	record = dataSetIter.next();
+        // Go to 2nd record
+        assertTrue(dataSetIter.hasNext());
+        record = dataSetIter.next();
 
-	assertEquals("", record.getStringFieldValue("lob"));
-	assertEquals("", record.getStringFieldValue("usersCreated"));
-	assertEquals("removedUser1, removedUser2",
-		record.getStringFieldValue("usersRemoved"));
-	assertEquals("test message", record.getStringFieldValue("message"));
-	assertFalse(dataSetIter.hasNext());
+        assertEquals("", record.getStringFieldValue("lob"));
+        assertEquals("", record.getStringFieldValue("usersCreated"));
+        assertEquals("removedUser1, removedUser2",
+                record.getStringFieldValue("usersRemoved"));
+        assertEquals("test message", record.getStringFieldValue("message"));
+        assertFalse(dataSetIter.hasNext());
     }
 
     @Test
     public void testDeletionErrors() throws Exception {
-	Properties props = getBasicProperties();
+        Properties props = getBasicProperties();
 
-	UserCreatorConfig config = new UserCreatorConfig(props);
+        UserCreatorConfig config = new UserCreatorConfig(props);
 
-	config.setMode(Mode.USERS_PER_LOB);
-	config.setLob("testLOB");
+        config.setMode(Mode.USERS_PER_LOB);
+        config.setLob("testLOB");
 
-	UserAdjustmentReport report = new UserAdjustmentReport(config, "TEST");
-	report.setLob("testLob"); // LOB need only be set once, it persists
+        UserAdjustmentReport report = new UserAdjustmentReport(config, "TEST");
+        report.setLob("testLob"); // LOB need only be set once, it persists
 
-	List<String> createdUserList = new ArrayList<String>();
-	createdUserList.add("createdUser1");
-	createdUserList.add("userCreated2");
-	report.addRecord("testAppName1", "testAppVersion1", true,
-		createdUserList, listify("addedUser1"),
-		userStatusListify("removedUser1"), "");
+        List<String> createdUserList = new ArrayList<String>();
+        createdUserList.add("createdUser1");
+        createdUserList.add("userCreated2");
+        report.addRecord("testAppName1", "testAppVersion1", true,
+                createdUserList, listify("addedUser1"),
+                userStatusListify("removedUser1"), "");
 
-	List<UserStatus> removedUserList = new ArrayList<UserStatus>();
-	removedUserList
-		.add(new UserStatus("removedUser1", false, "testMessage"));
-	removedUserList.add(new UserStatus("removedUser2", true, null));
-	report.addRecord("testAppName2", "testAppVersion2", false, null,
-		listify("addedUser1"), removedUserList, "test message");
+        List<UserStatus> removedUserList = new ArrayList<UserStatus>();
+        removedUserList
+                .add(new UserStatus("removedUser1", false, "testMessage"));
+        removedUserList.add(new UserStatus("removedUser2", true, null));
+        report.addRecord("testAppName2", "testAppVersion2", false, null,
+                listify("addedUser1"), removedUserList, "test message");
 
-	DataTable table = report.getDataTable();
-	DataSetWriter writer = new DataSetWriterStdOut();
-	writer.write(table);
+        DataTable table = report.getDataTable();
+        DataSetWriter writer = new DataSetWriterStdOut();
+        writer.write(table);
 
-	// Iterator should get us two records
-	Iterator<Record> dataSetIter = table.iterator();
-	assertTrue(dataSetIter.hasNext());
-	Record record = dataSetIter.next();
-	assertEquals("testLob", record.getStringFieldValue("lob"));
-	assertEquals("testAppName1",
-		record.getStringFieldValue("applicationName"));
-	assertEquals("createdUser1, userCreated2",
-		record.getStringFieldValue("usersCreated"));
+        // Iterator should get us two records
+        Iterator<Record> dataSetIter = table.iterator();
+        assertTrue(dataSetIter.hasNext());
+        Record record = dataSetIter.next();
+        assertEquals("testLob", record.getStringFieldValue("lob"));
+        assertEquals("testAppName1",
+                record.getStringFieldValue("applicationName"));
+        assertEquals("createdUser1, userCreated2",
+                record.getStringFieldValue("usersCreated"));
 
-	// Go to 2nd record
-	assertTrue(dataSetIter.hasNext());
-	record = dataSetIter.next();
+        // Go to 2nd record
+        assertTrue(dataSetIter.hasNext());
+        record = dataSetIter.next();
 
-	assertEquals("", record.getStringFieldValue("lob"));
-	assertEquals("", record.getStringFieldValue("usersCreated"));
-	assertEquals("removedUser2", record.getStringFieldValue("usersRemoved"));
-	assertEquals(
-		"test message; Error deleting user removedUser1: testMessage",
-		record.getStringFieldValue("message"));
-	assertFalse(dataSetIter.hasNext());
+        assertEquals("", record.getStringFieldValue("lob"));
+        assertEquals("", record.getStringFieldValue("usersCreated"));
+        assertEquals("removedUser2", record.getStringFieldValue("usersRemoved"));
+        assertEquals(
+                "test message; Error deleting user removedUser1: testMessage",
+                record.getStringFieldValue("message"));
+        assertFalse(dataSetIter.hasNext());
     }
 
     private List<UserStatus> userStatusListify(String s) {
-	List<UserStatus> list = new ArrayList<UserStatus>(1);
-	list.add(new UserStatus(s, true, null));
-	return list;
+        List<UserStatus> list = new ArrayList<UserStatus>(1);
+        list.add(new UserStatus(s, true, null));
+        return list;
     }
 
     private List<String> listify(String s) {
-	List<String> list = new ArrayList<String>(1);
-	list.add(s);
-	return list;
+        List<String> list = new ArrayList<String>(1);
+        list.add(s);
+        return list;
     }
 
     private Properties getBasicProperties() {
-	Properties props = new Properties();
-	props.setProperty("cc.server.name", "notused");
-	props.setProperty("cc.user.name", "notused");
-	props.setProperty("cc.password", "notused");
-	props.setProperty("app.version", "notused");
-	props.setProperty("user.role", "notused");
-	props.setProperty("username.pattern",
-		"[a-z][0-9][0-9][0-9][0-9][0-9][0-9]");
-	props.setProperty("appname.separator", "-");
-	props.setProperty("appname.pattern.withoutdescriptionformat",
-		"[0-9][0-9][0-9]+-(PROD|RC1|RC2|RC3|RC4|RC5)-CURRENT");
-	props.setProperty("appname.pattern.withdescriptionformat",
-		"[0-9][0-9][0-9]+-.*-(PROD|RC1|RC2|RC3|RC4|RC5)-CURRENT");
-	props.setProperty("appname.pattern.followsdescription",
-		"-(PROD|RC1|RC2|RC3|RC4|RC5)-CURRENT");
-	props.setProperty("appname.pattern.appidentifier", "[0-9][0-9][0-9]+");
-	props.setProperty("appname.pattern.suffix.0",
-		"(PROD|RC1|RC2|RC3|RC4|RC5)");
-	props.setProperty("appname.pattern.suffix.1", "CURRENT");
+        Properties props = new Properties();
+        props.setProperty("cc.server.name", "notused");
+        props.setProperty("cc.user.name", "notused");
+        props.setProperty("cc.password", "notused");
+        props.setProperty("app.version", "notused");
+        props.setProperty("user.role", "notused");
+        props.setProperty("username.pattern",
+                "[a-z][0-9][0-9][0-9][0-9][0-9][0-9]");
+        props.setProperty("appname.separator", "-");
+        props.setProperty("appname.pattern.withoutdescriptionformat",
+                "[0-9][0-9][0-9]+-(PROD|RC1|RC2|RC3|RC4|RC5)-CURRENT");
+        props.setProperty("appname.pattern.withdescriptionformat",
+                "[0-9][0-9][0-9]+-.*-(PROD|RC1|RC2|RC3|RC4|RC5)-CURRENT");
+        props.setProperty("appname.pattern.followsdescription",
+                "-(PROD|RC1|RC2|RC3|RC4|RC5)-CURRENT");
+        props.setProperty("appname.pattern.appidentifier", "[0-9][0-9][0-9]+");
+        props.setProperty("appname.pattern.suffix.0",
+                "(PROD|RC1|RC2|RC3|RC4|RC5)");
+        props.setProperty("appname.pattern.suffix.1", "CURRENT");
 
-	return props;
+        return props;
     }
 }
