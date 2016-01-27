@@ -73,10 +73,6 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
             filter.setLastRowIndex(Integer.MAX_VALUE);
             String startsWithString = appIdentifier
                     + config.getAppNameSeparator();
-            // tbd
-            // List<Application> appIdentifierApps = codeCenterServerWrapper
-            // .getInternalApiWrapper().getApplicationApi()
-            // .searchApplications(startsWithString, filter);
             List<ApplicationPojo> appIdentifierApps = codeCenterServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, startsWithString);
 
             logger.info("Loaded " + appIdentifierApps.size()

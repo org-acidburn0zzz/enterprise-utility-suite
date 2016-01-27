@@ -31,8 +31,6 @@ import org.slf4j.LoggerFactory;
 import com.blackducksoftware.sdk.codecenter.application.data.ApplicationNameVersionToken;
 import com.blackducksoftware.sdk.codecenter.common.data.UserRolePageFilter;
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
-import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
-import com.blackducksoftware.sdk.codecenter.user.data.User;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
@@ -40,6 +38,7 @@ import com.blackducksoftware.tools.commonframework.core.exception.CommonFramewor
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
+import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 /**
@@ -121,28 +120,25 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
         filter.setFirstRowIndex(0);
         filter.setLastRowIndex(Integer.MAX_VALUE);
 
-        List<ApplicationRoleAssignment> roleAssignments = codeCenterServerWrapper
-                .getInternalApiWrapper().getApplicationApi()
-                .searchUserInApplicationTeam(appToken, null, filter);
+        List<ApplicationUserPojo> roleAssignments = codeCenterServerWrapper.getApplicationManager().getAllUsersAssignedToApplication(app.getId());
 
         Set<String> oldUsers = new HashSet<String>();
-        for (ApplicationRoleAssignment roleAssignment : roleAssignments) {
-            logger.debug("Checking role assignment: User " + roleAssignment.getUserNameToken().getName() + ": Role: "
-                    + roleAssignment.getRoleNameToken().getName());
+        for (ApplicationUserPojo roleAssignment : roleAssignments) {
+            logger.debug("Checking role assignment: User " + roleAssignment.getUserName() + ": Role: "
+                    + roleAssignment.getRoleName());
 
-            User user = codeCenterServerWrapper.getInternalApiWrapper()
-                    .getUserApi().getUser(roleAssignment.getUserIdToken());
+            CodeCenterUserPojo user = codeCenterServerWrapper.getUserManager().getUserById(roleAssignment.getUserId());
 
             boolean thisUserIsRelevant = thisUserHasTheRelevantRoleOnThisApp(
                     codeCenterServerWrapper, app, user, roleAssignment
-                            .getRoleIdToken().getId());
+                            .getRoleId());
 
             if (thisUserIsRelevant) {
-                logger.debug("User " + user.getName().getName()
+                logger.debug("User " + user.getUsername()
                         + " has role = target role; adding to oldUsers list.");
-                oldUsers.add(user.getName().getName());
+                oldUsers.add(user.getUsername());
             } else {
-                logger.debug("User " + user.getName().getName()
+                logger.debug("User " + user.getUsername()
                         + " has some other role; not going to remove it");
             }
         }
@@ -178,7 +174,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
 
     private boolean thisUserHasTheRelevantRoleOnThisApp(
             CodeCenterServerWrapper codeCenterServerWrapper, ApplicationPojo app,
-            User user, String usersRoleIdOnThisApp) throws CommonFrameworkException {
+            CodeCenterUserPojo user, String usersRoleIdOnThisApp) throws CommonFrameworkException {
 
         if (targetRoleId != null) {
             // If we already know the target Role ID, this is easy
@@ -220,7 +216,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
      */
     private boolean determineWhetherUserHasTheRelevantRoleOnThisApp(
             CodeCenterServerWrapper codeCenterServerWrapper, ApplicationPojo app,
-            User user, String usersRoleIdOnThisApp) throws CommonFrameworkException {
+            CodeCenterUserPojo user, String usersRoleIdOnThisApp) throws CommonFrameworkException {
         boolean userHasRelevantRole = false;
 
         Map<String, ApplicationUserPojo> userAssignmentMap = new HashMap<>();
@@ -237,11 +233,10 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
         }
 
         // Does the given user have the targeted role?
-        logger.debug("Checking to see if user " + user.getName().getName()
+        logger.debug("Checking to see if user " + user.getUsername()
                 + " has the targeted role...");
-        if (userAssignmentMap.containsKey(user.getName().getName())) {
-            ApplicationUserPojo a = userAssignmentMap.get(user.getName()
-                    .getName());
+        if (userAssignmentMap.containsKey(user.getUsername())) {
+            ApplicationUserPojo a = userAssignmentMap.get(user.getUsername());
             if (a.getRoleName().equals(config.getUserRole())) {
                 userHasRelevantRole = true;
                 logger.debug("... it does.");
@@ -256,7 +251,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
         }
 
         logger.debug("determineWhetherUserHasTheRelevantRoleOnThisApp(): Returning "
-                + userHasRelevantRole + " for user " + user.getName().getName() + " on app " + app.getName());
+                + userHasRelevantRole + " for user " + user.getUsername() + " on app " + app.getName());
         return userHasRelevantRole;
     }
 

@@ -35,7 +35,6 @@ import com.blackducksoftware.sdk.codecenter.application.data.ApplicationPageFilt
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameToken;
-import com.blackducksoftware.sdk.codecenter.user.data.UserCreate;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameToken;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig.Mode;
@@ -48,6 +47,7 @@ import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcess
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessorFactoryLobAdjust;
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
+import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
@@ -543,18 +543,11 @@ public class UserCreator implements UserAdder {
 
                     usersIds = new ArrayList<UserNameOrIdToken>();
                     for (String user : currentUser.trim().split(",")) {
-                        token = new UserNameToken();
-                        token.setName(user);
-                        usersIds.add(token);
-                        UserCreate uc = new UserCreate();
-                        uc.setName(user);
-                        uc.setActive(true);
-                        uc.setPassword(userPassword);
                         try {
-                            codeCenterServerWrapper.getInternalApiWrapper()
-                                    .getUserApi().createUser(uc);
+
+                            codeCenterServerWrapper.getUserManager().createUser(user, userPassword, "", "", "", true);
                             logger.info("User {} created", user);
-                        } catch (SdkFault createuser) {
+                        } catch (CommonFrameworkException createuserException) {
                             logger.info("User {} may already exist", user);
                         }
                     }
