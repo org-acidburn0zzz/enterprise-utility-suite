@@ -26,7 +26,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.addusers.TestUtils;
+import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 
 public class AppAdjusterConfigManagerTest {
 

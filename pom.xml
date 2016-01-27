@@ -112,7 +112,7 @@
 							<name>HighSev</name>
 						</program>
 						<program>
-							<mainClass>com.blackducksoftware.tools.addusers.UserCreator</mainClass>
+							<mainClass>com.blackducksoftware.tools.appuseradjuster.UserCreator</mainClass>
 							<name>AddUsers</name>
 						</program>
 						<program>
