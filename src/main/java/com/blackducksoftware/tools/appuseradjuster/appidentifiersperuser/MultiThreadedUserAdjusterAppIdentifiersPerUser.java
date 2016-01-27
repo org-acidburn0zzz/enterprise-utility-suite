@@ -26,11 +26,11 @@ import org.slf4j.LoggerFactory;
 
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessor;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessorFactory;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppProcessorThread;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppProcessorThread;
 import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
@@ -59,10 +59,10 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 
     private boolean threadExceptionThrown = false;
 
-    private final UserCreatorConfig config;
+    private final AddUserConfig config;
 
     public MultiThreadedUserAdjusterAppIdentifiersPerUser(
-            UserCreatorConfig config, ICodeCenterServerWrapper codeCenterServerWrapper,
+            AddUserConfig config, ICodeCenterServerWrapper codeCenterServerWrapper,
             AppListProcessorFactory appListProcessorFactory) throws Exception {
 
         this.config = config;

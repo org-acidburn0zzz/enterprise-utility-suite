@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,14 +39,16 @@ import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameToken;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterStringConstants;
+import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.MultiThreadedUserAdjusterLob;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactoryLobAdjust;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppIdentifierUserListMap;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppListProcessorFactoryAppIdentifiersPerUser;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.MultiThreadedUserAdjusterAppIdentifiersPerUser;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.MultiThreadedUserAdjusterLob;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessorFactory;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessorFactoryLobAdjust;
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
@@ -59,9 +61,9 @@ import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper
  * @author sbillings
  *
  */
-public class UserCreator implements UserAdder {
+public class AddUser implements UserAdder {
     private static final Logger logger = LoggerFactory
-            .getLogger(UserCreator.class.getName());
+            .getLogger(AddUser.class.getName());
 
     private static final String UTILITY_VERSION = "1.0";
 
@@ -102,7 +104,7 @@ public class UserCreator implements UserAdder {
     private String userAppRoleMappingFilePath = "";
 
     // Instance fields
-    private final UserCreatorConfig configProcessor;
+    private final AddUserConfig configProcessor;
 
     private MultiThreadedUserAdjuster multiThreadedUserAdjuster;
 
@@ -123,8 +125,8 @@ public class UserCreator implements UserAdder {
 
         File configFile = CommonHarness.getConfigFile();
 
-        UserCreatorConfig configProcessor = new UserCreatorConfig(configFile);
-        UserCreator adder = new UserCreator(configProcessor);
+        AddUserConfig configProcessor = new AddUserConfig(configFile);
+        AddUser adder = new AddUser(configProcessor);
 
         // Username;projectname
 
@@ -136,57 +138,57 @@ public class UserCreator implements UserAdder {
                 }
             }
 
-            if (args[argIndex].equals(StringConstants.CODE_CENTER_SERVER)) {
+            if (args[argIndex].equals(AddUserStringConstants.CODE_CENTER_SERVER)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setServer(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.CODE_CENTER_USERNAME)) {
+            if (args[argIndex].equals(AddUserStringConstants.CODE_CENTER_USERNAME)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setUsername(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.CODE_CENTER_PASSWORD)) {
+            if (args[argIndex].equals(AddUserStringConstants.CODE_CENTER_PASSWORD)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setPassword(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.APP_NAME)) {
+            if (args[argIndex].equals(AddUserStringConstants.APP_NAME)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setAppName(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.APP_VERSION)) {
+            if (args[argIndex].equals(AddUserStringConstants.APP_VERSION)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setAppVersion(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.USERS)) {
+            if (args[argIndex].equals(AddUserStringConstants.USERS)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setUsersInput(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.ROLE)) {
+            if (args[argIndex].equals(AddUserStringConstants.ROLE)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     adder.setRole(args[argIndex + 1]);
                 }
             }
 
-            if (args[argIndex].equals(StringConstants.LOB)) {
+            if (args[argIndex].equals(AddUserStringConstants.LOB)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     configProcessor.setMode(Mode.USERS_PER_LOB);
                     configProcessor.setLob(args[argIndex + 1]);
                 }
             }
-            if (args[argIndex].equals(StringConstants.LOB_USERLIST_STRING)) {
+            if (args[argIndex].equals(AddUserStringConstants.LOB_USERLIST_STRING)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     configProcessor.setMode(Mode.USERS_PER_LOB);
@@ -202,7 +204,7 @@ public class UserCreator implements UserAdder {
                     configProcessor.setLobUserSet(lobUserList);
                 }
             }
-            if (args[argIndex].equals(StringConstants.LOB_USERLIST_FILEPATH)) {
+            if (args[argIndex].equals(AddUserStringConstants.LOB_USERLIST_FILEPATH)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     configProcessor.setMode(Mode.USERS_PER_LOB);
@@ -223,7 +225,7 @@ public class UserCreator implements UserAdder {
             }
 
             if (args[argIndex]
-                    .equals(StringConstants.APPIDENTIFIERS_PER_USER_FILEPATH)) {
+                    .equals(AppUserAdjusterStringConstants.APPIDENTIFIERS_PER_USER_FILEPATH)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
                     configProcessor.setMode(Mode.APPIDENTIFIERS_PER_USER);
@@ -299,7 +301,7 @@ public class UserCreator implements UserAdder {
 
     // Public instance methods
 
-    public UserCreator(UserCreatorConfig configProcessor) {
+    public AddUser(AddUserConfig configProcessor) {
         this.configProcessor = configProcessor;
     }
 
@@ -714,7 +716,7 @@ public class UserCreator implements UserAdder {
     }
 
     private static CodeCenterServerWrapper connectToCodeCenter(
-            UserCreatorConfig configProcessor) throws Exception {
+            AddUserConfig configProcessor) throws Exception {
         ServerBean serverBean = configProcessor.getServerBean();
         CodeCenterServerWrapper codeCenterServerWrapper = new CodeCenterServerWrapper(
                 serverBean, configProcessor);

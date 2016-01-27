@@ -16,14 +16,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist;
-
 /**
- * An AppListProcessor Factory object.
+ * Classes for the add user utility mode where a list of users is provided for each line of business
+ * in the input file.
  *
- * @author sbillings
+ * @author Steve Billings
+ * @date Jul 23, 2014
  *
  */
-public interface AppListProcessorFactory {
-    AppListProcessor createAppListProcessor();
-}
+
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;

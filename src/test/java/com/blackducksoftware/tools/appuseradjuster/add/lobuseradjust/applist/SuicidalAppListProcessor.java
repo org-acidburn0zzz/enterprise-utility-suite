@@ -16,25 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;
 
 import java.util.List;
 
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessor;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
+import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
-/**
- * Mark each app as "locked". Test will use this to see if all apps were
- * "processed".
- *
- * @author Steve Billings
- * @date Sep 2, 2014
- *
- */
-public class MockAppListProcessor implements AppListProcessor {
+public class SuicidalAppListProcessor implements AppListProcessor {
     List<ApplicationPojo> apps;
 
     /**
@@ -42,8 +35,12 @@ public class MockAppListProcessor implements AppListProcessor {
      *
      * @param apps
      */
-    public MockAppListProcessor(List<ApplicationPojo> apps) {
+    public SuicidalAppListProcessor(List<ApplicationPojo> apps) {
         this.apps = apps;
+    }
+
+    public void setCodeCenterServerWrapper(
+            CodeCenterServerWrapper codeCenterServerWrapper) {
     }
 
     public void setOmitMissingLobRecordsFromReport(boolean value) {
@@ -66,9 +63,7 @@ public class MockAppListProcessor implements AppListProcessor {
             SimpleUserSet newUsers, UserAdjustmentReport report)
             throws Exception {
 
-        for (ApplicationPojo app : appList) {
-            System.out.println("(Mock) processing app: " + app.getName());
-        }
+        throw new Exception("Mock exception for testing exception handling");
 
     }
 }

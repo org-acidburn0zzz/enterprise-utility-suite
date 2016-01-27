@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -34,14 +34,14 @@ import org.junit.Test;
 import com.blackducksoftware.tools.appuseradjuster.MockUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
-import com.blackducksoftware.tools.appuseradjuster.UserAdder;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig.Mode;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.MultiThreadedUserAdjusterLob;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessorFactory;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.MockAppListProcessorFactory;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.SuicidalAppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.add.UserAdder;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.MultiThreadedUserAdjusterLob;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.MockAppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.SuicidalAppListProcessorFactory;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.commonframework.standard.datatable.Record;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
@@ -97,7 +97,7 @@ public class LobUserAdjustTest {
         Properties props = TestUtils.configUserCreatorForLobAdjustMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
-        UserCreatorConfig config = new UserCreatorConfig(props);
+        AddUserConfig config = new AddUserConfig(props);
 
         config.setMode(Mode.USERS_PER_LOB);
         config.setLob(LOB_TO_ADJUST);
@@ -136,7 +136,7 @@ public class LobUserAdjustTest {
         Properties props = TestUtils.configUserCreatorForLobAdjustMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
-        UserCreatorConfig config = new UserCreatorConfig(props);
+        AddUserConfig config = new AddUserConfig(props);
 
         config.setMode(Mode.USERS_PER_LOB);
         config.setLob(LOB_TO_ADJUST);

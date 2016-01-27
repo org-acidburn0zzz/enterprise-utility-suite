@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +26,10 @@ import org.slf4j.LoggerFactory;
 
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessor;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessorFactory;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppProcessorThread;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppProcessorThread;
 import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
@@ -48,7 +48,7 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
             .getName());
 
-    private final UserCreatorConfig config;
+    private final AddUserConfig config;
 
     private final UserAdjustmentReport report;
 
@@ -58,7 +58,7 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
 
     private boolean threadExceptionThrown = false;
 
-    public MultiThreadedUserAdjusterLob(UserCreatorConfig config,
+    public MultiThreadedUserAdjusterLob(AddUserConfig config,
             AppListProcessorFactory appListProcessorFactory) throws Exception {
         this.config = config;
 

@@ -16,8 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
+import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 /**

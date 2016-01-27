@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;
 
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
@@ -32,11 +32,11 @@ public class AppListProcessorFactoryLobAdjust implements
         AppListProcessorFactory {
     private final CodeCenterServerWrapper codeCenterServerWrapper;
 
-    private final UserCreatorConfig config;
+    private final AddUserConfig config;
 
     public AppListProcessorFactoryLobAdjust(
             CodeCenterServerWrapper codeCenterServerWrapper,
-            UserCreatorConfig config) {
+            AddUserConfig config) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
 

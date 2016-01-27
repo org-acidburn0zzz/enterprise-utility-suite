@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +32,8 @@ import com.blackducksoftware.sdk.codecenter.application.data.ApplicationNameVers
 import com.blackducksoftware.sdk.codecenter.common.data.UserRolePageFilter;
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
@@ -53,7 +53,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
 
     private final CodeCenterServerWrapper codeCenterServerWrapper;
 
-    private final UserCreatorConfig config;
+    private final AddUserConfig config;
 
     private String targetRoleId; // at some point we discover this Role
 
@@ -61,7 +61,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
 
     public AppListProcessorLobAdjust(
             CodeCenterServerWrapper codeCenterServerWrapper,
-            UserCreatorConfig config) {
+            AddUserConfig config) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
     }

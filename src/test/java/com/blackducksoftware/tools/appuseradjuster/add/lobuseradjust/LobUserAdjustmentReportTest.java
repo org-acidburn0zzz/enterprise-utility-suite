@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -32,8 +32,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.commonframework.standard.datatable.Record;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
@@ -53,7 +53,7 @@ public class LobUserAdjustmentReportTest {
     @Test
     public void test() throws Exception {
         Properties props = getBasicProperties();
-        UserCreatorConfig config = new UserCreatorConfig(props);
+        AddUserConfig config = new AddUserConfig(props);
 
         config.setMode(Mode.USERS_PER_LOB);
         config.setLob("testLOB");
@@ -104,7 +104,7 @@ public class LobUserAdjustmentReportTest {
     public void testDeletionErrors() throws Exception {
         Properties props = getBasicProperties();
 
-        UserCreatorConfig config = new UserCreatorConfig(props);
+        AddUserConfig config = new AddUserConfig(props);
 
         config.setMode(Mode.USERS_PER_LOB);
         config.setLob("testLOB");

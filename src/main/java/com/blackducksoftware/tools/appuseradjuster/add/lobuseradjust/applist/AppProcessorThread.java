@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 /**

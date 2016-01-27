@@ -13,10 +13,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppIdentifierUserListMap;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
 
 public class UserCreatorConfigTest {
     private static final String APP_SUFFIX1_PATTERN_STRING = "CURRENT";
@@ -29,7 +29,7 @@ public class UserCreatorConfigTest {
 
     private static final String USERNAME_PATTERN_STRING = "[a-z][0-9][0-9][0-9][0-9][0-9][0-9]";
 
-    private static UserCreatorConfig config;
+    private static AddUserConfig config;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -67,7 +67,7 @@ public class UserCreatorConfigTest {
 	props.setProperty("appname.pattern.live", "test live app pattern");
 
 	props.setProperty("circumvent.locks", "true");
-	config = new UserCreatorConfig(props);
+	config = new AddUserConfig(props);
     }
 
     @AfterClass

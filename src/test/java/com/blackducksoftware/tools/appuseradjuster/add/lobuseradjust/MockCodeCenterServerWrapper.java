@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
 
 import java.util.List;
 

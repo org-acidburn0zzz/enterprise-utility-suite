@@ -17,12 +17,11 @@
  *******************************************************************************/
 
 /**
- * Classes for the add user utility mode where a list of users is provided for each line of business
- * in the input file.
+ * Classes for loading and processing a list of applications for a line of business.
  *
  * @author Steve Billings
  * @date Jul 23, 2014
  *
  */
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;

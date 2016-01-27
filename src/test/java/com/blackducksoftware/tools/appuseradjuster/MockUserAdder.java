@@ -19,17 +19,17 @@
 package com.blackducksoftware.tools.appuseradjuster;
 
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
-import com.blackducksoftware.tools.appuseradjuster.UserAdder;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.UserAdder;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 public class MockUserAdder implements UserAdder {
-    private UserCreatorConfig configProcessor;
+    private AddUserConfig configProcessor;
 
     private MultiThreadedUserAdjuster lobUserAdjuster = null;
 
-    public MockUserAdder(UserCreatorConfig configProcessor) {
+    public MockUserAdder(AddUserConfig configProcessor) {
         this.configProcessor = configProcessor;
     }
 

@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppListFilter;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 import com.blackducksoftware.tools.connector.common.ApprovalStatus;
@@ -32,7 +32,7 @@ public class AppListFilterTest {
         Properties props = TestUtils
                 .configUserCreatorForAppIdentifiersPerUserMode("not used",
                         "not used", "not used", "not used", "Unspecified");
-        UserCreatorConfig config = new UserCreatorConfig(props);
+        AddUserConfig config = new AddUserConfig(props);
 
         List<ApplicationPojo> unfilteredAppList = new ArrayList<ApplicationPojo>(6);
 
@@ -71,7 +71,7 @@ public class AppListFilterTest {
         t = props.getProperty("appname.pattern.live");
         assertTrue(t == null);
 
-        UserCreatorConfig config = new UserCreatorConfig(props);
+        AddUserConfig config = new AddUserConfig(props);
 
         List<ApplicationPojo> unfilteredAppList = new ArrayList<>(6);
 

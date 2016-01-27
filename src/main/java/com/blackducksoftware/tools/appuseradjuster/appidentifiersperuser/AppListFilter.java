@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.tools.appuseradjuster.UserCreatorConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 /**
@@ -32,7 +32,7 @@ public class AppListFilter {
 
     private List<ApplicationPojo> filteredApps;
 
-    public AppListFilter(UserCreatorConfig config,
+    public AppListFilter(AddUserConfig config,
             List<ApplicationPojo> unfilteredApps, String appIdentifier) {
         this.unfilteredApps = unfilteredApps;
         startsWithString = appIdentifier + config.getSeparatorString();

@@ -16,13 +16,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterConfig;
+import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.common.EntAppNameConfigurationManager;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationPassword;
 
@@ -32,7 +33,7 @@ import com.blackducksoftware.tools.commonframework.core.config.ConfigurationPass
  * @author sbillings
  *
  */
-public class UserCreatorConfig extends AppUserAdjusterConfig implements
+public class AddUserConfig extends AppUserAdjusterConfig implements
         EntAppNameConfigurationManager {
 
     public enum Mode {
@@ -112,22 +113,22 @@ public class UserCreatorConfig extends AppUserAdjusterConfig implements
 
     private String newUserPassword = DEFAULT_PASSWORD;
 
-    public UserCreatorConfig(Properties props) {
+    public AddUserConfig(Properties props) {
         super(props, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 
-    public UserCreatorConfig(InputStream in) {
+    public AddUserConfig(InputStream in) {
         super(in, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 
-    public UserCreatorConfig(String configFilename) {
+    public AddUserConfig(String configFilename) {
         super(configFilename, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 
-    public UserCreatorConfig(File configFile) {
+    public AddUserConfig(File configFile) {
         super(configFile.toString(), APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }

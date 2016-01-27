@@ -16,12 +16,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist;
+package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;
 
 import java.util.List;
 
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessor;
-import com.blackducksoftware.tools.appuseradjuster.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 public class SuicidalAppListProcessorFactory implements AppListProcessorFactory {

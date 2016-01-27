@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *******************************************************************************/
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
 /**
  * String constants.
@@ -23,7 +23,7 @@ package com.blackducksoftware.tools.appuseradjuster;
  * @author sbillings
  *
  */
-public class StringConstants {
+public class AddUserStringConstants {
     /**
      * -server
      */
@@ -71,6 +71,5 @@ public class StringConstants {
      */
     public static final String LOB_USERLIST_STRING = "-lob-userlist";
     public static final String LOB_USERLIST_FILEPATH = "-lob-userlist-file";
-    public static final String APPIDENTIFIERS_PER_USER_FILEPATH = "-app-identifiers-per-user-file";
 
 }
