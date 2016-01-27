@@ -21,8 +21,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -477,11 +479,8 @@ public class UserCreator implements UserAdder {
      */
     private void createAndAssignUsers(
             ICodeCenterServerWrapper codeCenterServerWrapper) throws Exception {
-        List<UserNameOrIdToken> usersIds = null;
-        UserNameToken token = null;
-        List<RoleNameOrIdToken> roleIds = null;
-        RoleNameToken roleToken = null;
-        ApplicationNameVersionToken appNameVersionToken = null;
+        Set<String> userIds = null;
+        Set<String> roleNames = null;
 
         int countSuccess = 0;
         int countFailed = 0;
@@ -541,11 +540,12 @@ public class UserCreator implements UserAdder {
                     logger.info("Adding {} as a '{}' user to application [{}]",
                             currentUser, currentRole, currentApplication);
 
-                    usersIds = new ArrayList<UserNameOrIdToken>();
+                    userIds = new HashSet<>();
                     for (String user : currentUser.trim().split(",")) {
                         try {
 
-                            codeCenterServerWrapper.getUserManager().createUser(user, userPassword, "", "", "", true);
+                            String userId = codeCenterServerWrapper.getUserManager().createUser(user, userPassword, "", "", "", true);
+                            userIds.add(userId);
                             logger.info("User {} created", user);
                         } catch (CommonFrameworkException createuserException) {
                             logger.info("User {} may already exist", user);
@@ -555,10 +555,8 @@ public class UserCreator implements UserAdder {
                     /*
                      * Establish the role here
                      */
-                    roleIds = new ArrayList<RoleNameOrIdToken>();
-                    roleToken = new RoleNameToken();
-                    roleToken.setName(currentRole);
-                    roleIds.add(roleToken);
+                    roleNames = new HashSet<>();
+                    roleNames.add(currentRole);
 
                     // get the list of Apps
                     try {
@@ -578,10 +576,6 @@ public class UserCreator implements UserAdder {
                             continue;
                         }
 
-                        appNameVersionToken = new ApplicationNameVersionToken();
-                        appNameVersionToken.setName(name);
-                        appNameVersionToken.setVersion(appVersion);
-
                         boolean worked = true;
 
                         logger.info(
@@ -589,12 +583,7 @@ public class UserCreator implements UserAdder {
                                 currentUser, theApp.getName(),
                                 theApp.getVersion());
                         try {
-                            codeCenterServerWrapper
-                                    .getInternalApiWrapper()
-                                    .getApplicationApi()
-                                    .addUserToApplicationTeam(
-                                            appNameVersionToken, usersIds,
-                                            roleIds);
+                            codeCenterServerWrapper.getApplicationManager().addUsersByIdToApplicationTeam(theApp.getId().getId(), userIds, roleNames, false);
                         } catch (Exception e) {
                             logger.error(
                                     "Unable to add {} to application [{} / {}]!\r\n{}",
@@ -608,7 +597,7 @@ public class UserCreator implements UserAdder {
                             countSuccess++;
                             logger.info(
                                     "{} '{}' user was added to application [{} / {}] team successfully",
-                                    usersIds.size(), role, theApp.getName(),
+                                    userIds.size(), role, theApp.getName(),
                                     theApp.getVersion());
                         }
                     }
