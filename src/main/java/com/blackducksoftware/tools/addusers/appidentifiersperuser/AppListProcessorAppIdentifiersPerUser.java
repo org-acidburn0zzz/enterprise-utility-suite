@@ -26,14 +26,14 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.sdk.codecenter.application.data.ApplicationPageFilter;
-import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.addusers.lobuseradjust.applist.AppListProcessor;
+import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
@@ -58,12 +58,13 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
      * Load the applications to be processed from Code Center.
      *
      * @return
+     * @throws CommonFrameworkException
      * @throws Exception
      */
     @Override
-    public List<Application> loadApplications() throws SdkFault {
+    public List<ApplicationPojo> loadApplications() throws CommonFrameworkException {
 
-        List<Application> apps = new ArrayList<Application>();
+        List<ApplicationPojo> apps = new ArrayList<>();
 
         for (String appIdentifier : appIdentifierUserListMap) {
 
@@ -72,14 +73,17 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
             filter.setLastRowIndex(Integer.MAX_VALUE);
             String startsWithString = appIdentifier
                     + config.getAppNameSeparator();
-            List<Application> appIdentifierApps = codeCenterServerWrapper
-                    .getInternalApiWrapper().getApplicationApi()
-                    .searchApplications(startsWithString, filter);
+            // tbd
+            // List<Application> appIdentifierApps = codeCenterServerWrapper
+            // .getInternalApiWrapper().getApplicationApi()
+            // .searchApplications(startsWithString, filter);
+            List<ApplicationPojo> appIdentifierApps = codeCenterServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, startsWithString);
+
             logger.info("Loaded " + appIdentifierApps.size()
                     + " apps for AppIdentifier: " + appIdentifier);
             AppListFilter appListFilter = new AppListFilter(config,
                     appIdentifierApps, appIdentifier);
-            List<Application> appIdentifierFilteredApps = appListFilter
+            List<ApplicationPojo> appIdentifierFilteredApps = appListFilter
                     .getFilteredList();
             logger.info("Filtered that down to "
                     + appIdentifierFilteredApps.size()
@@ -105,7 +109,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
      * @throws Exception
      */
     @Override
-    public void processAppList(List<Application> apps, SimpleUserSet newUsers,
+    public void processAppList(List<ApplicationPojo> apps, SimpleUserSet newUsers,
             UserAdjustmentReport report) throws Exception {
 
         int matchingAppCount = 0;
@@ -114,7 +118,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
 
             AppIdentifierAddUserDetails details = appIdentifierUserListMap
                     .getAppIdentifierUsernameListMap().get(appIdentifier);
-            for (Application app : details.getApplications()) {
+            for (ApplicationPojo app : details.getApplications()) {
                 logger.info("Potentially processing app " + app.getName()
                         + " / " + app.getVersion());
                 if (!apps.contains(app)) {
@@ -130,7 +134,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
 
                 Set<String> roleNames = new HashSet<>(1);
                 roleNames.add(config.getUserRole());
-                codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId().getId(),
+                codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId(),
                         userSet, roleNames, config.isCircumventLocks());
 
                 report.addRecord(app.getName(), app.getVersion(), true, null,

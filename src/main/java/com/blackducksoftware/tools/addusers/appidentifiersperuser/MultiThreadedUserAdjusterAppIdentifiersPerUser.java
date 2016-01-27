@@ -24,7 +24,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
@@ -36,6 +35,7 @@ import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 /**
  * A MultiThreadedUserAdjuster that executes the AppIdentifiersPerUser
@@ -97,7 +97,7 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 
         AppListProcessor fullAppListGetter = appListProcessorFactory
                 .createAppListProcessor();
-        List<Application> fullAppList = fullAppListGetter.loadApplications();
+        List<ApplicationPojo> fullAppList = fullAppListGetter.loadApplications();
 
         if (fullAppList.size() == 0) {
             logger.warn("No applications found that match the AppIdentifiers specified in the input file");
@@ -114,7 +114,7 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
             int fromIndex = distrib.getFromListIndex(i);
             int toIndex = distrib.getToListIndex(i);
             logger.info("partialAppList indices: " + fromIndex + ", " + toIndex);
-            List<Application> partialAppList = fullAppList.subList(fromIndex,
+            List<ApplicationPojo> partialAppList = fullAppList.subList(fromIndex,
                     toIndex);
             logger.info("partialAppList.size(): " + partialAppList.size());
 

@@ -24,7 +24,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
@@ -35,6 +34,7 @@ import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 /**
  * A MultiThreadedUserAdjuster that executes the "users per LOB" algorithm.
@@ -106,7 +106,7 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
         logger.info("Fetching applications from Code Center");
         AppListProcessor fullAppListGetter = appListProcessorFactory
                 .createAppListProcessor();
-        List<Application> fullAppList = fullAppListGetter.loadApplications();
+        List<ApplicationPojo> fullAppList = fullAppListGetter.loadApplications();
 
         ListDistributor distrib = new ListDistributor(numThreads,
                 fullAppList.size());
@@ -115,7 +115,7 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
         List<Thread> startedThreads = new ArrayList<Thread>(
                 distrib.getNumThreads());
         for (int i = 0; i < distrib.getNumThreads(); i++) {
-            List<Application> partialAppList = fullAppList.subList(
+            List<ApplicationPojo> partialAppList = fullAppList.subList(
                     distrib.getFromListIndex(i), distrib.getToListIndex(i));
 
             AppProcessorThread threadWorker = new AppProcessorThread(

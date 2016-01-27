@@ -28,12 +28,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.sdk.codecenter.application.data.ApplicationNameVersionToken;
-import com.blackducksoftware.sdk.codecenter.application.data.ApplicationPageFilter;
-import com.blackducksoftware.sdk.codecenter.attribute.data.AbstractAttribute;
-import com.blackducksoftware.sdk.codecenter.attribute.data.AttributeIdToken;
-import com.blackducksoftware.sdk.codecenter.common.data.AttributeValue;
 import com.blackducksoftware.sdk.codecenter.common.data.UserRolePageFilter;
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
@@ -41,7 +36,10 @@ import com.blackducksoftware.sdk.codecenter.user.data.User;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 /**
@@ -70,23 +68,18 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
     }
 
     @Override
-    public List<Application> loadApplications() throws SdkFault {
-        ApplicationPageFilter filter = new ApplicationPageFilter();
-        filter.setFirstRowIndex(0);
-        filter.setLastRowIndex(Integer.MAX_VALUE);
-        List<Application> apps = codeCenterServerWrapper
-                .getInternalApiWrapper().getApplicationApi()
-                .searchApplications(null, filter);
+    public List<ApplicationPojo> loadApplications() throws CommonFrameworkException {
+        List<ApplicationPojo> apps = codeCenterServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE);
         logger.debug("Loaded " + apps.size() + " apps");
         return apps;
     }
 
     @Override
-    public void processAppList(List<Application> apps, SimpleUserSet newUsers,
+    public void processAppList(List<ApplicationPojo> apps, SimpleUserSet newUsers,
             UserAdjustmentReport report) throws Exception {
         int appIndex = 0;
         int appCount = apps.size();
-        for (Application app : apps) {
+        for (ApplicationPojo app : apps) {
             logger.info("Processing application " + app.getName() + " ("
                     + ++appIndex + " of " + appCount + ")");
             processApp(codeCenterServerWrapper, app, newUsers, report);
@@ -94,61 +87,32 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
     }
 
     private void processApp(CodeCenterServerWrapper codeCenterServerWrapper,
-            Application app, SimpleUserSet newUsers, UserAdjustmentReport report)
+            ApplicationPojo app, SimpleUserSet newUsers, UserAdjustmentReport report)
             throws Exception {
-        List<AttributeValue> attrs = app.getAttributeValues();
-        logger.debug("This app has " + attrs.size() + " attributes");
-
-        boolean lobAttrFound = false;
-        for (AttributeValue attr : attrs) {
-            AttributeIdToken attrIdToken = (AttributeIdToken) attr
-                    .getAttributeId();
-            logger.debug("Processing attr " + attrIdToken.getId()
-                    + " with value count: " + attr.getValues().size());
-
-            AbstractAttribute attrObject = codeCenterServerWrapper
-                    .getInternalApiWrapper().getAttributeApi()
-                    .getAttribute(attrIdToken);
-            String attrName = attrObject.getName();
-
-            if (attrName == null) {
-                continue;
+        String attrValueString = app.getAttributeByName(config.getLobAttrName());
+        if (attrValueString == null) {
+            if (!config.isOmitMissingLobRecordsFromReport()) {
+                logger.warn("Application " + app.getName()
+                        + " has no LOB attribute value");
+                report.addRecord(app.getName(), app.getVersion(), false, null,
+                        null, null, "This application has no LOB value");
             }
-
-            logger.debug("Found attr " + attrName + "; we're looking for attr "
-                    + config.getLobAttrName());
-            if (!attrName.equals(config.getLobAttrName())) {
-                continue;
-            }
-            logger.debug("Found the LOB attr");
-            lobAttrFound = true;
-            for (String attrValue : attr.getValues()) {
-                logger.debug("\tValue: " + attrValue);
-
-                if (attrValue == null) {
-                    continue;
-                }
-
-                if (attrValue.equals(config.getLob())) {
-                    logger.debug("This application (" + app.getName()
-                            + ") belongs to the LOB we're processing");
-                    processLobApp(codeCenterServerWrapper, app, newUsers,
-                            report);
-                }
-            }
+            return; // This app does not belong to any LOB
         }
-        if (!lobAttrFound && !config.isOmitMissingLobRecordsFromReport()) {
-            logger.warn("Application " + app.getName()
-                    + " has no LOB attribute value");
-            report.addRecord(app.getName(), app.getVersion(), false, null,
-                    null, null, "This application has no LOB value");
+        if (!attrValueString.equals(config.getLob())) {
+            return; // This app belongs to a different LOB
         }
+
+        logger.debug("This application (" + app.getName()
+                + ") belongs to the LOB we're processing");
+        processLobApp(codeCenterServerWrapper, app, newUsers,
+                report);
     }
 
     private void processLobApp(CodeCenterServerWrapper codeCenterServerWrapper,
-            Application app, SimpleUserSet newUsers, UserAdjustmentReport report)
+            ApplicationPojo app, SimpleUserSet newUsers, UserAdjustmentReport report)
             throws Exception {
-
+        logger.debug("processLobApp(): app: " + app.getName());
         ApplicationNameVersionToken appToken = new ApplicationNameVersionToken();
         appToken.setName(app.getName());
         appToken.setVersion(app.getVersion());
@@ -163,15 +127,11 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
 
         Set<String> oldUsers = new HashSet<String>();
         for (ApplicationRoleAssignment roleAssignment : roleAssignments) {
-            logger.debug("Getting user for roleAssignment "
-                    + roleAssignment.getRoleIdToken().getId());
-            logger.debug("roleAssignment: User id is "
-                    + roleAssignment.getUserIdToken().getId());
+            logger.debug("Checking role assignment: User " + roleAssignment.getUserNameToken().getName() + ": Role: "
+                    + roleAssignment.getRoleNameToken().getName());
+
             User user = codeCenterServerWrapper.getInternalApiWrapper()
                     .getUserApi().getUser(roleAssignment.getUserIdToken());
-            logger.debug("roleAssignment: App " + app.getName()
-                    + " user username: " + user.getName().getName()
-                    + " roleId " + roleAssignment.getRoleIdToken().getId());
 
             boolean thisUserIsRelevant = thisUserHasTheRelevantRoleOnThisApp(
                     codeCenterServerWrapper, app, user, roleAssignment
@@ -186,25 +146,29 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
                         + " has some other role; not going to remove it");
             }
         }
-        logger.debug("Creating userSet from oldUsers");
+
         SimpleUserSet userSet = new SimpleUserSet(oldUsers);
-        logger.debug("Getting users to add");
         SimpleUserSet usersToAdd = userSet.getUsersToAdd(newUsers);
-        logger.debug("Getting users to delete");
         SimpleUserSet usersToDelete = userSet.getUsersToDelete(newUsers);
 
-        // List<String> usersAdded = userManager.addUsers(app,
-        // usersToAdd.getUserSet());
-        Set<String> roleNames = new HashSet<>(1);
-        roleNames.add(config.getUserRole());
-        codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId().getId(), usersToAdd.getUserSet(), roleNames,
-                config.isCircumventLocks());
+        if (usersToAdd.getUserSet().size() > 0) {
+            Set<String> roleNames = new HashSet<>(1);
+            roleNames.add(config.getUserRole());
+            logger.debug("Adding users: " + usersToAdd + " (role: " + config.getUserRole() + ")");
+            codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId(), usersToAdd.getUserSet(), roleNames,
+                    config.isCircumventLocks());
+        } else {
+            logger.debug("There are no users to add");
+        }
 
-        // List<UserStatus> usersRemoved = userManager.deleteUsers(app,
-        // usersToDelete.getUserSet());
-        List<UserStatus> usersRemoved = codeCenterServerWrapper.getApplicationManager().removeUsersByNameFromApplicationAllRoles(app.getId().getId(),
-                usersToDelete.getUserSet(), config.isCircumventLocks());
-
+        List<UserStatus> usersRemoved = new ArrayList<UserStatus>(0);
+        if (usersToDelete.getUserSet().size() > 0) {
+            logger.debug("Removing users: " + usersToDelete);
+            usersRemoved = codeCenterServerWrapper.getApplicationManager().removeUsersByNameFromApplicationAllRoles(app.getId(),
+                    usersToDelete.getUserSet(), config.isCircumventLocks());
+        } else {
+            logger.debug("There are no users to remove");
+        }
         logger.debug("Adding record to report for app " + app.getName());
         List<String> usersAdded = new ArrayList<>(usersToAdd.getUserSet());
         report.addRecord(app.getName(), app.getVersion(), true, null,
@@ -213,8 +177,8 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
     }
 
     private boolean thisUserHasTheRelevantRoleOnThisApp(
-            CodeCenterServerWrapper codeCenterServerWrapper, Application app,
-            User user, String usersRoleIdOnThisApp) throws SdkFault {
+            CodeCenterServerWrapper codeCenterServerWrapper, ApplicationPojo app,
+            User user, String usersRoleIdOnThisApp) throws CommonFrameworkException {
 
         if (targetRoleId != null) {
             // If we already know the target Role ID, this is easy
@@ -251,55 +215,48 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
      * @param user
      * @param usersRoleIdOnThisApp
      * @return
+     * @throws CommonFrameworkException
      * @throws SdkFault
      */
     private boolean determineWhetherUserHasTheRelevantRoleOnThisApp(
-            CodeCenterServerWrapper codeCenterServerWrapper, Application app,
-            User user, String usersRoleIdOnThisApp) throws SdkFault {
+            CodeCenterServerWrapper codeCenterServerWrapper, ApplicationPojo app,
+            User user, String usersRoleIdOnThisApp) throws CommonFrameworkException {
         boolean userHasRelevantRole = false;
 
-        Map<String, ApplicationRoleAssignment> userAssignmentMap = new HashMap<String, ApplicationRoleAssignment>();
-        Map<String, ApplicationRoleAssignment> roleNameMap = new HashMap<String, ApplicationRoleAssignment>();
+        Map<String, ApplicationUserPojo> userAssignmentMap = new HashMap<>();
+        Map<String, ApplicationUserPojo> roleNameMap = new HashMap<>();
 
-        List<ApplicationRoleAssignment> applicationRoleAssignments = codeCenterServerWrapper
-                .getInternalApiWrapper().getProxy().getRoleApi()
-                .getApplicationRoles(app.getId());
-        for (ApplicationRoleAssignment applicationRoleAssignment : applicationRoleAssignments) {
-            logger.debug("Role ID: "
-                    + applicationRoleAssignment.getRoleIdToken().getId()
-                    + " = Role Name: "
-                    + applicationRoleAssignment.getRoleNameToken().getName()
-                    + "; User: "
-                    + applicationRoleAssignment.getUserNameToken().getName());
+        List<ApplicationUserPojo> userRoles = codeCenterServerWrapper.getApplicationManager().getAllUsersAssignedToApplication(app.getId());
+        for (ApplicationUserPojo userRole : userRoles) {
+            logger.debug("Checking Role Assignment: " + userRole);
 
             logger.debug("Adding role assignment to userAssignmentMap");
-            userAssignmentMap.put(applicationRoleAssignment.getUserNameToken()
-                    .getName(), applicationRoleAssignment);
+            userAssignmentMap.put(userRole.getUserName(), userRole);
             logger.debug("Adding role assignment to roleNameMap");
-            roleNameMap.put(applicationRoleAssignment.getRoleNameToken()
-                    .getName(), applicationRoleAssignment);
+            roleNameMap.put(userRole.getRoleName(), userRole);
         }
 
         // Does the given user have the targeted role?
-        logger.debug("Checking to see if user " + user.getName()
-                + " has the targeted role");
+        logger.debug("Checking to see if user " + user.getName().getName()
+                + " has the targeted role...");
         if (userAssignmentMap.containsKey(user.getName().getName())) {
-            ApplicationRoleAssignment a = userAssignmentMap.get(user.getName()
+            ApplicationUserPojo a = userAssignmentMap.get(user.getName()
                     .getName());
-            if (a.getRoleNameToken().getName().equals(config.getUserRole())) {
+            if (a.getRoleName().equals(config.getUserRole())) {
                 userHasRelevantRole = true;
+                logger.debug("... it does.");
             }
         }
 
         // Did we stumble across the RoleID for the targeted role?
         logger.debug("Checking to see if we encountered the RoleID for the targeted role");
         if (roleNameMap.containsKey(config.getUserRole())) {
-            ApplicationRoleAssignment a = roleNameMap.get(config.getUserRole());
-            targetRoleId = a.getRoleIdToken().getId();
+            ApplicationUserPojo targetRole = roleNameMap.get(config.getUserRole());
+            targetRoleId = targetRole.getRoleId();
         }
 
         logger.debug("determineWhetherUserHasTheRelevantRoleOnThisApp(): Returning "
-                + userHasRelevantRole);
+                + userHasRelevantRole + " for user " + user.getName().getName() + " on app " + app.getName());
         return userHasRelevantRole;
     }
 

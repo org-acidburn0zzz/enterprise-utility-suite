@@ -20,21 +20,21 @@ package com.blackducksoftware.tools.addusers.lobuseradjust.applist;
 
 import java.util.List;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.sdk.codecenter.fault.SdkFault;
 import com.blackducksoftware.tools.addusers.UserAdjustmentReport;
 import com.blackducksoftware.tools.addusers.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 public class SuicidalAppListProcessor implements AppListProcessor {
-    List<Application> apps;
+    List<ApplicationPojo> apps;
 
     /**
      * Constructor provides app list (not loaded from Code Center).
      *
      * @param apps
      */
-    public SuicidalAppListProcessor(List<Application> apps) {
+    public SuicidalAppListProcessor(List<ApplicationPojo> apps) {
         this.apps = apps;
     }
 
@@ -49,16 +49,16 @@ public class SuicidalAppListProcessor implements AppListProcessor {
      * Constructor provides app list (not loaded from Code Center).
      */
     @Override
-    public List<Application> loadApplications() throws SdkFault {
+    public List<ApplicationPojo> loadApplications() throws SdkFault {
         return apps;
     }
 
-    public List<Application> getApplications() {
+    public List<ApplicationPojo> getApplications() {
         return apps;
     }
 
     @Override
-    public void processAppList(List<Application> appList,
+    public void processAppList(List<ApplicationPojo> appList,
             SimpleUserSet newUsers, UserAdjustmentReport report)
             throws Exception {
 

@@ -11,9 +11,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.TestUtils;
 import com.blackducksoftware.tools.addusers.UserCreatorConfig;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.common.ApprovalStatus;
 
 public class AppListFilterTest {
 
@@ -27,80 +28,81 @@ public class AppListFilterTest {
 
     @Test
     public void test() {
-	Properties props = TestUtils
-		.configUserCreatorForAppIdentifiersPerUserMode("not used",
-			"not used", "not used", "not used", "Unspecified");
-	UserCreatorConfig config = new UserCreatorConfig(props);
+        Properties props = TestUtils
+                .configUserCreatorForAppIdentifiersPerUserMode("not used",
+                        "not used", "not used", "not used", "Unspecified");
+        UserCreatorConfig config = new UserCreatorConfig(props);
 
-	List<Application> unfilteredAppList = new ArrayList<Application>(6);
+        List<ApplicationPojo> unfilteredAppList = new ArrayList<ApplicationPojo>(6);
 
-	unfilteredAppList
-		.add(createApp("123-test-PROD-CURRENT", "Unspecified")); // a
-									 // match
-	unfilteredAppList
-		.add(createApp("1230-test-PROD-CURRENT", "Unspecified")); // wrong
-									  // appIdentifier
-	unfilteredAppList.add(createApp("123-test-PROD-CURRENT", "v100")); // wrong
-									   // version
-	unfilteredAppList.add(createApp("123-test-PROD-100", "v100")); // not
-								       // "live"
+        unfilteredAppList
+                .add(createApp("123-test-PROD-CURRENT", "Unspecified")); // a
+        // match
+        unfilteredAppList
+                .add(createApp("1230-test-PROD-CURRENT", "Unspecified")); // wrong
+        // appIdentifier
+        unfilteredAppList.add(createApp("123-test-PROD-CURRENT", "v100")); // wrong
+        // version
+        unfilteredAppList.add(createApp("123-test-PROD-100", "v100")); // not
+        // "live"
 
-	String appIdentifier = "123";
-	AppListFilter filter = new AppListFilter(config, unfilteredAppList,
-		appIdentifier);
+        String appIdentifier = "123";
+        AppListFilter filter = new AppListFilter(config, unfilteredAppList,
+                appIdentifier);
 
-	List<Application> filteredApps = filter.getFilteredList();
-	assertEquals(1, filteredApps.size());
-	assertEquals("123-test-PROD-CURRENT", filteredApps.get(0).getName());
-	assertEquals("Unspecified", filteredApps.get(0).getVersion());
+        List<ApplicationPojo> filteredApps = filter.getFilteredList();
+        assertEquals(1, filteredApps.size());
+        assertEquals("123-test-PROD-CURRENT", filteredApps.get(0).getName());
+        assertEquals("Unspecified", filteredApps.get(0).getVersion());
     }
 
     @Test
     public void testEverythingIsLive() {
-	Properties props = TestUtils
-		.configUserCreatorForAppIdentifiersPerUserMode("not used",
-			"not used", "not used", "not used", "Unspecified");
-	String t = props.getProperty("appname.pattern.live");
-	assertTrue(t != null); // make sure we're
-			       // about to remove
-			       // the right
-			       // property
-	props.remove("appname.pattern.live"); // consider everything live
-	t = props.getProperty("appname.pattern.live");
-	assertTrue(t == null);
+        Properties props = TestUtils
+                .configUserCreatorForAppIdentifiersPerUserMode("not used",
+                        "not used", "not used", "not used", "Unspecified");
+        String t = props.getProperty("appname.pattern.live");
+        assertTrue(t != null); // make sure we're
+        // about to remove
+        // the right
+        // property
+        props.remove("appname.pattern.live"); // consider everything live
+        t = props.getProperty("appname.pattern.live");
+        assertTrue(t == null);
 
-	UserCreatorConfig config = new UserCreatorConfig(props);
+        UserCreatorConfig config = new UserCreatorConfig(props);
 
-	List<Application> unfilteredAppList = new ArrayList<Application>(6);
+        List<ApplicationPojo> unfilteredAppList = new ArrayList<>(6);
 
-	unfilteredAppList
-		.add(createApp("123-test-PROD-CURRENT", "Unspecified")); // a
-									 // match
-	unfilteredAppList
-		.add(createApp("1230-test-PROD-CURRENT", "Unspecified")); // wrong
-									  // appIdentifier
-	unfilteredAppList.add(createApp("123-test-PROD-CURRENT", "v100")); // wrong
-									   // version
-	unfilteredAppList.add(createApp("123-test-PROD-100", "Unspecified")); // not
-									      // "live",
-									      // but
-									      // should
-									      // still
-									      // match
+        unfilteredAppList
+                .add(createApp("123-test-PROD-CURRENT", "Unspecified")); // a
+        // match
+        unfilteredAppList
+                .add(createApp("1230-test-PROD-CURRENT", "Unspecified")); // wrong
+        // appIdentifier
+        unfilteredAppList.add(createApp("123-test-PROD-CURRENT", "v100")); // wrong
+        // version
+        unfilteredAppList.add(createApp("123-test-PROD-100", "Unspecified")); // not
+        // "live",
+        // but
+        // should
+        // still
+        // match
 
-	String appIdentifier = "123";
-	AppListFilter filter = new AppListFilter(config, unfilteredAppList,
-		appIdentifier);
+        String appIdentifier = "123";
+        AppListFilter filter = new AppListFilter(config, unfilteredAppList,
+                appIdentifier);
 
-	List<Application> filteredApps = filter.getFilteredList();
-	assertEquals(2, filteredApps.size()); // the -100 app should match too
+        List<ApplicationPojo> filteredApps = filter.getFilteredList();
+        assertEquals(2, filteredApps.size()); // the -100 app should match too
     }
 
-    private Application createApp(String name, String version) {
-	Application app = new Application();
-	app.setName(name);
-	app.setVersion(version);
-	return app;
+    private ApplicationPojo createApp(String name, String version) {
+        ApplicationPojo app = new ApplicationPojo("testId", name, version,
+                null,
+                ApprovalStatus.APPROVED, false);
+
+        return app;
     }
 
 }

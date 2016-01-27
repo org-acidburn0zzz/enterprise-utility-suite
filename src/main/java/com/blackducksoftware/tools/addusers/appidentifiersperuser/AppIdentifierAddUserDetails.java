@@ -8,19 +8,19 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.addusers.appidentifiersperuser;
 
 import java.util.List;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 
 /**
  * This class manages, for one AppIdentifier, the list of applications found
@@ -32,11 +32,12 @@ import com.blackducksoftware.sdk.codecenter.application.data.Application;
  */
 public class AppIdentifierAddUserDetails {
     private final List<String> usernames;
-    private List<Application> applications;
+
+    private List<ApplicationPojo> applications;
 
     public AppIdentifierAddUserDetails(List<String> usernames) {
 
-	this.usernames = usernames;
+        this.usernames = usernames;
     }
 
     /**
@@ -45,7 +46,7 @@ public class AppIdentifierAddUserDetails {
      * @return
      */
     public List<String> getUsernames() {
-	return usernames;
+        return usernames;
     }
 
     /**
@@ -53,8 +54,8 @@ public class AppIdentifierAddUserDetails {
      *
      * @return
      */
-    public List<Application> getApplications() {
-	return applications;
+    public List<ApplicationPojo> getApplications() {
+        return applications;
     }
 
     /**
@@ -62,8 +63,8 @@ public class AppIdentifierAddUserDetails {
      *
      * @param applications
      */
-    public void setApplications(List<Application> applications) {
-	this.applications = applications;
+    public void setApplications(List<ApplicationPojo> applications) {
+        this.applications = applications;
     }
 
 }

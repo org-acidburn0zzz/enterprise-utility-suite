@@ -31,7 +31,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
 import com.blackducksoftware.tools.addusers.MockUserAdder;
 import com.blackducksoftware.tools.addusers.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.addusers.TestUtils;
@@ -46,6 +45,8 @@ import com.blackducksoftware.tools.commonframework.standard.datatable.Record;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStdOut;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.common.ApprovalStatus;
 
 public class LobUserAdjustTest {
 
@@ -87,7 +88,7 @@ public class LobUserAdjustTest {
     }
 
     private void testMultiThreading(int size, int numThreads) throws Exception {
-        List<Application> appList = createAppList(size);
+        List<ApplicationPojo> appList = createAppList(size);
 
         checkAppList(appList, size, false);
 
@@ -118,7 +119,7 @@ public class LobUserAdjustTest {
 
         // appList = appListProcessor.getApplications(); // we've already got it
 
-        checkAppList(appList, size, true);
+        checkAppList(appList, size, false);
     }
 
     @Test
@@ -126,7 +127,7 @@ public class LobUserAdjustTest {
         int size = 2;
         int numThreads = 1;
 
-        List<Application> appList = createAppList(size);
+        List<ApplicationPojo> appList = createAppList(size);
 
         checkAppList(appList, size, false);
 
@@ -180,22 +181,23 @@ public class LobUserAdjustTest {
         assertEquals("Error", record.getStringFieldValue("status"));
     }
 
-    private List<Application> createAppList(int size) {
-        List<Application> appList = new ArrayList<Application>();
+    private List<ApplicationPojo> createAppList(int size) {
+        List<ApplicationPojo> appList = new ArrayList<>();
 
-        Application app;
+        ApplicationPojo app;
 
         for (int i = 0; i < size; i++) {
-            app = new Application();
-            app.setName("app" + i);
-            app.setLocked(false);
+            app = new ApplicationPojo("app" + i, "app" + i, "Unspecified",
+                    null,
+                    ApprovalStatus.APPROVED, false);
+
             appList.add(app);
         }
 
         return appList;
     }
 
-    private void checkAppList(List<Application> appList, int size,
+    private void checkAppList(List<ApplicationPojo> appList, int size,
             boolean lockedValue) {
 
         for (int i = 0; i < size; i++) {
