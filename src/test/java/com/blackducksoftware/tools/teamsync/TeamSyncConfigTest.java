@@ -14,6 +14,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.blackducksoftware.tools.common.cc.AppList;
+
 public class TeamSyncConfigTest {
     private static final String APP_SUFFIX1_PATTERN_STRING = "CURRENT";
     private static final String APP_SUFFIX0_PATTERN_STRING = "(PROD|RC1|RC2|RC3|RC4|RC5)";

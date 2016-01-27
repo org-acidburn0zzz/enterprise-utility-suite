@@ -29,6 +29,8 @@ import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.tools.common.EntAppName;
+import com.blackducksoftware.tools.common.cc.AppIdentifierApps;
+import com.blackducksoftware.tools.common.cc.AppList;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**

@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.teamsync;
+package com.blackducksoftware.tools.common.cc;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

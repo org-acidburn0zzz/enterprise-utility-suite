@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import com.blackducksoftware.tools.common.EntAppNameConfigMgrDelegate;
 import com.blackducksoftware.tools.common.EntAppNameConfigurationManager;
+import com.blackducksoftware.tools.common.cc.AppList;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 
 /**

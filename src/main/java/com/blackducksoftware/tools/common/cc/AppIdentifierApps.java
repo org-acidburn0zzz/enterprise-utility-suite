@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.teamsync;
+package com.blackducksoftware.tools.common.cc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +24,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.application.data.Application;
-import com.blackducksoftware.sdk.codecenter.application.data.ApplicationPageFilter;
 import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
 import com.blackducksoftware.tools.common.EntAppName;
 import com.blackducksoftware.tools.common.EntAppNameConfigurationManager;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.teamsync.AppTeam;
+import com.blackducksoftware.tools.teamsync.CodeCenterUtils;
+import com.blackducksoftware.tools.teamsync.DeriveAppIdentifierTeamAlgorithm;
 
 /**
  * The set of applications associated with an appIdentifier.
@@ -49,15 +51,10 @@ public class AppIdentifierApps {
             CodeCenterServerWrapper ccServerWrapper, AppTeam newAppTeam)
             throws Exception {
 
-        ApplicationPageFilter filter = new ApplicationPageFilter();
-        filter.setFirstRowIndex(0);
-        filter.setLastRowIndex(Integer.MAX_VALUE);
-        List<Application> apps = ccServerWrapper.getInternalApiWrapper()
-                .getApplicationApi()
-                .searchApplications(newAppTeam.getAppIdentifier(), filter);
+        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, newAppTeam.getAppIdentifier());
 
-        appTeams = new ArrayList<AppTeam>();
-        for (Application app : apps) {
+        appTeams = new ArrayList<>(apps.size());
+        for (ApplicationPojo app : apps) {
 
             if (!app.getName()
                     .startsWith(

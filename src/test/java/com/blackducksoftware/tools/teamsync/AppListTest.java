@@ -26,6 +26,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.blackducksoftware.tools.common.cc.AppList;
+
 public class AppListTest {
 
     @BeforeClass
