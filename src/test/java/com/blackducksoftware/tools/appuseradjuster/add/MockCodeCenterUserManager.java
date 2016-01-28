@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;

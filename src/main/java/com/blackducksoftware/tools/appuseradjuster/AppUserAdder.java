@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 public class AppUserAdder implements AppUserAdjuster {
-    private CodeCenterServerWrapper codeCenterServerWrapper;
+    private ICodeCenterServerWrapper codeCenterServerWrapper;
 
-    public AppUserAdder(CodeCenterServerWrapper codeCenterServerWrapper) {
+    public AppUserAdder(ICodeCenterServerWrapper codeCenterServerWrapper) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
     }
 

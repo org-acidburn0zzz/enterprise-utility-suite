@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
 import java.util.List;
 
@@ -54,8 +54,7 @@ public class MockCodeCenterServerWrapper implements ICodeCenterServerWrapper {
 
     @Override
     public IApplicationManager getApplicationManager() {
-        // TODO Auto-generated function stub
-        return null;
+        return new MockApplicationManager();
     }
 
     @Override

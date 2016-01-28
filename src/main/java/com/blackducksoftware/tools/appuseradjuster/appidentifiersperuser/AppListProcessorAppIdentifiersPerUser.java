@@ -34,7 +34,7 @@ import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
@@ -44,14 +44,14 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
 
     private final AddUserConfig config;
 
-    private CodeCenterServerWrapper codeCenterServerWrapper;
+    private ICodeCenterServerWrapper codeCenterServerWrapper;
 
     private final AppIdentifierUserListMap appIdentifierUserListMap;
 
     private final AppUserAdjuster appUserAdjuster;
 
     public AppListProcessorAppIdentifiersPerUser(
-            CodeCenterServerWrapper codeCenterServerWrapper,
+            ICodeCenterServerWrapper codeCenterServerWrapper,
             AddUserConfig config,
             AppIdentifierUserListMap appIdentifierUserListMap,
             AppUserAdjuster appUserAdjuster) {
