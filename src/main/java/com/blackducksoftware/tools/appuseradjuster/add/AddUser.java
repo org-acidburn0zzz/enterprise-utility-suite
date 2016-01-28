@@ -39,6 +39,8 @@ import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameToken;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdder;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterStringConstants;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
@@ -125,8 +127,8 @@ public class AddUser implements UserAdder {
 
         File configFile = CommonHarness.getConfigFile();
 
-        AddUserConfig configProcessor = new AddUserConfig(configFile);
-        AddUser adder = new AddUser(configProcessor);
+        AddUserConfig config = new AddUserConfig(configFile);
+        AddUser adder = new AddUser(config);
 
         // Username;projectname
 
@@ -184,14 +186,14 @@ public class AddUser implements UserAdder {
             if (args[argIndex].equals(AddUserStringConstants.LOB)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
-                    configProcessor.setMode(Mode.USERS_PER_LOB);
-                    configProcessor.setLob(args[argIndex + 1]);
+                    config.setMode(Mode.USERS_PER_LOB);
+                    config.setLob(args[argIndex + 1]);
                 }
             }
             if (args[argIndex].equals(AddUserStringConstants.LOB_USERLIST_STRING)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
-                    configProcessor.setMode(Mode.USERS_PER_LOB);
+                    config.setMode(Mode.USERS_PER_LOB);
                     SimpleUserSet lobUserList = null;
                     try {
                         lobUserList = new SimpleUserSet(args[argIndex + 1]);
@@ -201,13 +203,13 @@ public class AddUser implements UserAdder {
                                 e);
                         System.exit(-1);
                     }
-                    configProcessor.setLobUserSet(lobUserList);
+                    config.setLobUserSet(lobUserList);
                 }
             }
             if (args[argIndex].equals(AddUserStringConstants.LOB_USERLIST_FILEPATH)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
-                    configProcessor.setMode(Mode.USERS_PER_LOB);
+                    config.setMode(Mode.USERS_PER_LOB);
                     String filename = args[argIndex + 1];
                     File lobUserListFile = new File(filename);
                     SimpleUserSet lobUserList = null;
@@ -218,7 +220,7 @@ public class AddUser implements UserAdder {
                                 + filename, e);
                         System.exit(-1);
                     }
-                    configProcessor.setLobUserSet(lobUserList);
+                    config.setLobUserSet(lobUserList);
                 } else {
                     logger.error("The LOB user list file is missing from command line");
                 }
@@ -228,21 +230,21 @@ public class AddUser implements UserAdder {
                     .equals(AppUserAdjusterStringConstants.APPIDENTIFIERS_PER_USER_FILEPATH)) {
                 if (args.length > argIndex + 1
                         && !args[argIndex + 1].startsWith("-")) {
-                    configProcessor.setMode(Mode.APPIDENTIFIERS_PER_USER);
+                    config.setMode(Mode.APPIDENTIFIERS_PER_USER);
                     String appIdentifiersPerUserFilename = args[argIndex + 1];
                     AppIdentifierUserListMap appIdentifierUserListMap = null;
                     try {
                         appIdentifierUserListMap = new AppIdentifierUserListMap(
                                 appIdentifiersPerUserFilename,
-                                configProcessor.getUsernamePattern(),
-                                configProcessor.getAppIdentifierPattern());
+                                config.getUsernamePattern(),
+                                config.getAppIdentifierPattern());
                     } catch (Exception e) {
                         logger.error(
                                 "Unable to load app identifiers per user data from file "
                                         + appIdentifiersPerUserFilename, e);
                         System.exit(-1);
                     }
-                    configProcessor
+                    config
                             .setAppIdentifierUserListMap(appIdentifierUserListMap);
                 } else {
                     logger.error("The app-identifier-per-user file is missing from command line");
@@ -253,29 +255,29 @@ public class AddUser implements UserAdder {
 
         CodeCenterServerWrapper codeCenterServerWrapper = null;
         try {
-            codeCenterServerWrapper = connectToCodeCenter(configProcessor);
+            codeCenterServerWrapper = connectToCodeCenter(config);
         } catch (Exception e) {
             logger.error("Error connecting to Code Center: " + e.getMessage(),
                     e);
             System.exit(-1);
         }
-        if (configProcessor.getMode() == Mode.USERS_PER_LOB) {
+        if (config.getMode() == Mode.USERS_PER_LOB) {
             try {
                 AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryLobAdjust(
-                        codeCenterServerWrapper, configProcessor);
+                        codeCenterServerWrapper, config);
                 adder.setMultiThreadedUserAdjuster(new MultiThreadedUserAdjusterLob(
-                        configProcessor, appListProcessorFactory));
+                        config, appListProcessorFactory));
             } catch (Exception e) {
                 logger.error("Error initializing LOB user adjustment mode.", e);
                 System.exit(-1);
             }
-        } else if (configProcessor.getMode() == Mode.APPIDENTIFIERS_PER_USER) {
+        } else if (config.getMode() == Mode.APPIDENTIFIERS_PER_USER) {
             try {
-
+                AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper);
                 AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
-                        codeCenterServerWrapper, configProcessor);
+                        codeCenterServerWrapper, config, appUserAdjuster);
                 MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
-                        configProcessor, codeCenterServerWrapper, appListProcessorFactory);
+                        config, codeCenterServerWrapper, appListProcessorFactory);
                 adder.setMultiThreadedUserAdjuster(adjuster);
             } catch (Exception e) {
                 logger.error(
@@ -292,7 +294,7 @@ public class AddUser implements UserAdder {
         }
 
         try {
-            adder.run(codeCenterServerWrapper, configProcessor.getNumThreads());
+            adder.run(codeCenterServerWrapper, config.getNumThreads());
         } catch (Exception e) {
             logger.error("Error adding users: " + e.getMessage());
             System.exit(-1);

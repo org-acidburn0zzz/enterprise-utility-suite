@@ -27,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.blackducksoftware.sdk.codecenter.application.data.ApplicationPageFilter;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterType;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
@@ -34,6 +36,7 @@ import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.App
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
@@ -45,13 +48,17 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
 
     private final AppIdentifierUserListMap appIdentifierUserListMap;
 
+    private final AppUserAdjuster appUserAdjuster;
+
     public AppListProcessorAppIdentifiersPerUser(
             CodeCenterServerWrapper codeCenterServerWrapper,
             AddUserConfig config,
-            AppIdentifierUserListMap appIdentifierUserListMap) {
+            AppIdentifierUserListMap appIdentifierUserListMap,
+            AppUserAdjuster appUserAdjuster) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
         this.appIdentifierUserListMap = appIdentifierUserListMap;
+        this.appUserAdjuster = appUserAdjuster;
     }
 
     /**
@@ -108,12 +115,19 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
     public void processAppList(List<ApplicationPojo> apps, SimpleUserSet newUsers,
             UserAdjustmentReport report) throws Exception {
 
+        Set<String> roleNames = new HashSet<>(1);
+        roleNames.add(config.getUserRole());
+        boolean circumventLocks = config.isCircumventLocks();
+
         int matchingAppCount = 0;
         for (String appIdentifier : appIdentifierUserListMap) {
             logger.info("Processing AppIdentifier: " + appIdentifier);
 
             AppIdentifierAddUserDetails details = appIdentifierUserListMap
                     .getAppIdentifierUsernameListMap().get(appIdentifier);
+            List<String> userNamesList = details.getUsernames();
+            Set<String> userSet = new HashSet<String>(userNamesList);
+
             for (ApplicationPojo app : details.getApplications()) {
                 logger.info("Potentially processing app " + app.getName()
                         + " / " + app.getVersion());
@@ -126,15 +140,21 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
                 logger.info("Processing app " + app.getName() + " / "
                         + app.getVersion());
                 matchingAppCount++;
-                Set<String> userSet = new HashSet<String>(details.getUsernames());
+                String appId = app.getId();
+                String appName = app.getName();
+                String appVersion = app.getVersion();
+                AppUserAdjusterType adjusterType;
 
-                Set<String> roleNames = new HashSet<>(1);
-                roleNames.add(config.getUserRole());
-                codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId(),
-                        userSet, roleNames, config.isCircumventLocks());
+                adjusterType = appUserAdjuster.getType(); // what type of adjuster (add or remove users) were we passed?
+                List<UserStatus> results = appUserAdjuster.adjustAppUsers(appId, userSet, roleNames, circumventLocks);
 
-                report.addRecord(app.getName(), app.getVersion(), true, null,
-                        details.getUsernames(), null, null);
+                if (adjusterType == AppUserAdjusterType.ADD) {
+                    report.addRecord(appName, appVersion, true, null,
+                            userNamesList, null, null);
+                } else { // Remove
+                    report.addRecord(appName, appVersion, true, null,
+                            null, results, null);
+                }
             }
         }
         if (matchingAppCount == 0) {
