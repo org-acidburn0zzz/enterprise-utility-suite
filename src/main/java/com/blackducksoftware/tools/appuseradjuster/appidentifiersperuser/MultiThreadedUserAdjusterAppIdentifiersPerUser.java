@@ -24,14 +24,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterConfig;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppProcessorThread;
-import com.blackducksoftware.tools.common.cc.UserUtils;
 import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistributor;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
@@ -57,16 +57,20 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 
     private final AppListProcessorFactory appListProcessorFactory;
 
+    private final AppUserAdjuster appUserAdjuster;
+
     private boolean threadExceptionThrown = false;
 
-    private final AddUserConfig config;
+    private final AppUserAdjusterConfig config;
 
     public MultiThreadedUserAdjusterAppIdentifiersPerUser(
-            AddUserConfig config, ICodeCenterServerWrapper codeCenterServerWrapper,
-            AppListProcessorFactory appListProcessorFactory) throws Exception {
+            AppUserAdjusterConfig config, ICodeCenterServerWrapper codeCenterServerWrapper,
+            AppListProcessorFactory appListProcessorFactory,
+            AppUserAdjuster appUserAdjuster) throws Exception {
 
         this.config = config;
         this.appListProcessorFactory = appListProcessorFactory;
+        this.appUserAdjuster = appUserAdjuster;
         report = new UserAdjustmentReport(config, "report");
         report.setLob("");
 
@@ -90,7 +94,7 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
         logger.info("Adding users to applications based on AppIdentifiers per Username input file");
         logger.info("Creating any users that don't already exist.");
 
-        List<String> usersCreated = UserUtils.createOrActivateUsers(codeCenterServerWrapper, newUsers.getUserSet(), config.getNewUserPassword());
+        List<String> usersCreated = appUserAdjuster.preProcessUsers(newUsers.getUserSet());
 
         report.addRecord("<all>", "", true, usersCreated, null, null, null);
         logger.info("Fetching applications from Code Center");

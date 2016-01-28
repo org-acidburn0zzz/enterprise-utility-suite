@@ -112,11 +112,11 @@ public class AppListIdentifiersPerUserTest {
 
         AddUser adder = new AddUser(config);
 
-        AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper);
+        AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper, config.getNewUserPassword());
         AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
                 codeCenterServerWrapper, config, appUserAdjuster);
         MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
-                config, codeCenterServerWrapper, appListProcessorFactory);
+                config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
 
         adder.setMultiThreadedUserAdjuster(adjuster);
         adder.applyDefaultsFromConfig();
@@ -166,11 +166,11 @@ public class AppListIdentifiersPerUserTest {
 
         AddUser adder = new AddUser(config);
 
-        AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper);
+        AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper, config.getNewUserPassword());
         AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
                 codeCenterServerWrapper, config, appUserAdjuster);
         MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
-                config, codeCenterServerWrapper, appListProcessorFactory);
+                config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
 
         adder.setMultiThreadedUserAdjuster(adjuster);
         adder.applyDefaultsFromConfig();

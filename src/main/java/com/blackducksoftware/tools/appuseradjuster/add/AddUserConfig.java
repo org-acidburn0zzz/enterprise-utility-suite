@@ -58,13 +58,8 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
 
     private static final String APP_NAME_PROPERTY = "app.name";
 
-    private static final String APP_VERSION_PROPERTY = "app.version";
-
     // Users to add, separated with a ; (semicolon)
     private static final String USERS_TO_ADD_LIST_PROPERTY = "add.user.request";
-
-    // Role for the user in the application
-    private static final String USER_ROLE_PROPERTY = "user.role";
 
     // Path to file containing configuration data
     private static final String FILE_PATH_PROPERTY = "path";
@@ -93,13 +88,6 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
      * Application information
      */
     private String applicationName = "";
-
-    private String applicationVersion = "";
-
-    /*
-     * User role
-     */
-    private String userRole = "";
 
     /*
      * User information
@@ -143,14 +131,6 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
 
     public String getApplicationName() {
         return applicationName;
-    }
-
-    public String getApplicationVersion() {
-        return applicationVersion;
-    }
-
-    public String getUserRole() {
-        return userRole;
     }
 
     public String getUsersToAddListString() {
@@ -207,8 +187,7 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
 
     private void loadAdditionalProperties() {
         applicationName = super.getOptionalProperty(APP_NAME_PROPERTY);
-        applicationVersion = super.getProperty(APP_VERSION_PROPERTY);
-        userRole = super.getProperty(USER_ROLE_PROPERTY);
+
         filePath = super.getOptionalProperty(FILE_PATH_PROPERTY);
         usersToAddListString = super
                 .getOptionalProperty(USERS_TO_ADD_LIST_PROPERTY);

@@ -21,7 +21,6 @@ package com.blackducksoftware.tools.appuseradjuster;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.commonframework.standard.datatable.FieldDef;
 import com.blackducksoftware.tools.commonframework.standard.datatable.FieldType;
@@ -39,7 +38,7 @@ import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
  *
  */
 public class UserAdjustmentReport {
-    private final AddUserConfig config;
+    private final AppUserAdjusterConfig config;
 
     private final String reportFilenameSuffix;
 
@@ -51,7 +50,7 @@ public class UserAdjustmentReport {
 
     // It never gets reset
 
-    public UserAdjustmentReport(AddUserConfig config,
+    public UserAdjustmentReport(AppUserAdjusterConfig config,
             String reportFilenameSuffix) {
         this.config = config;
         this.reportFilenameSuffix = reportFilenameSuffix;

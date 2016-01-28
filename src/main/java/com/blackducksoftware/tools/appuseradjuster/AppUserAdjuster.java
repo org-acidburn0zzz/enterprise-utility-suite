@@ -9,5 +9,7 @@ import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 public interface AppUserAdjuster {
     AppUserAdjusterType getType();
 
+    List<String> preProcessUsers(Set<String> usernames) throws CommonFrameworkException;
+
     List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, Set<String> roleNames, boolean circumventLocks) throws CommonFrameworkException;
 }

@@ -273,11 +273,11 @@ public class AddUser implements UserAdder {
             }
         } else if (config.getMode() == Mode.APPIDENTIFIERS_PER_USER) {
             try {
-                AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper);
+                AppUserAdjuster appUserAdjuster = new AppUserAdder(codeCenterServerWrapper, config.getNewUserPassword());
                 AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
                         codeCenterServerWrapper, config, appUserAdjuster);
                 MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
-                        config, codeCenterServerWrapper, appListProcessorFactory);
+                        config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
                 adder.setMultiThreadedUserAdjuster(adjuster);
             } catch (Exception e) {
                 logger.error(

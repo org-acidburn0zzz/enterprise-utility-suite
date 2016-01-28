@@ -28,9 +28,9 @@ import org.slf4j.LoggerFactory;
 
 import com.blackducksoftware.sdk.codecenter.application.data.ApplicationPageFilter;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterConfig;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterType;
 import com.blackducksoftware.tools.appuseradjuster.UserAdjustmentReport;
-import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
@@ -42,7 +42,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
             .getName());
 
-    private final AddUserConfig config;
+    private final AppUserAdjusterConfig config;
 
     private ICodeCenterServerWrapper codeCenterServerWrapper;
 
@@ -52,7 +52,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
 
     public AppListProcessorAppIdentifiersPerUser(
             ICodeCenterServerWrapper codeCenterServerWrapper,
-            AddUserConfig config,
+            AppUserAdjusterConfig config,
             AppIdentifierUserListMap appIdentifierUserListMap,
             AppUserAdjuster appUserAdjuster) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;

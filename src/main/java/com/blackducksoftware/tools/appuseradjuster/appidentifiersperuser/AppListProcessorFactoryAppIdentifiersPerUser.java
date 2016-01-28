@@ -19,7 +19,7 @@
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
 
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
-import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
@@ -35,7 +35,7 @@ public class AppListProcessorFactoryAppIdentifiersPerUser implements
         AppListProcessorFactory {
     private final ICodeCenterServerWrapper codeCenterServerWrapper;
 
-    private final AddUserConfig config;
+    private final AppUserAdjusterConfig config;
 
     private final AppIdentifierUserListMap appIdentifierUserListMap;
 
@@ -43,7 +43,7 @@ public class AppListProcessorFactoryAppIdentifiersPerUser implements
 
     public AppListProcessorFactoryAppIdentifiersPerUser(
             ICodeCenterServerWrapper codeCenterServerWrapper,
-            AddUserConfig config, AppUserAdjuster appUserAdjuster) {
+            AppUserAdjusterConfig config, AppUserAdjuster appUserAdjuster) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.config = config;
         appIdentifierUserListMap = config.getAppIdentifierUserListMap();
