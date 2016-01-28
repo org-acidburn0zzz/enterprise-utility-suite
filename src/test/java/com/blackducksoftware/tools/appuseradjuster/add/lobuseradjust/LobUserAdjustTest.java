@@ -34,12 +34,10 @@ import org.junit.Test;
 import com.blackducksoftware.tools.appuseradjuster.MockUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
-import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
-import com.blackducksoftware.tools.appuseradjuster.add.UserAdder;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
-import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.MultiThreadedUserAdjusterLob;
-import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.SimpleUserSet;
+import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
+import com.blackducksoftware.tools.appuseradjuster.add.UserAdder;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.MockAppListProcessorFactory;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.SuicidalAppListProcessorFactory;
@@ -117,7 +115,7 @@ public class LobUserAdjustTest {
         MultiThreadedUserAdjuster lobUserAdjuster = new MultiThreadedUserAdjusterLob(
                 config, appListProcessorFactory);
         userAdder.setMultiThreadedUserAdjuster(lobUserAdjuster);
-        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper();
+        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper(false);
         userAdder.run(mockCcServerWrapper, numThreads);
 
         // appList = appListProcessor.getApplications(); // we've already got it
@@ -156,7 +154,7 @@ public class LobUserAdjustTest {
         MultiThreadedUserAdjuster lobUserAdjuster = new MultiThreadedUserAdjusterLob(
                 config, appListProcessorFactory);
         userAdder.setMultiThreadedUserAdjuster(lobUserAdjuster);
-        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper();
+        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper(false);
         try {
             userAdder.run(mockCcServerWrapper, numThreads);
             fail("Should have thrown exception");

@@ -1,15 +1,37 @@
 package com.blackducksoftware.tools.appuseradjuster.add;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;
 import com.blackducksoftware.tools.connector.codecenter.user.ICodeCenterUserManager;
 
 public class MockCodeCenterUserManager implements ICodeCenterUserManager {
+    private boolean simulateRequestedUsersAlreadyExisted;
+
+    private List<String> createdUsers = new ArrayList<>();
+
+    public MockCodeCenterUserManager(boolean simulateRequestedUsersAlreadyExisted) {
+        this.simulateRequestedUsersAlreadyExisted = simulateRequestedUsersAlreadyExisted;
+    }
+
+    public void setSimulateRequestedUsersAlreadyExisted(boolean simulateRequestedUsersAlreadyExisted) {
+        this.simulateRequestedUsersAlreadyExisted = simulateRequestedUsersAlreadyExisted;
+    }
+
+    public List<String> getCreatedUsers() {
+        return createdUsers;
+    }
+
+    public void clearCreatedUsers() {
+        createdUsers = new ArrayList<>();
+    }
 
     @Override
     public String createUser(String username, String password, String firstName, String lastName, String email, boolean active) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+        createdUsers.add(username);
+        return "userId_" + username.replace(" ", "_");
     }
 
     @Override
@@ -20,8 +42,14 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
 
     @Override
     public CodeCenterUserPojo getUserByName(String userName) throws CommonFrameworkException {
-        CodeCenterUserPojo user = new CodeCenterUserPojo(userName.replace(" ", "_"), userName, "test", "user", "", true);
-        return user;
+
+        if (simulateRequestedUsersAlreadyExisted) {
+            CodeCenterUserPojo user = new CodeCenterUserPojo(userName.replace(" ", "_"), userName, "test", "user", "", true);
+            return user;
+        } else {
+            throw new CommonFrameworkException("MockCodeCenterUserManager: pretending user does not exist.");
+        }
+
     }
 
     @Override

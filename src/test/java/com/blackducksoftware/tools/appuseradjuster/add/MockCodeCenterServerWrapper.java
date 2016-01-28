@@ -18,8 +18,10 @@ import com.blackducksoftware.tools.connector.common.LicensePojo;
 public class MockCodeCenterServerWrapper implements ICodeCenterServerWrapper {
     private ICodeCenterUserManager mockCodeCenterUserManager;
 
-    public MockCodeCenterServerWrapper() {
-        mockCodeCenterUserManager = new MockCodeCenterUserManager();
+    private IApplicationManager mockApplicationManager = new MockApplicationManager();
+
+    public MockCodeCenterServerWrapper(boolean simulateRequestedUsersAlreadyExisted) {
+        mockCodeCenterUserManager = new MockCodeCenterUserManager(simulateRequestedUsersAlreadyExisted);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class MockCodeCenterServerWrapper implements ICodeCenterServerWrapper {
 
     @Override
     public IApplicationManager getApplicationManager() {
-        return new MockApplicationManager();
+        return mockApplicationManager;
     }
 
     @Override

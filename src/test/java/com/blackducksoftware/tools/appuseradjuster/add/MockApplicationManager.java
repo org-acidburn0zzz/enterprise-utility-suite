@@ -2,8 +2,11 @@ package com.blackducksoftware.tools.appuseradjuster.add;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
@@ -16,6 +19,15 @@ import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 import com.blackducksoftware.tools.connector.common.ApprovalStatus;
 
 public class MockApplicationManager implements IApplicationManager {
+    private SortedSet<String> addOperations;
+
+    public MockApplicationManager() {
+        addOperations = new TreeSet<>();
+    }
+
+    public synchronized SortedSet<String> getAddOperations() {
+        return addOperations;
+    }
 
     @Override
     public List<ApplicationPojo> getApplications(int firstRow, int lastRow, String searchString) throws CommonFrameworkException {
@@ -77,8 +89,19 @@ public class MockApplicationManager implements IApplicationManager {
     @Override
     public void addUsersByNameToApplicationTeam(String appId, Set<String> userNames, Set<String> roleNames, boolean circumventLock)
             throws CommonFrameworkException {
-        // TODO Auto-generated function stub
+        System.out.println("addUsersByNameToApplicationTeam() called: " + appId + ": " + userNames);
+        recordOperation(appId, userNames);
+    }
 
+    private synchronized void recordOperation(String appId, Set<String> userNames) {
+        String operation = appId + ": " + asSortedList(userNames);
+        addOperations.add(operation);
+    }
+
+    private static <T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
+        List<T> list = new ArrayList<T>(c);
+        java.util.Collections.sort(list);
+        return list;
     }
 
     @Override
