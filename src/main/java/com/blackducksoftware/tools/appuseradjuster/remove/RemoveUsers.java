@@ -63,7 +63,7 @@ public class RemoveUsers {
             appIdentifierUserListMap = new AppIdentifierUserListMap(
                     appIdentifiersPerUserFilename,
                     config.getUsernamePattern(),
-                    config.getAppIdentifierPattern());
+                    config.getAppIdentifierPattern(), true);
         } catch (Exception e) {
             logger.error(
                     "Unable to load app identifiers per user data from file "

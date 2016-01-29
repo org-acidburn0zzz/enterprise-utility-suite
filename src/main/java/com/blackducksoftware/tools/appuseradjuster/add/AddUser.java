@@ -237,7 +237,7 @@ public class AddUser implements UserAdder {
                         appIdentifierUserListMap = new AppIdentifierUserListMap(
                                 appIdentifiersPerUserFilename,
                                 config.getUsernamePattern(),
-                                config.getAppIdentifierPattern());
+                                config.getAppIdentifierPattern(), false);
                     } catch (Exception e) {
                         logger.error(
                                 "Unable to load app identifiers per user data from file "
@@ -571,7 +571,7 @@ public class AddUser implements UserAdder {
                                 .searchApplications(currentApplication, apf);
                     } catch (SdkFault e) {
                         logger.error(
-                                "Error fetching applications from CodeCenter: "
+                                "Error fetching appNames from CodeCenter: "
                                         + e.getMessage(), e);
                     }
                     // cycle through apps and add user to each one

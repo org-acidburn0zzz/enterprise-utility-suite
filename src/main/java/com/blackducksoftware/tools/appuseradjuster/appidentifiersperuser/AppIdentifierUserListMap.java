@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
@@ -45,15 +45,19 @@ import org.slf4j.LoggerFactory;
  */
 public class AppIdentifierUserListMap implements Iterable<String> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass()
-	    .getName());
+            .getName());
+
     private static final String INPUT_LINE_EXPECTED_FORMAT_MESSAGE = "Expected format: <Username>;<AppIdentifier>... You must include one Username and one or more AppIdentifiers separated by semicolons";
+
     private Map<String, List<String>> usernameAppIdentifierListMap; // AppIdentifiers
-								    // per
-								    // Username:
-								    // the
+
+    // per
+    // Username:
+    // the
     // data as specified in
     // input file
     private Map<String, AppIdentifierAddUserDetails> appIdentifierUsernameListMap; // Usernames
+
     // per
     // AppIdentifier:
     // the
@@ -65,8 +69,12 @@ public class AppIdentifierUserListMap implements Iterable<String> {
     // adduser
     // utility
     private String inputFilePath = "<none>";
+
     private Pattern usernamePattern;
+
     private Pattern appIdentifierPattern;
+
+    private final boolean tolerateEmptyAppIdLists;
 
     /**
      * Construct from a given input file.
@@ -77,12 +85,13 @@ public class AppIdentifierUserListMap implements Iterable<String> {
      * @throws Exception
      */
     public AppIdentifierUserListMap(String inputFilePath,
-	    Pattern usernamePattern, Pattern appIdentifierPattern)
-	    throws Exception {
-	this.inputFilePath = inputFilePath;
-
-	List<String> lines = getFileContents(inputFilePath);
-	init(lines, usernamePattern, appIdentifierPattern);
+            Pattern usernamePattern, Pattern appIdentifierPattern,
+            boolean tolerateEmptyAppIdLists)
+            throws Exception {
+        this.inputFilePath = inputFilePath;
+        this.tolerateEmptyAppIdLists = tolerateEmptyAppIdLists;
+        List<String> lines = getFileContents(inputFilePath);
+        init(lines, usernamePattern, appIdentifierPattern);
     }
 
     /**
@@ -94,9 +103,11 @@ public class AppIdentifierUserListMap implements Iterable<String> {
      * @throws Exception
      */
     public AppIdentifierUserListMap(List<String> lines,
-	    Pattern usernamePattern, Pattern appIdentifierPattern)
-	    throws Exception {
-	init(lines, usernamePattern, appIdentifierPattern);
+            Pattern usernamePattern, Pattern appIdentifierPattern,
+            boolean tolerateEmptyAppIdLists)
+            throws Exception {
+        this.tolerateEmptyAppIdLists = tolerateEmptyAppIdLists;
+        init(lines, usernamePattern, appIdentifierPattern);
     }
 
     /**
@@ -105,99 +116,106 @@ public class AppIdentifierUserListMap implements Iterable<String> {
      * @return
      */
     public Map<String, AppIdentifierAddUserDetails> getAppIdentifierUsernameListMap() {
-	return appIdentifierUsernameListMap;
+        return appIdentifierUsernameListMap;
     }
 
     private void init(List<String> lines, Pattern usernamePattern,
-	    Pattern appIdentifierPattern) throws Exception {
-	this.usernamePattern = usernamePattern;
-	this.appIdentifierPattern = appIdentifierPattern;
+            Pattern appIdentifierPattern) throws Exception {
+        this.usernamePattern = usernamePattern;
+        this.appIdentifierPattern = appIdentifierPattern;
 
-	usernameAppIdentifierListMap = new HashMap<String, List<String>>();
-	appIdentifierUsernameListMap = new HashMap<String, AppIdentifierAddUserDetails>();
+        usernameAppIdentifierListMap = new HashMap<String, List<String>>();
+        appIdentifierUsernameListMap = new HashMap<String, AppIdentifierAddUserDetails>();
 
-	// input line: Username;AppIdentifier;AppIdentifier;AppIdentifier...
-	int lineIndex = 0;
-	for (String line : lines) {
-	    lineIndex++;
+        // input line: Username;AppIdentifier;AppIdentifier;AppIdentifier...
+        int lineIndex = 0;
+        for (String line : lines) {
+            lineIndex++;
 
-	    line = line.trim();
-	    if (line.startsWith("#") || line.length() == 0) {
-		continue;
-	    }
+            line = line.trim();
+            if (line.startsWith("#") || line.length() == 0) {
+                continue;
+            }
 
-	    String[] fields = line.split(";");
-	    if (fields.length < 2) {
-		throw new Exception("Error in input file " + inputFilePath
-			+ ": Invalid input format on line " + lineIndex
-			+ "; line must contain at least 2 fields" + "; "
-			+ INPUT_LINE_EXPECTED_FORMAT_MESSAGE);
-	    }
+            String[] fields = line.split(";");
+            if ((fields.length < 2) && !tolerateEmptyAppIdLists) {
+                throw new Exception("Error in input file " + inputFilePath
+                        + ": Invalid input format on line " + lineIndex
+                        + "; line must contain at least 2 fields" + "; "
+                        + INPUT_LINE_EXPECTED_FORMAT_MESSAGE);
+            }
 
-	    String username = fixUsername(fields[0]);
-	    Matcher m = this.usernamePattern.matcher(username);
-	    if (!m.matches()) {
-		throw new Exception("" + username + " is not a valid Username");
-	    }
+            String username = fixUsername(fields[0]);
+            Matcher m = this.usernamePattern.matcher(username);
+            if (!m.matches()) {
+                throw new Exception("" + username + " is not a valid Username");
+            }
 
-	    List<String> appIdentifierList = new ArrayList<String>();
-	    for (int fieldIndex = 1; fieldIndex < fields.length; fieldIndex++) {
+            List<String> appIdentifierList = new ArrayList<String>();
+            for (int fieldIndex = 1; fieldIndex < fields.length; fieldIndex++) {
 
-		String appIdentifier = fields[fieldIndex].trim();
-		m = this.appIdentifierPattern.matcher(appIdentifier);
-		if (!m.matches()) {
-		    throw new Exception("" + appIdentifier
-			    + " is not a valid AppIdentifier");
-		}
+                String appIdentifier = fields[fieldIndex].trim();
+                m = this.appIdentifierPattern.matcher(appIdentifier);
+                if (!m.matches()) {
+                    throw new Exception("" + appIdentifier
+                            + " is not a valid AppIdentifier");
+                }
 
-		logger.info("Username " + username + ": AppIdentifier "
-			+ appIdentifier);
-		appIdentifierList.add(appIdentifier); // Update the
-						      // appIdentifierList for
-						      // the current
-		// Username
-		updateAppIdentifierUsernameListMap(username, appIdentifier); // Update
-									     // the
-		// appIdentifierUsernameListMap (Username
-		// list for each AppIdentifier)
-	    }
+                logger.info("Username " + username + ": AppIdentifier "
+                        + appIdentifier);
+                appIdentifierList.add(appIdentifier); // Update the
+                // appIdentifierList for
+                // the current
+                // Username
+                updateAppIdentifierUsernameListMap(username, appIdentifier); // Update
+                // the
+                // appIdentifierUsernameListMap (Username
+                // list for each AppIdentifier)
+            }
 
-	    addAppIdentifierList(usernameAppIdentifierListMap, username,
-		    appIdentifierList);
-	}
-	logger.info("Read AppIdentifiers for "
-		+ usernameAppIdentifierListMap.size() + " unique Usernames");
+            addAppIdentifierList(usernameAppIdentifierListMap, username,
+                    appIdentifierList);
+        }
+        logger.info("Read AppIdentifiers for "
+                + usernameAppIdentifierListMap.size() + " unique Usernames");
     }
 
+    /**
+     * Add the given user to the given AppIdentifier's userlist, creating
+     * the AppIdentifier userlist if it's not already there.
+     *
+     * @param username
+     * @param appIdentifier
+     */
     private void updateAppIdentifierUsernameListMap(String username,
-	    String appIdentifier) {
-	if (appIdentifierUsernameListMap.containsKey(appIdentifier)) {
-	    // add this Username to the existing AppIdentifier entry
-	    AppIdentifierAddUserDetails addUserDetails = appIdentifierUsernameListMap
-		    .get(appIdentifier);
-	    List<String> usernameList = addUserDetails.getUsernames();
-	    usernameList.add(username);
-	} else {
-	    // start a new AppIdentifier entry
-	    List<String> usernameList = new ArrayList<String>();
-	    usernameList.add(username);
-	    AppIdentifierAddUserDetails appIdentifierAddUserDetails = new AppIdentifierAddUserDetails(
-		    usernameList);
-	    appIdentifierUsernameListMap.put(appIdentifier,
-		    appIdentifierAddUserDetails);
-	}
+            String appIdentifier) {
+        if (appIdentifierUsernameListMap.containsKey(appIdentifier)) {
+            // add this Username to the existing AppIdentifier entry
+            AppIdentifierAddUserDetails addUserDetails = appIdentifierUsernameListMap
+                    .get(appIdentifier);
+            List<String> usernameList = addUserDetails.getUsernames();
+            usernameList.add(username);
+        } else {
+            // start a new AppIdentifier entry
+            List<String> usernameList = new ArrayList<String>();
+            usernameList.add(username);
+            AppIdentifierAddUserDetails appIdentifierAddUserDetails = new AppIdentifierAddUserDetails(
+                    usernameList);
+            appIdentifierUsernameListMap.put(appIdentifier,
+                    appIdentifierAddUserDetails);
+        }
     }
 
     private void addAppIdentifierList(
-	    Map<String, List<String>> appIdentifierUserListMap,
-	    String username, List<String> appIdentifierList) {
-	if (appIdentifierUserListMap.containsKey(username)) {
-	    List<String> existingAppIdentifierList = appIdentifierUserListMap
-		    .get(username);
-	    existingAppIdentifierList.addAll(appIdentifierList);
-	} else {
-	    appIdentifierUserListMap.put(username, appIdentifierList);
-	}
+            Map<String, List<String>> appIdentifierUserListMap,
+            String username, List<String> appIdentifierList) {
+        if (appIdentifierUserListMap.containsKey(username)) {
+            List<String> existingAppIdentifierList = appIdentifierUserListMap
+                    .get(username);
+            existingAppIdentifierList.addAll(appIdentifierList);
+        } else {
+            appIdentifierUserListMap.put(username, appIdentifierList);
+        }
     }
 
     /**
@@ -206,51 +224,57 @@ public class AppIdentifierUserListMap implements Iterable<String> {
      * @return
      */
     public Map<String, List<String>> getUsernameAppIdentifierListMap() {
-	return usernameAppIdentifierListMap;
+        return usernameAppIdentifierListMap;
     }
 
     private List<String> getFileContents(String userAppRoleMappingFilePath)
-	    throws Exception {
-	List<String> contents = new ArrayList<String>();
+            throws Exception {
+        List<String> contents = new ArrayList<String>();
 
-	FileInputStream fis = null;
+        FileInputStream fis = null;
 
-	try {
-	    fis = new FileInputStream(userAppRoleMappingFilePath);
-	} catch (FileNotFoundException e) {
-	    String msg = "Unable to read the Username / AppIdentifiers mapping file: "
-		    + userAppRoleMappingFilePath;
-	    throw new Exception(msg + ": " + e.getMessage());
-	}
+        try {
+            fis = new FileInputStream(userAppRoleMappingFilePath);
+        } catch (FileNotFoundException e) {
+            String msg = "Unable to read the Username / AppIdentifiers mapping file: "
+                    + userAppRoleMappingFilePath;
+            throw new Exception(msg + ": " + e.getMessage());
+        }
 
-	Scanner scanner = new Scanner(fis);
+        Scanner scanner = new Scanner(fis);
 
-	logger.info("Reading Username / AppIdentifier mapping file ({})",
-		userAppRoleMappingFilePath);
+        logger.info("Reading Username / AppIdentifier mapping file ({})",
+                userAppRoleMappingFilePath);
 
-	while (scanner.hasNextLine()) {
-	    contents.add(scanner.nextLine());
-	}
+        while (scanner.hasNextLine()) {
+            contents.add(scanner.nextLine());
+        }
 
-	scanner.close();
+        scanner.close();
 
-	return contents;
+        return contents;
     }
 
     private String fixUsername(String rawUsername) {
-	String fixedUsername = rawUsername.trim();
-	if (fixedUsername.length() > 0) {
-	    char firstChar = fixedUsername.charAt(0);
-	    if (Character.isUpperCase(firstChar)) {
-		firstChar = Character.toLowerCase(firstChar);
-	    }
-	    fixedUsername = firstChar + fixedUsername.substring(1);
-	}
-	return fixedUsername;
+        String fixedUsername = rawUsername.trim();
+        if (fixedUsername.length() > 0) {
+            char firstChar = fixedUsername.charAt(0);
+            if (Character.isUpperCase(firstChar)) {
+                firstChar = Character.toLowerCase(firstChar);
+            }
+            fixedUsername = firstChar + fixedUsername.substring(1);
+        }
+        return fixedUsername;
     }
 
     @Override
     public Iterator<String> iterator() {
-	return appIdentifierUsernameListMap.keySet().iterator();
+        return appIdentifierUsernameListMap.keySet().iterator();
     }
+
+    @Override
+    public String toString() {
+        return "AppIdentifierUserListMap [usernameAppIdentifierListMap=" + usernameAppIdentifierListMap + "]";
+    }
+
 }

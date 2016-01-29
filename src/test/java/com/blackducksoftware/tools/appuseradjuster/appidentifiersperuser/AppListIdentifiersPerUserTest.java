@@ -104,7 +104,7 @@ public class AppListIdentifiersPerUserTest {
         appIdentifierUserListMap = new AppIdentifierUserListMap(
                 appIdentifiersPerUserFilename,
                 config.getUsernamePattern(),
-                config.getAppIdentifierPattern());
+                config.getAppIdentifierPattern(), false);
 
         config
                 .setAppIdentifierUserListMap(appIdentifierUserListMap);
@@ -159,7 +159,7 @@ public class AppListIdentifiersPerUserTest {
         appIdentifierUserListMap = new AppIdentifierUserListMap(
                 appIdentifiersPerUserFilename,
                 config.getUsernamePattern(),
-                config.getAppIdentifierPattern());
+                config.getAppIdentifierPattern(), false);
 
         config
                 .setAppIdentifierUserListMap(appIdentifierUserListMap);

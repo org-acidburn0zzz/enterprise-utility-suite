@@ -57,9 +57,9 @@ public class RemoveUsersTest {
     }
 
     @Test
-    public void test() throws Exception {
+    public void testRemoveFromGivenApps() throws Exception {
         ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
-        Properties props = TestUtils.configUserCreatorForLobAdjustMode("role2",
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
         RemoveUsersConfig config = new RemoveUsersConfig(props);
@@ -70,7 +70,7 @@ public class RemoveUsersTest {
         appIdentifierUserListMap = new AppIdentifierUserListMap(
                 appIdentifiersPerUserFilename,
                 config.getUsernamePattern(),
-                config.getAppIdentifierPattern());
+                config.getAppIdentifierPattern(), true);
 
         config
                 .setAppIdentifierUserListMap(appIdentifierUserListMap);
@@ -93,6 +93,46 @@ public class RemoveUsersTest {
             System.out.println(op);
         }
         assertTrue(removeOperations.containsAll(Arrays.asList(expectedAddUserOperations)));
+    }
+
+    @Test
+    public void testRemoveFromAllApps() throws Exception {
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        String appIdentifiersPerUserFilename = "src/test/resources/addusers/appIdentifierUserListMapFileNoAppSpecified.txt";
+        AppIdentifierUserListMap appIdentifierUserListMap = null;
+
+        appIdentifierUserListMap = new AppIdentifierUserListMap(
+                appIdentifiersPerUserFilename,
+                config.getUsernamePattern(),
+                config.getAppIdentifierPattern(), true);
+
+        config
+                .setAppIdentifierUserListMap(appIdentifierUserListMap);
+
+        AppUserAdjuster appUserAdjuster = new AppUserRemover(codeCenterServerWrapper);
+        AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
+                codeCenterServerWrapper, config, appUserAdjuster);
+        MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
+                config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
+
+        RemoveUsers adder = new RemoveUsers(config, codeCenterServerWrapper, adjuster);
+
+        adder.run(config.getNumThreads());
+
+        MockApplicationManager mockAppMgr = (MockApplicationManager) codeCenterServerWrapper.getApplicationManager();
+        SortedSet<String> removeOperations = mockAppMgr.getOperations();
+
+        System.out.println("(Mocked) operations:");
+        for (String op : removeOperations) {
+            System.out.println(op);
+        }
+        // assertTrue(removeOperations.containsAll(Arrays.asList(expectedAddUserOperations)));
+        // TODO: Need to get this functionality working, and verify it here
     }
 
 }
