@@ -39,7 +39,6 @@ import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameToken;
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterStringConstants;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
@@ -49,7 +48,9 @@ import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.App
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactoryLobAdjust;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppIdentifierUserListMap;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppListProcessorFactoryAppIdentifiersPerUser;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.MultiThreadedUserAdjusterAppIdentifiersPerUser;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.add.AppUserAdder;
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;

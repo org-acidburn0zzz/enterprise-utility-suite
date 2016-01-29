@@ -13,17 +13,16 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUser;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
-import com.blackducksoftware.tools.appuseradjuster.add.AppUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.add.MockApplicationManager;
 import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterUserManager;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.add.AppUserAdder;
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStdOut;

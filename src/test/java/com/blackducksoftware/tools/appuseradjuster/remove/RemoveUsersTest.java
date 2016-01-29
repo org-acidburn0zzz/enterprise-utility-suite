@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.MockApplicationManager;
@@ -18,7 +17,9 @@ import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapp
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppIdentifierUserListMap;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppListProcessorFactoryAppIdentifiersPerUser;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.MultiThreadedUserAdjusterAppIdentifiersPerUser;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.remove.AppUserRemover;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 public class RemoveUsersTest {

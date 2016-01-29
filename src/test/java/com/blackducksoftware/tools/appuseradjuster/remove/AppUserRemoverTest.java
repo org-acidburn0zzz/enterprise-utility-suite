@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.blackducksoftware.tools.appuseradjuster.add.MockApplicationManager;
 import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.remove.AppUserRemover;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;

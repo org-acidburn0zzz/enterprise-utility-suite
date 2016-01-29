@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster.add;
+package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.add;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,8 +8,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterType;
+import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppUserAdjuster;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;

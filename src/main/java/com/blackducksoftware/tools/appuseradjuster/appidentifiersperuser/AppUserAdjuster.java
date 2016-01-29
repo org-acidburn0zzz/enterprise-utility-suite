@@ -1,8 +1,9 @@
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
 
 import java.util.List;
 import java.util.Set;
 
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterType;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 

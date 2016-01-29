@@ -18,7 +18,6 @@
 
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
 
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessor;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
