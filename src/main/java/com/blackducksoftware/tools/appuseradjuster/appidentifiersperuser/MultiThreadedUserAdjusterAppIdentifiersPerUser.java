@@ -91,8 +91,7 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
     @Override
     public void run(ICodeCenterServerWrapper codeCenterServerWrapper,
             int numThreads) throws Exception {
-        logger.info("Adding users to applications based on AppIdentifiers per Username input file");
-        logger.info("Creating any users that don't already exist.");
+        logger.info("Adjusting application team (users) based on AppIdentifiers per Username input file");
 
         List<String> usersCreated = appUserAdjuster.preProcessUsers(newUsers.getUserSet());
 

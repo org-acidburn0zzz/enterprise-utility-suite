@@ -24,7 +24,7 @@ public class AppUserRemover implements AppUserAdjuster {
 
     @Override
     public List<String> preProcessUsers(Set<String> usernames) throws CommonFrameworkException {
-        return new ArrayList<String>(usernames);
+        return new ArrayList<String>(0);
     }
 
     @Override

@@ -9,23 +9,23 @@ import com.blackducksoftware.tools.commonframework.core.config.user.CommonUser;
 
 public class RemoveUsersConfig extends AppUserAdjusterConfig {
 
-    public RemoveUsersConfig(CommonUser user, APPLICATION applicationName) {
-        super(user, applicationName);
+    public RemoveUsersConfig(CommonUser user) {
+        super(user, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 
-    public RemoveUsersConfig(InputStream is, APPLICATION applicationName) {
-        super(is, applicationName);
+    public RemoveUsersConfig(InputStream is) {
+        super(is, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 
-    public RemoveUsersConfig(Properties props, APPLICATION applicationName) {
-        super(props, applicationName);
+    public RemoveUsersConfig(Properties props) {
+        super(props, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 
-    public RemoveUsersConfig(String configFileLocation, APPLICATION applicationName) {
-        super(configFileLocation, applicationName);
+    public RemoveUsersConfig(String configFileLocation) {
+        super(configFileLocation, APPLICATION.CODECENTER);
         loadAdditionalProperties();
     }
 

@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterType;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
@@ -13,6 +16,9 @@ import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 public class AppUserAdder implements AppUserAdjuster {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass()
+            .getName());
+
     private ICodeCenterServerWrapper codeCenterServerWrapper;
 
     private final String newUserPassword;
@@ -35,6 +41,7 @@ public class AppUserAdder implements AppUserAdjuster {
 
     @Override
     public List<String> preProcessUsers(Set<String> usernames) throws CommonFrameworkException {
+        logger.info("Creating any users that don't already exist.");
         List<String> usersCreated = new ArrayList<>(usernames.size());
         String userId = null;
         for (String username : usernames) {
