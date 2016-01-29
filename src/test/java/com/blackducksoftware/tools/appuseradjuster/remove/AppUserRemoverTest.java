@@ -34,12 +34,12 @@ public class AppUserRemoverTest {
         Set<String> userNames = new HashSet<>();
         userNames.add("User1");
         userNames.add("User2");
-        List<UserStatus> results = remover.adjustAppUsers("testAppId1", userNames, null, true);
+        List<UserStatus> results = remover.adjustAppUsers("testAppId1", userNames, true);
 
         userNames = new HashSet<>();
         userNames.add("User3");
         userNames.add("User4");
-        results = remover.adjustAppUsers("testAppId2", userNames, null, false);
+        results = remover.adjustAppUsers("testAppId2", userNames, false);
 
         MockApplicationManager mockAppMgr = (MockApplicationManager) cc.getApplicationManager();
         Set<String> operations = mockAppMgr.getOperations();

@@ -11,5 +11,5 @@ public interface AppUserAdjuster {
 
     List<String> preProcessUsers(Set<String> usernames) throws CommonFrameworkException;
 
-    List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, Set<String> roleNames, boolean circumventLocks) throws CommonFrameworkException;
+    List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, boolean circumventLocks) throws CommonFrameworkException;
 }

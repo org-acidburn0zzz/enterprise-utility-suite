@@ -115,8 +115,6 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
     public void processAppList(List<ApplicationPojo> apps, SimpleUserSet newUsers,
             UserAdjustmentReport report) throws Exception {
 
-        Set<String> roleNames = new HashSet<>(1);
-        roleNames.add(config.getUserRole());
         boolean circumventLocks = config.isCircumventLocks();
 
         int matchingAppCount = 0;
@@ -145,7 +143,7 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
                 String appVersion = app.getVersion();
                 AppUserAdjusterType adjusterType;
 
-                List<UserStatus> results = appUserAdjuster.adjustAppUsers(appId, userSet, roleNames, circumventLocks);
+                List<UserStatus> results = appUserAdjuster.adjustAppUsers(appId, userSet, circumventLocks);
 
                 adjusterType = appUserAdjuster.getType(); // what type of adjuster (add or remove users) were we passed?
                 if (adjusterType == AppUserAdjusterType.ADD) {

@@ -14,9 +14,6 @@ public abstract class AppUserAdjusterConfig extends ConfigurationManager impleme
         EntAppNameConfigurationManager {
     private static final String APP_VERSION_PROPERTY = "app.version";
 
-    // Role for the user in the application
-    private static final String USER_ROLE_PROPERTY = "user.role";
-
     private static final String DEFAULT_REPORT_DIR = ".";
 
     private static final String NUM_THREADS_PROPERTY = "num.threads";
@@ -32,11 +29,6 @@ public abstract class AppUserAdjusterConfig extends ConfigurationManager impleme
     private static final String CIRCUMVENT_LOCKS_PROPERTY = "circumvent.locks";
 
     private String applicationVersion = "";
-
-    /*
-     * User role
-     */
-    private String userRole = "";
 
     private int numThreads = 8;
 
@@ -74,7 +66,7 @@ public abstract class AppUserAdjusterConfig extends ConfigurationManager impleme
 
     private void loadAdditionalProperties() {
         applicationVersion = super.getProperty(APP_VERSION_PROPERTY);
-        userRole = super.getProperty(USER_ROLE_PROPERTY);
+
         entAppNameConfigMgrDelegate = new EntAppNameConfigMgrDelegate(
                 getProps());
 
@@ -212,7 +204,4 @@ public abstract class AppUserAdjusterConfig extends ConfigurationManager impleme
         return applicationVersion;
     }
 
-    public String getUserRole() {
-        return userRole;
-    }
 }

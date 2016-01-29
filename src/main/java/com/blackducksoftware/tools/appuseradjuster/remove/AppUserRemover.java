@@ -28,7 +28,7 @@ public class AppUserRemover implements AppUserAdjuster {
     }
 
     @Override
-    public List<UserStatus> adjustAppUsers(String appId, Set<String> userNames, Set<String> roleNames, boolean circumventLocks) throws CommonFrameworkException {
+    public List<UserStatus> adjustAppUsers(String appId, Set<String> userNames, boolean circumventLocks) throws CommonFrameworkException {
         List<UserStatus> results = codeCenterServerWrapper.getApplicationManager().removeUsersByNameFromApplicationAllRoles(appId, userNames, circumventLocks);
         return results;
     }

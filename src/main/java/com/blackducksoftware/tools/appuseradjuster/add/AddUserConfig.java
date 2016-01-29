@@ -56,6 +56,9 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
 
     }
 
+    // Role for the user in the application
+    private static final String USER_ROLE_PROPERTY = "user.role";
+
     private static final String APP_NAME_PROPERTY = "app.name";
 
     // Users to add, separated with a ; (semicolon)
@@ -71,6 +74,11 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
     private static final String LOB_ATTR_NAME_PROPERTY = "lob.attr.name";
 
     private static final String DEFAULT_PASSWORD = "password";
+
+    /*
+     * User role
+     */
+    private String userRole = "";
 
     private static final String OMIT_MISSING_LOB_RECORDS_FROM_REPORT_PROPERTY = "omit.missing.lob.records.from.report";
 
@@ -185,6 +193,10 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
         return omitMissingLobRecordsFromReport;
     }
 
+    public String getUserRole() {
+        return userRole;
+    }
+
     private void loadAdditionalProperties() {
         applicationName = super.getOptionalProperty(APP_NAME_PROPERTY);
 
@@ -203,7 +215,7 @@ public class AddUserConfig extends AppUserAdjusterConfig implements
             // the
             // password
         }
-
+        userRole = super.getProperty(USER_ROLE_PROPERTY);
         lobAttrName = super.getOptionalProperty(LOB_ATTR_NAME_PROPERTY);
 
         String omitMissingLobRecordsFromReportString = super

@@ -1,6 +1,7 @@
 package com.blackducksoftware.tools.appuseradjuster.add;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,11 +15,17 @@ import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 public class AppUserAdder implements AppUserAdjuster {
     private ICodeCenterServerWrapper codeCenterServerWrapper;
 
-    private String newUserPassword;
+    private final String newUserPassword;
 
-    public AppUserAdder(ICodeCenterServerWrapper codeCenterServerWrapper, String newUserPassword) {
+    private final Set<String> roleNames;
+
+    public AppUserAdder(ICodeCenterServerWrapper codeCenterServerWrapper, String newUserPassword,
+            String newUserRole) {
         this.codeCenterServerWrapper = codeCenterServerWrapper;
         this.newUserPassword = newUserPassword;
+
+        roleNames = new HashSet<>(1);
+        roleNames.add(newUserRole);
     }
 
     @Override
@@ -48,7 +55,8 @@ public class AppUserAdder implements AppUserAdjuster {
     }
 
     @Override
-    public List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, Set<String> roleNames, boolean circumventLocks) throws CommonFrameworkException {
+    public List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, boolean circumventLocks) throws CommonFrameworkException {
+
         codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(appId,
                 userSet, roleNames, circumventLocks);
         List<UserStatus> userStatusList = new ArrayList<>(userSet.size());
