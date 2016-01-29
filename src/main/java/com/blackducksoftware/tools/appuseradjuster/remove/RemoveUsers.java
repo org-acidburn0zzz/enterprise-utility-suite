@@ -42,7 +42,7 @@ public class RemoveUsers {
 
         RemoveUsersConfig config = new RemoveUsersConfig(configFile);
 
-        int argIndex = 2;
+        int argIndex = 0;
 
         if (!args[argIndex]
                 .equals(AppUserAdjusterStringConstants.APPIDENTIFIERS_PER_USER_FILEPATH)) {

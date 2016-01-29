@@ -63,7 +63,7 @@ public class AppUserAdder implements AppUserAdjuster {
 
     @Override
     public List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, boolean circumventLocks) throws CommonFrameworkException {
-
+        logger.info("Adding to appId " + appId + " users: " + userSet);
         codeCenterServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(appId,
                 userSet, roleNames, circumventLocks);
         List<UserStatus> userStatusList = new ArrayList<>(userSet.size());

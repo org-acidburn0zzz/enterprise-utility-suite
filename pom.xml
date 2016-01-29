@@ -112,8 +112,12 @@
 							<name>HighSev</name>
 						</program>
 						<program>
-							<mainClass>com.blackducksoftware.tools.appuseradjuster.UserCreator</mainClass>
+							<mainClass>com.blackducksoftware.tools.appuseradjuster.add.AddUser</mainClass>
 							<name>AddUsers</name>
+						</program>
+						<program>
+							<mainClass>com.blackducksoftware.tools.appuseradjuster.remove.RemoveUsers</mainClass>
+							<name>RemoveUsers</name>
 						</program>
 						<program>
 							<mainClass>com.blackducksoftware.tools.capop.CAPopHarness</mainClass>

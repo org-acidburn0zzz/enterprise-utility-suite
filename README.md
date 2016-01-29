@@ -33,7 +33,8 @@ These utilities are designed with the following environment in mind:
 The utilities also support the concept of a Line Of Business (LOB), which is an organization that "owns" a subset of applications. An application's LOB can be stored in a (configurable) custom attribute. The AddUser utility has the ability to assign a given set of users to all of the applications owned by a given LOB.
 
 ## Utilities included in the suite ##
- - AddUser: Creates Code Center user accounts and adds them to applications' teams.
+ - AddUsers: Creates Code Center user accounts and adds them to applications' teams.
+ - RemoveUsers: Removes Code Center user accounts from applications' teams.
  - AppAdjuster: Adjusts values of custom attributes of a Code Center application.
  - Custom Attribute Populator (CaPop): Bulk uploads values from a spreadsheet into Code Center application custom attributes.
  - HighSev: Determines the severity level of an application's highest severity vulnerability, and writes that severity level into a given application custom attribute.

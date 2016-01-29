@@ -46,8 +46,8 @@
 			</includes>
 	    </fileSet>
 	    <fileSet>
-	       <directory>${project.basedir}/src/main/resources/addusers</directory>
-	       	<outputDirectory>/properties/addusers</outputDirectory>
+	       <directory>${project.basedir}/src/main/resources/add_remove_users</directory>
+	       	<outputDirectory>/properties/add_remove_users</outputDirectory>
 	       	<includes>
 				<include>*</include>
 			</includes>

@@ -1,6 +1,6 @@
-Summary:
+﻿Summary:
 
-Assigns users to projects.
+Assigns users to Code Center applications' teams.
 
 There are four modes:
 - AppIdentifiers per user mode: Assigns users to applications (all with the same role).
@@ -11,7 +11,7 @@ There are four modes:
 AppIdentifiers per user mode
 ============================
 
-  In this mode, the utility expects, as a program arguments a file path to a 
+  In this mode, the utility expects, as a program argument a file path to a 
   plain text file that contains on line per user involved. Blank lines and
   lines that start with '#' are ignored. Each line consists
   of:
@@ -36,7 +36,7 @@ AppIdentifiers per user mode
     bin\AddUsers.bat -config <properties file> -app-identifiers-per-user-file <path to app-identifiers-per-user text file>
 
   For example:
-    bin\AddUsers.bat -config adduser.properties -app-identifiers-per-user-file AppIdentifiers_per_User.txt
+    bin\AddUsers.bat -config addusers.properties -app-identifiers-per-user-file AppIdentifiers_per_User.txt
     
   A configuration file for this mode will typically look something like this:
   
@@ -111,7 +111,7 @@ Users per LOB mode
     bin\AddUsers.bat -config <properties file> -lob <LOB name> -lob-userlist-file <path to CSV file containing user list>
 
   For example:
-    bin\AddUsers.bat -config adduser.properties -lob "My LOB" -lob-userlist-file LOB_Test_Users.csv
+    bin\AddUsers.bat -config addusers.properties -lob "My LOB" -lob-userlist-file LOB_Test_Users.csv
     
 Users per app mode
 ==================
@@ -122,7 +122,7 @@ Users per app mode
   add.user.request config property, a semicolon-separated list) to the application name specified by
   config properties app.name and app.version.
   
-  Configuration file: The configuration file is a Java properties file named adduser.properties found
+  Configuration file: The configuration file is a Java properties file named addusers.properties found
   on the classpath. It should define the following properties:
   	cc.server.name: the Code Center URL (starts with http: or https:)
   		Can be overridden from the command line using -server <servername>
@@ -177,7 +177,7 @@ App and role per user mode
 
 Execution (all modes):
 
-[Required] Update the adduser.properties using the information above.
+[Required] Update the addusers.properties using the information above.
 [User creation mode only] Create the user data file and make sure the path property points to it.
 
 - Run the batch/shell script. The first two arguments must be:

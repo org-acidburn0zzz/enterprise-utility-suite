@@ -1,8 +1,10 @@
 # AppIdentifiers per User data file
 #
-# Sample input file for the the add user utility -app-identifiers-per-user-file mode. This mode
-# lets you specify a list of AppIdentifiers per user. It will grant the user access to applications
-# associated with those AppIdentifiers.
+# Sample input file for the the AddUsers and RemoveUsers utilities. For AddUsers,
+# this type of input file is only used in -app-identifiers-per-user-file mode. 
+#
+# This file specifies a list of AppIdentifiers per user. For that user, the utility
+# will grant/remove access to applications associated with those AppIdentifiers.
 #
 # The add user utility runs in this mode when you include on the command line:
 #	-app-identifiers-per-user-file <AppIdentifiers per username data filename>
