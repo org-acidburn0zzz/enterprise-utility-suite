@@ -39,7 +39,6 @@ import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.role.data.RoleNameToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.sdk.codecenter.user.data.UserNameToken;
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterStringConstants;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;

@@ -1,9 +1,11 @@
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.appuseradjuster.add;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
+import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterType;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;

@@ -1,5 +1,6 @@
 package com.blackducksoftware.tools.appuseradjuster.remove;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,20 +19,18 @@ public class AppUserRemover implements AppUserAdjuster {
 
     @Override
     public AppUserAdjusterType getType() {
-        // TODO Auto-generated function stub
-        return null;
+        return AppUserAdjusterType.REMOVE;
     }
 
     @Override
     public List<String> preProcessUsers(Set<String> usernames) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+        return new ArrayList<String>(usernames);
     }
 
     @Override
-    public List<UserStatus> adjustAppUsers(String appId, Set<String> userSet, Set<String> roleNames, boolean circumventLocks) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+    public List<UserStatus> adjustAppUsers(String appId, Set<String> userNames, Set<String> roleNames, boolean circumventLocks) throws CommonFrameworkException {
+        List<UserStatus> results = codeCenterServerWrapper.getApplicationManager().removeUsersByNameFromApplicationAllRoles(appId, userNames, circumventLocks);
+        return results;
     }
 
 }

@@ -19,14 +19,14 @@ import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 import com.blackducksoftware.tools.connector.common.ApprovalStatus;
 
 public class MockApplicationManager implements IApplicationManager {
-    private SortedSet<String> addOperations;
+    private SortedSet<String> operations;
 
     public MockApplicationManager() {
-        addOperations = new TreeSet<>();
+        operations = new TreeSet<>();
     }
 
-    public synchronized SortedSet<String> getAddOperations() {
-        return addOperations;
+    public synchronized SortedSet<String> getOperations() {
+        return operations;
     }
 
     @Override
@@ -90,12 +90,12 @@ public class MockApplicationManager implements IApplicationManager {
     public void addUsersByNameToApplicationTeam(String appId, Set<String> userNames, Set<String> roleNames, boolean circumventLock)
             throws CommonFrameworkException {
         System.out.println("addUsersByNameToApplicationTeam() called: " + appId + ": " + userNames);
-        recordOperation(appId, userNames);
+        recordOperation("add", appId, userNames);
     }
 
-    private synchronized void recordOperation(String appId, Set<String> userNames) {
-        String operation = appId + ": " + asSortedList(userNames);
-        addOperations.add(operation);
+    private synchronized void recordOperation(String operationName, String appId, Set<String> userNames) {
+        String operation = operationName + ": " + appId + ": " + asSortedList(userNames);
+        operations.add(operation);
     }
 
     private static <T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
@@ -113,7 +113,7 @@ public class MockApplicationManager implements IApplicationManager {
     @Override
     public List<UserStatus> removeUsersByNameFromApplicationAllRoles(String appId, Set<String> usernames, boolean circumventLock)
             throws CommonFrameworkException {
-        // TODO Auto-generated function stub
+        recordOperation("remove", appId, usernames);
         return null;
     }
 

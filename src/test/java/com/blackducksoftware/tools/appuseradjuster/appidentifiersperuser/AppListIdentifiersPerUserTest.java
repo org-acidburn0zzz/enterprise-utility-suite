@@ -13,13 +13,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.AppUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUser;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
+import com.blackducksoftware.tools.appuseradjuster.add.AppUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.add.MockApplicationManager;
 import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterUserManager;
@@ -34,26 +34,26 @@ public class AppListIdentifiersPerUserTest {
     private static String APPLICATION_VERSION = "v100";
 
     private static String[] expectedAddUserOperations = {
-            "111-App0-PROD-CURRENT: [a000000, f566884]",
-            "111-App1-PROD-CURRENT: [a000000, f566884]",
-            "111-App2-PROD-CURRENT: [a000000, f566884]",
-            "111-App3-PROD-CURRENT: [a000000, f566884]",
-            "222-App0-PROD-CURRENT: [f111222]",
-            "222-App1-PROD-CURRENT: [f111222]",
-            "222-App2-PROD-CURRENT: [f111222]",
-            "222-App3-PROD-CURRENT: [f111222]",
-            "333-App0-PROD-CURRENT: [f111222]",
-            "333-App1-PROD-CURRENT: [f111222]",
-            "333-App2-PROD-CURRENT: [f111222]",
-            "333-App3-PROD-CURRENT: [f111222]",
-            "444-App0-PROD-CURRENT: [f444555]",
-            "444-App1-PROD-CURRENT: [f444555]",
-            "444-App2-PROD-CURRENT: [f444555]",
-            "444-App3-PROD-CURRENT: [f444555]",
-            "555-App0-PROD-CURRENT: [f444555]",
-            "555-App1-PROD-CURRENT: [f444555]",
-            "555-App2-PROD-CURRENT: [f444555]",
-            "555-App3-PROD-CURRENT: [f444555]"
+            "add: 111-App0-PROD-CURRENT: [a000000, f566884]",
+            "add: 111-App1-PROD-CURRENT: [a000000, f566884]",
+            "add: 111-App2-PROD-CURRENT: [a000000, f566884]",
+            "add: 111-App3-PROD-CURRENT: [a000000, f566884]",
+            "add: 222-App0-PROD-CURRENT: [f111222]",
+            "add: 222-App1-PROD-CURRENT: [f111222]",
+            "add: 222-App2-PROD-CURRENT: [f111222]",
+            "add: 222-App3-PROD-CURRENT: [f111222]",
+            "add: 333-App0-PROD-CURRENT: [f111222]",
+            "add: 333-App1-PROD-CURRENT: [f111222]",
+            "add: 333-App2-PROD-CURRENT: [f111222]",
+            "add: 333-App3-PROD-CURRENT: [f111222]",
+            "add: 444-App0-PROD-CURRENT: [f444555]",
+            "add: 444-App1-PROD-CURRENT: [f444555]",
+            "add: 444-App2-PROD-CURRENT: [f444555]",
+            "add: 444-App3-PROD-CURRENT: [f444555]",
+            "add: 555-App0-PROD-CURRENT: [f444555]",
+            "add: 555-App1-PROD-CURRENT: [f444555]",
+            "add: 555-App2-PROD-CURRENT: [f444555]",
+            "add: 555-App3-PROD-CURRENT: [f444555]"
     };
 
     private static String[] expectedReport = {
@@ -134,7 +134,7 @@ public class AppListIdentifiersPerUserTest {
         assertTrue(reportStrings.containsAll(Arrays.asList(expectedReport)));
 
         MockApplicationManager mockAppMgr = (MockApplicationManager) codeCenterServerWrapper.getApplicationManager();
-        SortedSet<String> addOperations = mockAppMgr.getAddOperations();
+        SortedSet<String> addOperations = mockAppMgr.getOperations();
 
         System.out.println("====== addOperations:");
         for (String op : addOperations) {

@@ -145,9 +145,9 @@ public class AppListProcessorAppIdentifiersPerUser implements AppListProcessor {
                 String appVersion = app.getVersion();
                 AppUserAdjusterType adjusterType;
 
-                adjusterType = appUserAdjuster.getType(); // what type of adjuster (add or remove users) were we passed?
                 List<UserStatus> results = appUserAdjuster.adjustAppUsers(appId, userSet, roleNames, circumventLocks);
 
+                adjusterType = appUserAdjuster.getType(); // what type of adjuster (add or remove users) were we passed?
                 if (adjusterType == AppUserAdjusterType.ADD) {
                     report.addRecord(appName, appVersion, true, null,
                             userNamesList, null, null);
