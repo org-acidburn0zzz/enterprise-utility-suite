@@ -19,12 +19,15 @@
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.junit.AfterClass;
@@ -68,6 +71,8 @@ public class AppIdentifierUserListMapTest {
         }
         assertTrue(appIdentifiers.contains("444"));
         assertTrue(appIdentifiers.contains("555"));
+
+        assertEquals(0, appIdentifierUserListMap.getBarrenUsers().size());
     }
 
     @Test
@@ -98,6 +103,62 @@ public class AppIdentifierUserListMapTest {
         }
         assertTrue(appIdentifiers.contains("444"));
         assertTrue(appIdentifiers.contains("555"));
+
+        assertEquals(0, appIdentifierUserListMap.getBarrenUsers().size());
+    }
+
+    @Test
+    public void testEmptyAppIdList() throws Exception {
+        List<String> inputLines = new ArrayList<String>();
+        inputLines.add("f566884;111");
+        inputLines.add("f111222;222;333");
+        inputLines.add("f444555;444;");
+        inputLines.add("F444555 ;555 ;");
+        inputLines.add("F000000;");
+        inputLines.add("F000001");
+        inputLines.add("F000002 ; ");
+
+        AppIdentifierUserListMap appIdentifierUserListMap = new AppIdentifierUserListMap(
+                inputLines, usernamePattern, appIdentifierPattern, true);
+
+        Map<String, List<String>> usernameToAppIdentifiersMap = appIdentifierUserListMap
+                .getUsernameAppIdentifierListMap();
+
+        assertEquals(6, usernameToAppIdentifiersMap.keySet().size());
+
+        assertNull(usernameToAppIdentifiersMap.get("F000000"));
+        assertNull(usernameToAppIdentifiersMap.get("F000001"));
+        assertNull(usernameToAppIdentifiersMap.get("F000002"));
+
+        Set<String> barrenUsers = appIdentifierUserListMap.getBarrenUsers();
+        assertEquals(3, appIdentifierUserListMap.getBarrenUsers().size());
+        assertTrue(barrenUsers.contains("f000000"));
+        assertTrue(barrenUsers.contains("f000001"));
+        assertTrue(barrenUsers.contains("f000002"));
+    }
+
+    @Test
+    public void testAddMore() throws Exception {
+        List<String> inputLines = new ArrayList<String>();
+        inputLines.add("f566884;111");
+        inputLines.add("f111222;222;333");
+        inputLines.add("f444555;444;");
+        inputLines.add("F444555 ;555 ;");
+
+        AppIdentifierUserListMap appIdentifierUserListMap = new AppIdentifierUserListMap(
+                inputLines, usernamePattern, appIdentifierPattern, true);
+        assertEquals(5, appIdentifierUserListMap.getAppIdentifierUsernameListMap().size());
+        assertEquals(3, appIdentifierUserListMap.getUsernameAppIdentifierListMap().size());
+
+        List<String> additionalAppIds = new ArrayList<>();
+        additionalAppIds.add("666");
+        additionalAppIds.add("777777");
+        Map<String, List<String>> additionalMap = new HashMap<>();
+        additionalMap.put("g000000", additionalAppIds);
+        appIdentifierUserListMap.addMoreUsernameToAppIdsMappings(additionalMap);
+
+        assertEquals(7, appIdentifierUserListMap.getAppIdentifierUsernameListMap().size());
+        assertEquals(4, appIdentifierUserListMap.getUsernameAppIdentifierListMap().size());
     }
 
     @Test

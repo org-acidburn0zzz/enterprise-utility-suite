@@ -22,10 +22,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -117,6 +119,59 @@ public class AppIdentifierUserListMap implements Iterable<String> {
      */
     public Map<String, AppIdentifierAddUserDetails> getAppIdentifierUsernameListMap() {
         return appIdentifierUsernameListMap;
+    }
+
+    /**
+     * Return the set of barren (have an empty list of appIds associated with them) users.
+     *
+     * @return set of usernames (might be an empty set)
+     */
+    public Set<String> getBarrenUsers() {
+        Set<String> barrenUsers = new HashSet<>(usernameAppIdentifierListMap.size() / 2);
+        for (String username : usernameAppIdentifierListMap.keySet()) {
+            if (usernameAppIdentifierListMap.get(username).size() == 0) {
+                barrenUsers.add(username);
+            }
+        }
+        return barrenUsers;
+    }
+
+    /**
+     * Add additional username:appIds mappings.
+     *
+     * @param additionalUsernameAppIdentifierListMap
+     */
+    public void addMoreUsernameToAppIdsMappings(Map<String, List<String>> additionalUsernameAppIdentifierListMap) {
+        for (String username : additionalUsernameAppIdentifierListMap.keySet()) {
+            logger.info("Adding all applications user " + username + " can access");
+
+            // Matcher m = this.usernamePattern.matcher(username);
+            // if (!m.matches()) {
+            // throw new Exception("" + username + " is not a valid Username");
+            // }
+
+            List<String> appIdentifierList = additionalUsernameAppIdentifierListMap.get(username);
+            for (String appIdentifier : appIdentifierList) {
+
+                // m = this.appIdentifierPattern.matcher(appIdentifier);
+                // if (!m.matches()) {
+                // throw new Exception("" + appIdentifier
+                // + " is not a valid AppIdentifier");
+                // }
+
+                logger.info("Adding: Username " + username + ": AppIdentifier "
+                        + appIdentifier);
+                updateAppIdentifierUsernameListMap(username, appIdentifier); // Update
+                // the
+                // appIdentifierUsernameListMap (Username
+                // list for each AppIdentifier)
+            }
+
+            addAppIdentifierList(usernameAppIdentifierListMap, username,
+                    appIdentifierList);
+
+        }
+
     }
 
     private void init(List<String> lines, Pattern usernamePattern,

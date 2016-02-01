@@ -67,4 +67,9 @@ public class AppIdentifierAddUserDetails {
         this.applications = applications;
     }
 
+    @Override
+    public String toString() {
+        return "AppIdentifierAddUserDetails [usernames=" + usernames + ", applications=" + applications + "]";
+    }
+
 }
