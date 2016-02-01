@@ -37,7 +37,7 @@ public class MockApplicationManager implements IApplicationManager {
             String appName = searchString + "App" + i + "-PROD-CURRENT";
             ApplicationPojo app = new ApplicationPojo(appName, appName, "v100",
                     null,
-                    ApprovalStatus.APPROVED, false);
+                    ApprovalStatus.APPROVED, false, "testOwnerId");
             apps.add(app);
         }
         return apps;

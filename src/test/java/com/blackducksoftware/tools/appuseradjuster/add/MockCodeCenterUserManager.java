@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
+import com.blackducksoftware.tools.connector.codecenter.common.ApplicationRolePojo;
 import com.blackducksoftware.tools.connector.codecenter.user.CodeCenterUserPojo;
 import com.blackducksoftware.tools.connector.codecenter.user.ICodeCenterUserManager;
 
@@ -62,6 +63,12 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
     public void setUserActiveStatus(String userId, boolean active) throws CommonFrameworkException {
         // TODO Auto-generated function stub
 
+    }
+
+    @Override
+    public List<ApplicationRolePojo> getApplicationRolesByUserName(String userName) throws CommonFrameworkException {
+        // TODO Auto-generated function stub
+        return null;
     }
 
 }

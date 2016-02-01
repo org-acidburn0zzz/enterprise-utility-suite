@@ -190,7 +190,7 @@ public class LobUserAdjustTest {
         for (int i = 0; i < size; i++) {
             app = new ApplicationPojo("app" + i, "app" + i, "Unspecified",
                     null,
-                    ApprovalStatus.APPROVED, false);
+                    ApprovalStatus.APPROVED, false, "testOwnerId");
 
             appList.add(app);
         }

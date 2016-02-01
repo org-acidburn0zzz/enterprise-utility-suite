@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
-import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppListFilter;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 import com.blackducksoftware.tools.connector.common.ApprovalStatus;
 
@@ -101,7 +100,7 @@ public class AppListFilterTest {
     private ApplicationPojo createApp(String name, String version) {
         ApplicationPojo app = new ApplicationPojo("testId", name, version,
                 null,
-                ApprovalStatus.APPROVED, false);
+                ApprovalStatus.APPROVED, false, "testOwnerId");
 
         return app;
     }
