@@ -76,7 +76,7 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
         newUsers = new SimpleUserSet(config.getAppIdentifierUserListMap()
                 .getUsernameAppIdentifierListMap().keySet());
         if ((newUsers == null) || (newUsers.size() == 0)) {
-            String msg = "The LOB user list provided is empty.";
+            String msg = "The input file is empty.";
             logger.error(msg);
             throw new Exception(msg);
         }

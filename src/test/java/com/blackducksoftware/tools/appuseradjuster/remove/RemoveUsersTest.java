@@ -1,8 +1,11 @@
 package com.blackducksoftware.tools.appuseradjuster.remove;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.SortedSet;
 
@@ -12,6 +15,7 @@ import org.junit.Test;
 
 import com.blackducksoftware.tools.appuseradjuster.MockApplicationManager;
 import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
+import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterUserManager;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
@@ -59,6 +63,9 @@ public class RemoveUsersTest {
             "remove: 1000-App3-PROD-CURRENT: [f566884]"
     };
 
+    private static String[] expectedOperationsNoRolesToRemove = {
+            };
+
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -75,11 +82,20 @@ public class RemoveUsersTest {
                 APPLICATION_VERSION);
         RemoveUsersConfig config = new RemoveUsersConfig(props);
 
-        String appIdentifiersPerUserFilename = "src/test/resources/addusers/appIdentifierUserListMapFileMultUsersPerApp.txt";
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add("");
+        inputLines.add("#");
+        inputLines.add("");
+        inputLines.add("f566884;111");
+        inputLines.add("f111222; 222 ; 333 ");
+        inputLines.add("f444555;444;");
+        inputLines.add("F444555 ;555 ;");
+        inputLines.add("a000000;111");
+
         AppIdentifierUserListMap appIdentifierUserListMap = null;
 
         appIdentifierUserListMap = new AppIdentifierUserListMap(
-                appIdentifiersPerUserFilename,
+                inputLines,
                 config.getUsernamePattern(),
                 config.getAppIdentifierPattern(), true);
 
@@ -114,11 +130,12 @@ public class RemoveUsersTest {
                 APPLICATION_VERSION);
         RemoveUsersConfig config = new RemoveUsersConfig(props);
 
-        String appIdentifiersPerUserFilename = "src/test/resources/addusers/appIdentifierUserListMapFileNoAppSpecified.txt";
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add("f566884; ");
         AppIdentifierUserListMap appIdentifierUserListMap = null;
 
         appIdentifierUserListMap = new AppIdentifierUserListMap(
-                appIdentifiersPerUserFilename,
+                inputLines,
                 config.getUsernamePattern(),
                 config.getAppIdentifierPattern(), true);
 
@@ -145,4 +162,133 @@ public class RemoveUsersTest {
         assertTrue(removeOperations.containsAll(Arrays.asList(expectedOperationsRemoveFromAllApps)));
     }
 
+    @Test
+    public void testUserHasNoRolesOnMatchingApps() throws Exception {
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+
+        MockCodeCenterUserManager mockUserMgr = (MockCodeCenterUserManager) codeCenterServerWrapper.getUserManager();
+        mockUserMgr.setReturnRoles(false); // tell mock to return no roles
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add("f566884");
+        AppIdentifierUserListMap appIdentifierUserListMap = null;
+
+        appIdentifierUserListMap = new AppIdentifierUserListMap(
+                inputLines,
+                config.getUsernamePattern(),
+                config.getAppIdentifierPattern(), true);
+
+        config
+                .setAppIdentifierUserListMap(appIdentifierUserListMap);
+
+        AppUserAdjuster appUserAdjuster = new AppUserRemover(codeCenterServerWrapper);
+        AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
+                codeCenterServerWrapper, config, appUserAdjuster);
+        MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
+                config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
+
+        RemoveUsers adder = new RemoveUsers(config, codeCenterServerWrapper, adjuster);
+        adder.globAppIds(appIdentifierUserListMap);
+        adder.run(config.getNumThreads());
+
+        MockApplicationManager mockAppMgr = (MockApplicationManager) codeCenterServerWrapper.getApplicationManager();
+        SortedSet<String> removeOperations = mockAppMgr.getOperations();
+
+        System.out.println("(Mocked) operations:");
+        for (String op : removeOperations) {
+            System.out.println("\t" + op);
+        }
+        assertTrue(removeOperations.containsAll(Arrays.asList(expectedOperationsNoRolesToRemove)));
+    }
+
+    @Test
+    public void testBadUsername() throws Exception {
+
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add("badUserName");
+
+        try {
+            new AppIdentifierUserListMap(
+                    inputLines,
+                    config.getUsernamePattern(),
+                    config.getAppIdentifierPattern(), true);
+            fail("Provided a bad username, expected an exception");
+        } catch (Exception e) {
+            // expected this
+        }
+
+    }
+
+    @Test
+    public void testBadAppId() throws Exception {
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add("");
+        inputLines.add("#");
+        inputLines.add("");
+        inputLines.add("f566884;xxx");
+        inputLines.add("f111222; 222 ; 333 ");
+        inputLines.add("f444555;444;");
+        inputLines.add("F444555 ;555 ;");
+        inputLines.add("a000000;111");
+
+        try {
+            new AppIdentifierUserListMap(
+                    inputLines,
+                    config.getUsernamePattern(),
+                    config.getAppIdentifierPattern(), true);
+            fail("Provided a bad appId, expected an exception");
+        } catch (Exception e) {
+            // expected this
+        }
+    }
+
+    @Test
+    public void testEmptyInputFile() throws Exception {
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add("");
+        inputLines.add("#");
+        inputLines.add("");
+
+        AppIdentifierUserListMap appIdentifierUserListMap = null;
+
+        appIdentifierUserListMap = new AppIdentifierUserListMap(
+                inputLines,
+                config.getUsernamePattern(),
+                config.getAppIdentifierPattern(), true);
+
+        config
+                .setAppIdentifierUserListMap(appIdentifierUserListMap);
+
+        AppUserAdjuster appUserAdjuster = new AppUserRemover(codeCenterServerWrapper);
+        AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
+                codeCenterServerWrapper, config, appUserAdjuster);
+
+        try {
+            new MultiThreadedUserAdjusterAppIdentifiersPerUser(config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
+            fail("Provided empty input, expected an exception");
+        } catch (Exception e) {
+            // expected this
+        }
+
+    }
 }

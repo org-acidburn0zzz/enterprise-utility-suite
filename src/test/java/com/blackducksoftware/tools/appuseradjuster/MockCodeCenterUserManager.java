@@ -11,10 +11,16 @@ import com.blackducksoftware.tools.connector.codecenter.user.ICodeCenterUserMana
 public class MockCodeCenterUserManager implements ICodeCenterUserManager {
     private boolean simulateRequestedUsersAlreadyExisted;
 
+    private boolean returnRoles = true; // return some mock roles or not (yes by default)
+
     private List<String> createdUsers = new ArrayList<>();
 
     public MockCodeCenterUserManager(boolean simulateRequestedUsersAlreadyExisted) {
         this.simulateRequestedUsersAlreadyExisted = simulateRequestedUsersAlreadyExisted;
+    }
+
+    public void setReturnRoles(boolean returnRoles) {
+        this.returnRoles = returnRoles;
     }
 
     public void setSimulateRequestedUsersAlreadyExisted(boolean simulateRequestedUsersAlreadyExisted) {
@@ -68,6 +74,9 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
     @Override
     public List<ApplicationRolePojo> getApplicationRolesByUserName(String userName) throws CommonFrameworkException {
         List<ApplicationRolePojo> roles = new ArrayList<>();
+        if (!returnRoles) {
+            return null;
+        }
         for (int appIndex = 0; appIndex < 2; appIndex++) {
 
             ApplicationRolePojo role = new ApplicationRolePojo("testAppId" + appIndex, appIndex + "000-Test App-PROD-CURRENT", "Unspecified",
