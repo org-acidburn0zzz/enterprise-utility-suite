@@ -5,6 +5,9 @@
   The users specified are removed from applications as specified (any/all
   application roles they hold), but their user accounts are not deleted.
 
+  Limitation: An application's owner cannot be removed from the application
+  via this utility.
+
 Usage:
 
   Using RemoveUsers is very similar to using AddUsers in AppIdentifiers per user mode. The
