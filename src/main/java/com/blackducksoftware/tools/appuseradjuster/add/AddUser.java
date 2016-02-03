@@ -252,7 +252,7 @@ public class AddUser implements UserAdder {
             }
 
         }
-
+        logger.info("Mode: " + config.getMode());
         CodeCenterServerWrapper codeCenterServerWrapper = null;
         try {
             codeCenterServerWrapper = connectToCodeCenter(config);
@@ -365,7 +365,7 @@ public class AddUser implements UserAdder {
         if ((configProcessor.getMode() != Mode.USERS_PER_LOB)
                 && (configProcessor.getMode() != Mode.APPIDENTIFIERS_PER_USER)) {
             if ((appName == null) || appName.isEmpty()) {
-                if (userAppRoleMappingFilePath.isEmpty()) {
+                if ((userAppRoleMappingFilePath == null) || (userAppRoleMappingFilePath.isEmpty())) {
                     logger.info("Missing application name configuration");
                     valid = false;
                 }
@@ -381,7 +381,7 @@ public class AddUser implements UserAdder {
         if ((configProcessor.getMode() != Mode.USERS_PER_LOB)
                 && (configProcessor.getMode() != Mode.APPIDENTIFIERS_PER_USER)) {
             if ((usersInput == null) || usersInput.isEmpty()) {
-                if (userAppRoleMappingFilePath.isEmpty()) {
+                if ((userAppRoleMappingFilePath == null) || (userAppRoleMappingFilePath.isEmpty())) {
                     logger.info("Missing users configuration");
                     valid = false;
                 }
