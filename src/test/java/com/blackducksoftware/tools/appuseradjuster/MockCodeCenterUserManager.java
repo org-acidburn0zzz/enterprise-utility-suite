@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster.add;
+package com.blackducksoftware.tools.appuseradjuster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +67,18 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
 
     @Override
     public List<ApplicationRolePojo> getApplicationRolesByUserName(String userName) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+        List<ApplicationRolePojo> roles = new ArrayList<>();
+        for (int appIndex = 0; appIndex < 2; appIndex++) {
+
+            ApplicationRolePojo role = new ApplicationRolePojo("testAppId" + appIndex, appIndex + "000-Test App-PROD-CURRENT", "Unspecified",
+                    "testUserId", userName, "testRoleId",
+                    "Test Role");
+            roles.add(role);
+            System.out.println("Role: " + role);
+
+        }
+
+        return roles;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster.add;
+package com.blackducksoftware.tools.appuseradjuster;
 
 import java.util.List;
 

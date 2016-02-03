@@ -124,20 +124,28 @@ public class RemoveUsers {
 
         Set<String> barrenUsernames = appIdentifierUserListMap.getBarrenUsers();
         for (String barrenUsername : barrenUsernames) {
-            logger.info("Getting all applications for user: " + barrenUsername);
+            logger.info("Input requests removal from ALL applications for user: " + barrenUsername);
             List<ApplicationRolePojo> roles = codeCenterServerWrapper.getUserManager().getApplicationRolesByUserName(barrenUsername);
-            Set<String> barrenUsersAppIds = new HashSet<>();
-            for (ApplicationRolePojo role : roles) {
-                logger.info("User " + barrenUsername + " has a role on app: " + role.getApplicationName() + " / " + role.getApplicationVersion());
+            if (roles == null) {
+                logger.warn("User " + barrenUsername + " has no application roles and won't be removed from any applications");
+            } else {
+                Set<String> barrenUsersAppIds = new HashSet<>();
+                for (ApplicationRolePojo role : roles) {
+                    logger.info("User " + barrenUsername + " has a role on app: " + role.getApplicationName() + " / " + role.getApplicationVersion());
 
-                EntAppName appName = new EntAppName(config,
-                        role.getApplicationName());
-                logger.info("App ID: " + appName.getAppIdentifier());
-                barrenUsersAppIds.add(appName.getAppIdentifier());
+                    EntAppName appName = new EntAppName(config,
+                            role.getApplicationName());
+                    logger.info("App ID: " + appName.getAppIdentifier());
+                    if (appName.getAppIdentifier() == null) {
+                        logger.error("Application " + role.getApplicationName() + " does not match the configured app name pattern; skipping this application");
+                        continue;
+                    }
+                    barrenUsersAppIds.add(appName.getAppIdentifier());
+                }
+                List<String> appIdList = new ArrayList<String>(barrenUsersAppIds);
+                logger.info("Adding to remove-from-all user:appIds map: " + barrenUsername + ": " + appIdList);
+                additionalUsernameAppIdentifierListMap.put(barrenUsername, appIdList);
             }
-            List<String> appIdList = new ArrayList<String>(barrenUsersAppIds);
-            logger.info("Adding to remove-from-all user:appIds map: " + barrenUsername + ": " + appIdList);
-            additionalUsernameAppIdentifierListMap.put(barrenUsername, appIdList);
         }
 
         appIdentifierUserListMap.addMoreUsernameToAppIdsMappings(additionalUsernameAppIdentifierListMap);

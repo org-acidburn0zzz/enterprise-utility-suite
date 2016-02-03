@@ -31,12 +31,12 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.MockUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUserConfig.Mode;
-import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.add.UserAdder;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.MockAppListProcessorFactory;

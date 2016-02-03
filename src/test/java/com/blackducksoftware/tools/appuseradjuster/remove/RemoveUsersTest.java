@@ -10,10 +10,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.blackducksoftware.tools.appuseradjuster.MockApplicationManager;
+import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
-import com.blackducksoftware.tools.appuseradjuster.add.MockApplicationManager;
-import com.blackducksoftware.tools.appuseradjuster.add.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppIdentifierUserListMap;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppListProcessorFactoryAppIdentifiersPerUser;
@@ -25,7 +25,7 @@ import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper
 public class RemoveUsersTest {
     private static String APPLICATION_VERSION = "v100";
 
-    private static String[] expectedAddUserOperations = {
+    private static String[] expectedOperationsRemoveFromGivenApps = {
             "remove: 111-App0-PROD-CURRENT: [a000000, f566884]",
             "remove: 111-App1-PROD-CURRENT: [a000000, f566884]",
             "remove: 111-App2-PROD-CURRENT: [a000000, f566884]",
@@ -46,6 +46,17 @@ public class RemoveUsersTest {
             "remove: 555-App1-PROD-CURRENT: [f444555]",
             "remove: 555-App2-PROD-CURRENT: [f444555]",
             "remove: 555-App3-PROD-CURRENT: [f444555]"
+    };
+
+    private static String[] expectedOperationsRemoveFromAllApps = {
+            "remove: 0000-App0-PROD-CURRENT: [f566884]",
+            "remove: 0000-App1-PROD-CURRENT: [f566884]",
+            "remove: 0000-App2-PROD-CURRENT: [f566884]",
+            "remove: 0000-App3-PROD-CURRENT: [f566884]",
+            "remove: 1000-App0-PROD-CURRENT: [f566884]",
+            "remove: 1000-App1-PROD-CURRENT: [f566884]",
+            "remove: 1000-App2-PROD-CURRENT: [f566884]",
+            "remove: 1000-App3-PROD-CURRENT: [f566884]"
     };
 
     @BeforeClass
@@ -90,9 +101,9 @@ public class RemoveUsersTest {
 
         System.out.println("(Mocked) operations:");
         for (String op : removeOperations) {
-            System.out.println(op);
+            System.out.println("\t" + op);
         }
-        assertTrue(removeOperations.containsAll(Arrays.asList(expectedAddUserOperations)));
+        assertTrue(removeOperations.containsAll(Arrays.asList(expectedOperationsRemoveFromGivenApps)));
     }
 
     @Test
@@ -121,7 +132,7 @@ public class RemoveUsersTest {
                 config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
 
         RemoveUsers adder = new RemoveUsers(config, codeCenterServerWrapper, adjuster);
-
+        adder.globAppIds(appIdentifierUserListMap);
         adder.run(config.getNumThreads());
 
         MockApplicationManager mockAppMgr = (MockApplicationManager) codeCenterServerWrapper.getApplicationManager();
@@ -129,10 +140,9 @@ public class RemoveUsersTest {
 
         System.out.println("(Mocked) operations:");
         for (String op : removeOperations) {
-            System.out.println(op);
+            System.out.println("\t" + op);
         }
-        // assertTrue(removeOperations.containsAll(Arrays.asList(expectedAddUserOperations)));
-        // TODO: Need to get this functionality working, and verify it here
+        assertTrue(removeOperations.containsAll(Arrays.asList(expectedOperationsRemoveFromAllApps)));
     }
 
 }
