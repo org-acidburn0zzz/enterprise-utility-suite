@@ -37,7 +37,7 @@ suffix.to.remove: If set, the snapshot utility checks to see if the project/app 
 	ends in the value of this property. If it does, that part of the name is removed
 	before the date suffix is appended to generate the snapshot name.
 
-associate.project.with.app: If set to true, no Protex project snapshot will be
+snapshot.app.only=true: If set to true, no Protex project snapshot will be
 	created (only the Code Center application snapshot).
 
 snapshot.suffix.dateformat: If set, this controls the suffix (including leading character
