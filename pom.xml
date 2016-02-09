@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>com.blackducksoftware.tools</groupId>
 			<artifactId>cf-7x-connector</artifactId>
-			<version>1.4.4-SNAPSHOT</version>
+			<version>1.4.4</version>
 		</dependency>
 		
 	    <dependency>
