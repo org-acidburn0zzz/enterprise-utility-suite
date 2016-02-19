@@ -42,6 +42,14 @@ Usage:
   cc.password=<password>
 
   app.version=Unspecified
+  
+  # Set to true if the user accounts of users requested (in the input file)
+  # to be removed from ALL applications (those users followed by zero AppIdentifiers)
+  # should also be deactivated.
+  # Note that it is the remove-from-all REQUEST that matters, not whether or
+  # not a user ends up assigned to zero applications.
+  # Default is false
+  deactivate.users.removed.from.all=true
 
   report.dir=.
   num.threads=2

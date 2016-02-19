@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
@@ -35,6 +35,7 @@ import com.blackducksoftware.tools.commonframework.core.multithreading.ListDistr
 import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 
 /**
  * A MultiThreadedUserAdjuster that executes the AppIdentifiersPerUser
@@ -141,6 +142,11 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
             report.addRecord("<all>", "", false, null, null, null,
                     THREAD_FAILED_ERROR_MESSAGE);
         }
+
+        logger.info("Deactivating users");
+        List<UserStatus> usersDeactivated = appUserAdjuster.deActivateUsers(config.getAppIdentifierUserListMap().getBarrenUsers());
+        // TODO: Get results into report
+
         report.write();
         if (threadExceptionThrown) {
             throw new Exception(THREAD_FAILED_ERROR_MESSAGE);

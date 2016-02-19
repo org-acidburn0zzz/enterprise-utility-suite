@@ -1,7 +1,9 @@
 package com.blackducksoftware.tools.appuseradjuster;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.common.ApplicationRolePojo;
@@ -14,6 +16,8 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
     private boolean returnRoles = true; // return some mock roles or not (yes by default)
 
     private List<String> createdUsers = new ArrayList<>();
+
+    private Map<String, Boolean> activeStatusChangedUsers = new HashMap<>();
 
     public MockCodeCenterUserManager(boolean simulateRequestedUsersAlreadyExisted) {
         this.simulateRequestedUsersAlreadyExisted = simulateRequestedUsersAlreadyExisted;
@@ -67,8 +71,7 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
 
     @Override
     public void setUserActiveStatus(String userId, boolean active) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-
+        activeStatusChangedUsers.put(userId, active);
     }
 
     @Override
@@ -88,6 +91,10 @@ public class MockCodeCenterUserManager implements ICodeCenterUserManager {
         }
 
         return roles;
+    }
+
+    public Map<String, Boolean> getActiveStatusChangedUsers() {
+        return activeStatusChangedUsers;
     }
 
 }

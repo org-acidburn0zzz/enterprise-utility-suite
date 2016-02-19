@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blackducksoftware.tools</groupId>
 	<artifactId>enterprise-utility-suite</artifactId>
-	<version>1.5.3</version>
+	<version>1.5.4-SNAPSHOT</version>
 	<name>Enterprise Utility Suite</name>
 	<packaging>jar</packaging>
 

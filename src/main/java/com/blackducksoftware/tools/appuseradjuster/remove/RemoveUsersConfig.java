@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 package com.blackducksoftware.tools.appuseradjuster.remove;
 
@@ -25,6 +25,9 @@ import com.blackducksoftware.tools.appuseradjuster.AppUserAdjusterConfig;
 import com.blackducksoftware.tools.commonframework.core.config.user.CommonUser;
 
 public class RemoveUsersConfig extends AppUserAdjusterConfig {
+    private static final String DEACTIVATE_USERS_REMOVED_FROM_ALL_PROPERTY = "deactivate.users.removed.from.all";
+
+    private boolean deactivateUsersRemovedFromAll = false;
 
     public RemoveUsersConfig(CommonUser user) {
         super(user, APPLICATION.CODECENTER);
@@ -52,6 +55,14 @@ public class RemoveUsersConfig extends AppUserAdjusterConfig {
     }
 
     private void loadAdditionalProperties() {
+        String deactivateUsersRemovedFromAllString = super.getOptionalProperty(DEACTIVATE_USERS_REMOVED_FROM_ALL_PROPERTY);
+        if ((deactivateUsersRemovedFromAllString != null) && (deactivateUsersRemovedFromAllString.equalsIgnoreCase("true"))) {
+            deactivateUsersRemovedFromAll = true;
+        }
 
+    }
+
+    public boolean isDeactivateUsersRemovedFromAll() {
+        return deactivateUsersRemovedFromAll;
     }
 }

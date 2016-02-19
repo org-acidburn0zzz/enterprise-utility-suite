@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.add;
 
@@ -89,6 +89,15 @@ public class AppUserAdder implements AppUserAdjuster {
             userStatusList.add(userStatus);
         }
         return userStatusList;
+    }
+
+    /**
+     * For adduser, there is no deActivating
+     */
+    @Override
+    public List<UserStatus> deActivateUsers(Set<String> usernames) throws CommonFrameworkException {
+        List<UserStatus> deActivatedUsers = new ArrayList<>(0);
+        return deActivatedUsers;
     }
 
 }

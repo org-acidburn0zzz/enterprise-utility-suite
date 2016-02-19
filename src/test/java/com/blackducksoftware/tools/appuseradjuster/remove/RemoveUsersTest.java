@@ -1,11 +1,13 @@
 package com.blackducksoftware.tools.appuseradjuster.remove;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.SortedSet;
 
@@ -27,6 +29,15 @@ import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.remove.
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 public class RemoveUsersTest {
+    private static final String DEACTIVATED_USER_NAME1 = "f123456";
+
+    private static final String DEACTIVATED_USER_NAME2 = "f234567";
+
+    private static final String DEACTIVATED_USER_ID1 = DEACTIVATED_USER_NAME1; // Mock userManager creates userId ==
+                                                                               // userName
+
+    private static final String DEACTIVATED_USER_ID2 = DEACTIVATED_USER_NAME2;
+
     private static String APPLICATION_VERSION = "v100";
 
     private static String[] expectedOperationsRemoveFromGivenApps = {
@@ -61,6 +72,17 @@ public class RemoveUsersTest {
             "remove: 1000-App1-PROD-CURRENT: [f566884]",
             "remove: 1000-App2-PROD-CURRENT: [f566884]",
             "remove: 1000-App3-PROD-CURRENT: [f566884]"
+    };
+
+    private static String[] expectedOperationsRemoveFromAllAppsAndDeactivate = {
+            "remove: 0000-App0-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 0000-App1-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 0000-App2-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 0000-App3-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 1000-App0-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 1000-App1-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 1000-App2-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]",
+            "remove: 1000-App3-PROD-CURRENT: [" + DEACTIVATED_USER_NAME1 + ", " + DEACTIVATED_USER_NAME2 + "]"
     };
 
     private static String[] expectedOperationsNoRolesToRemove = {
@@ -160,6 +182,55 @@ public class RemoveUsersTest {
             System.out.println("\t" + op);
         }
         assertTrue(removeOperations.containsAll(Arrays.asList(expectedOperationsRemoveFromAllApps)));
+    }
+
+    @Test
+    public void testRemoveFromAllAppsAndDeactivate() throws Exception {
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        props.setProperty("deactivate.users.removed.from.all", "true");
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add(DEACTIVATED_USER_NAME1 + "; ");
+        inputLines.add(DEACTIVATED_USER_NAME2);
+        AppIdentifierUserListMap appIdentifierUserListMap = null;
+
+        appIdentifierUserListMap = new AppIdentifierUserListMap(
+                inputLines,
+                config.getUsernamePattern(),
+                config.getAppIdentifierPattern(), true);
+
+        config
+                .setAppIdentifierUserListMap(appIdentifierUserListMap);
+
+        AppUserAdjuster appUserAdjuster = new AppUserRemover(codeCenterServerWrapper);
+        AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
+                codeCenterServerWrapper, config, appUserAdjuster);
+        MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
+                config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
+
+        RemoveUsers adder = new RemoveUsers(config, codeCenterServerWrapper, adjuster);
+        adder.globAppIds(appIdentifierUserListMap);
+        adder.run(config.getNumThreads());
+
+        MockApplicationManager mockAppMgr = (MockApplicationManager) codeCenterServerWrapper.getApplicationManager();
+        SortedSet<String> removeOperations = mockAppMgr.getOperations();
+
+        System.out.println("(Mocked) operations:");
+        for (String op : removeOperations) {
+            System.out.println("\t" + op);
+        }
+        assertTrue(removeOperations.containsAll(Arrays.asList(expectedOperationsRemoveFromAllAppsAndDeactivate)));
+
+        MockCodeCenterUserManager mockUserManager = (MockCodeCenterUserManager) codeCenterServerWrapper.getUserManager();
+        Map<String, Boolean> activeStatusChangedUsers = mockUserManager.getActiveStatusChangedUsers();
+        assertEquals(2, activeStatusChangedUsers.size());
+        // In this test, userId == userName
+        assertEquals(Boolean.FALSE, activeStatusChangedUsers.get(DEACTIVATED_USER_ID1));
+        assertEquals(Boolean.FALSE, activeStatusChangedUsers.get(DEACTIVATED_USER_ID2));
     }
 
     @Test

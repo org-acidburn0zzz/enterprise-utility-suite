@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser;
@@ -78,6 +78,8 @@ public class AppIdentifierUserListMap implements Iterable<String> {
 
     private final boolean tolerateEmptyAppIdLists;
 
+    private final Set<String> barrenUsers = new HashSet<>(); // Users specified with zero appIds (= remove from all)
+
     /**
      * Construct from a given input file.
      *
@@ -122,17 +124,11 @@ public class AppIdentifierUserListMap implements Iterable<String> {
     }
 
     /**
-     * Return the set of barren (have an empty list of appIds associated with them) users.
+     * Return the set of barren (originally had an empty list of appIds associated with them) users.
      *
      * @return set of usernames (might be an empty set)
      */
     public Set<String> getBarrenUsers() {
-        Set<String> barrenUsers = new HashSet<>(usernameAppIdentifierListMap.size() / 2);
-        for (String username : usernameAppIdentifierListMap.keySet()) {
-            if (usernameAppIdentifierListMap.get(username).size() == 0) {
-                barrenUsers.add(username);
-            }
-        }
         return barrenUsers;
     }
 
@@ -233,6 +229,14 @@ public class AppIdentifierUserListMap implements Iterable<String> {
         }
         logger.info("Read AppIdentifiers for "
                 + usernameAppIdentifierListMap.size() + " unique Usernames");
+
+        // Derive the list of users for which input file specified no
+        // apps, meaning remove from ALL apps
+        for (String username : usernameAppIdentifierListMap.keySet()) {
+            if (usernameAppIdentifierListMap.get(username).size() == 0) {
+                barrenUsers.add(username);
+            }
+        }
     }
 
     /**
