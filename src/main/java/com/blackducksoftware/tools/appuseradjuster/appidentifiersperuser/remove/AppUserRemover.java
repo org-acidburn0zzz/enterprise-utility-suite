@@ -63,8 +63,6 @@ public class AppUserRemover implements AppUserAdjuster {
         logger.info("DeActivating users: " + usernames);
         List<UserStatus> deActivatedUsers = new ArrayList<>(usernames.size());
         for (String username : usernames) {
-            // TODO: If we can use usermanager earlier to get UserID, then the user will be cached
-            // and this lookup will be fast
             try {
                 logger.debug("Looking up userId for username: " + username);
                 CodeCenterUserPojo user = codeCenterServerWrapper.getUserManager().getUserByName(username);
