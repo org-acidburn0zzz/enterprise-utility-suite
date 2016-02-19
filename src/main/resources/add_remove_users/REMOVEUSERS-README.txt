@@ -49,7 +49,7 @@ Usage:
   # Note that it is the remove-from-all REQUEST that matters, not whether or
   # not a user ends up assigned to zero applications.
   # Default is false
-  deactivate.users.removed.from.all=true
+  deactivate.users.removed.from.all=false
 
   report.dir=.
   num.threads=2
