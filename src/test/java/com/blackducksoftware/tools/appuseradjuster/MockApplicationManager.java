@@ -19,10 +19,13 @@ import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
 import com.blackducksoftware.tools.connector.common.ApprovalStatus;
 
 public class MockApplicationManager implements IApplicationManager {
-    private SortedSet<String> operations;
+    private final SortedSet<String> operations;
 
-    public MockApplicationManager() {
+    private final boolean returnSomeApps;
+
+    public MockApplicationManager(boolean returnSomeApps) {
         operations = new TreeSet<>();
+        this.returnSomeApps = returnSomeApps;
     }
 
     public synchronized SortedSet<String> getOperations() {
@@ -31,7 +34,11 @@ public class MockApplicationManager implements IApplicationManager {
 
     @Override
     public List<ApplicationPojo> getApplications(int firstRow, int lastRow, String searchString) throws CommonFrameworkException {
+
         List<ApplicationPojo> apps = new ArrayList<>(4);
+        if (!returnSomeApps) {
+            return apps; // return none
+        }
 
         for (int i = 0; i < 4; i++) {
             String appName = searchString + "App" + i + "-PROD-CURRENT";

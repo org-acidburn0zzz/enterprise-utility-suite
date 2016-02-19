@@ -30,7 +30,7 @@ public class AppUserRemoverTest {
 
     @Test
     public void testAdjustAppUsers() throws CommonFrameworkException {
-        ICodeCenterServerWrapper cc = new MockCodeCenterServerWrapper(false);
+        ICodeCenterServerWrapper cc = new MockCodeCenterServerWrapper(false, true);
         AppUserRemover remover = new AppUserRemover(cc);
         Set<String> userNames = new HashSet<>();
         userNames.add("User1");

@@ -98,7 +98,7 @@ public class RemoveUsersTest {
 
     @Test
     public void testRemoveFromGivenApps() throws Exception {
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, true);
         Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
@@ -146,7 +146,7 @@ public class RemoveUsersTest {
 
     @Test
     public void testRemoveFromAllApps() throws Exception {
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, true);
         Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
@@ -186,7 +186,7 @@ public class RemoveUsersTest {
 
     @Test
     public void testRemoveFromAllAppsAndDeactivate() throws Exception {
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, true);
         Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
@@ -234,8 +234,57 @@ public class RemoveUsersTest {
     }
 
     @Test
+    public void testDeactivateUserWithNoRoles() throws Exception {
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, false);
+        Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
+                "test server", "test user", "test password",
+                APPLICATION_VERSION);
+        props.setProperty("deactivate.users.removed.from.all", "true");
+        RemoveUsersConfig config = new RemoveUsersConfig(props);
+
+        List<String> inputLines = new ArrayList<>();
+        inputLines.add(DEACTIVATED_USER_NAME1 + "; ");
+        inputLines.add(DEACTIVATED_USER_NAME2);
+        AppIdentifierUserListMap appIdentifierUserListMap = null;
+
+        appIdentifierUserListMap = new AppIdentifierUserListMap(
+                inputLines,
+                config.getUsernamePattern(),
+                config.getAppIdentifierPattern(), true);
+
+        config
+                .setAppIdentifierUserListMap(appIdentifierUserListMap);
+
+        AppUserAdjuster appUserAdjuster = new AppUserRemover(codeCenterServerWrapper);
+        AppListProcessorFactory appListProcessorFactory = new AppListProcessorFactoryAppIdentifiersPerUser(
+                codeCenterServerWrapper, config, appUserAdjuster);
+        MultiThreadedUserAdjuster adjuster = new MultiThreadedUserAdjusterAppIdentifiersPerUser(
+                config, codeCenterServerWrapper, appListProcessorFactory, appUserAdjuster);
+
+        RemoveUsers adder = new RemoveUsers(config, codeCenterServerWrapper, adjuster);
+        adder.globAppIds(appIdentifierUserListMap);
+        adder.run(config.getNumThreads());
+
+        MockApplicationManager mockAppMgr = (MockApplicationManager) codeCenterServerWrapper.getApplicationManager();
+        SortedSet<String> removeOperations = mockAppMgr.getOperations();
+
+        System.out.println("(Mocked) operations:");
+        for (String op : removeOperations) {
+            System.out.println("\t" + op);
+        }
+        assertEquals(0, removeOperations.size());
+
+        MockCodeCenterUserManager mockUserManager = (MockCodeCenterUserManager) codeCenterServerWrapper.getUserManager();
+        Map<String, Boolean> activeStatusChangedUsers = mockUserManager.getActiveStatusChangedUsers();
+        assertEquals(2, activeStatusChangedUsers.size());
+        // In this test, userId == userName
+        assertEquals(Boolean.FALSE, activeStatusChangedUsers.get(DEACTIVATED_USER_ID1));
+        assertEquals(Boolean.FALSE, activeStatusChangedUsers.get(DEACTIVATED_USER_ID2));
+    }
+
+    @Test
     public void testUserHasNoRolesOnMatchingApps() throws Exception {
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, true);
 
         MockCodeCenterUserManager mockUserMgr = (MockCodeCenterUserManager) codeCenterServerWrapper.getUserManager();
         mockUserMgr.setReturnRoles(false); // tell mock to return no roles
@@ -329,7 +378,7 @@ public class RemoveUsersTest {
 
     @Test
     public void testEmptyInputFile() throws Exception {
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, true);
         Properties props = TestUtils.configUserCreatorForAppIdentifiersPerUserMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);

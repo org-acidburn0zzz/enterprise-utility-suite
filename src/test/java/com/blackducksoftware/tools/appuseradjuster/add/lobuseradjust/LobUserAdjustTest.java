@@ -115,7 +115,7 @@ public class LobUserAdjustTest {
         MultiThreadedUserAdjuster lobUserAdjuster = new MultiThreadedUserAdjusterLob(
                 config, appListProcessorFactory);
         userAdder.setMultiThreadedUserAdjuster(lobUserAdjuster);
-        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper(false);
+        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper(false, true);
         userAdder.run(mockCcServerWrapper, numThreads);
 
         // appList = appListProcessor.getApplications(); // we've already got it
@@ -154,7 +154,7 @@ public class LobUserAdjustTest {
         MultiThreadedUserAdjuster lobUserAdjuster = new MultiThreadedUserAdjusterLob(
                 config, appListProcessorFactory);
         userAdder.setMultiThreadedUserAdjuster(lobUserAdjuster);
-        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper(false);
+        ICodeCenterServerWrapper mockCcServerWrapper = new MockCodeCenterServerWrapper(false, true);
         try {
             userAdder.run(mockCcServerWrapper, numThreads);
             fail("Should have thrown exception");

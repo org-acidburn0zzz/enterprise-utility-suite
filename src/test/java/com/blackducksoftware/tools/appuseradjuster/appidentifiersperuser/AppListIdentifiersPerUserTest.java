@@ -91,7 +91,7 @@ public class AppListIdentifiersPerUserTest {
     @Test
     public void testUsersAlreadyExist() throws Exception {
 
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(true, true);
         Properties props = TestUtils.configUserCreatorForLobAdjustMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
@@ -146,7 +146,7 @@ public class AppListIdentifiersPerUserTest {
     @Test
     public void testUsersDoNotExist() throws Exception {
 
-        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(false);
+        ICodeCenterServerWrapper codeCenterServerWrapper = new MockCodeCenterServerWrapper(false, true);
         Properties props = TestUtils.configUserCreatorForLobAdjustMode("role2",
                 "test server", "test user", "test password",
                 APPLICATION_VERSION);
