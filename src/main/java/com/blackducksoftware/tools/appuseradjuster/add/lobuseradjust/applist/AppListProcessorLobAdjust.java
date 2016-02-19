@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist;
@@ -94,7 +94,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
                 logger.warn("Application " + app.getName()
                         + " has no LOB attribute value");
                 report.addRecord(app.getName(), app.getVersion(), false, null,
-                        null, null, "This application has no LOB value");
+                        null, null, null, "This application has no LOB value");
             }
             return; // This app does not belong to any LOB
         }
@@ -168,7 +168,7 @@ public class AppListProcessorLobAdjust implements AppListProcessor {
         logger.debug("Adding record to report for app " + app.getName());
         List<String> usersAdded = new ArrayList<>(usersToAdd.getUserSet());
         report.addRecord(app.getName(), app.getVersion(), true, null,
-                usersAdded, usersRemoved, null);
+                usersAdded, usersRemoved, null, null);
         logger.debug("Done adding record to report for app " + app.getName());
     }
 

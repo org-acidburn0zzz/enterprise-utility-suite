@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust;
@@ -101,7 +101,7 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
 
         logger.info("Creating any users that don't already exist.");
         List<String> usersCreated = UserUtils.createOrActivateUsers(codeCenterServerWrapper, newUsers.getUserSet(), config.getNewUserPassword());
-        report.addRecord("<all>", "", true, usersCreated, null, null, null);
+        report.addRecord("<all>", "", true, usersCreated, null, null, null, null);
 
         logger.info("Fetching applications from Code Center");
         AppListProcessor fullAppListGetter = appListProcessorFactory
@@ -136,7 +136,7 @@ public class MultiThreadedUserAdjusterLob implements MultiThreadedUserAdjuster {
         logger.info("Done waiting for threads.");
 
         if (threadExceptionThrown) {
-            report.addRecord("<all>", "", false, null, null, null,
+            report.addRecord("<all>", "", false, null, null, null, null,
                     THREAD_FAILED_ERROR_MESSAGE);
         }
         report.write();

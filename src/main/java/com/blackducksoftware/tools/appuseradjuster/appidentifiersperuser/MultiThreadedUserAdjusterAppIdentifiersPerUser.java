@@ -95,7 +95,7 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
 
         List<String> usersCreated = appUserAdjuster.preProcessUsers(newUsers.getUserSet());
 
-        report.addRecord("<all>", "", true, usersCreated, null, null, null);
+        report.addRecord("<all>", "", true, usersCreated, null, null, null, null);
         logger.info("Fetching applications from Code Center");
 
         AppListProcessor fullAppListGetter = appListProcessorFactory
@@ -105,51 +105,64 @@ public class MultiThreadedUserAdjusterAppIdentifiersPerUser implements
         if ((fullAppList == null) || (fullAppList.size() == 0)) {
             logger.warn("No applications found that match the AppIdentifiers specified in the input file");
         } else {
-
-            ListDistributor distrib = new ListDistributor(numThreads,
-                    fullAppList.size());
-
-            // Launch a bunch of threads to process apps
-            List<Thread> startedThreads = new ArrayList<Thread>(
-                    distrib.getNumThreads());
-            for (int i = 0; i < distrib.getNumThreads(); i++) {
-                int fromIndex = distrib.getFromListIndex(i);
-                int toIndex = distrib.getToListIndex(i);
-                logger.info("partialAppList indices: " + fromIndex + ", " + toIndex);
-                List<ApplicationPojo> partialAppList = fullAppList.subList(fromIndex,
-                        toIndex);
-                logger.info("partialAppList.size(): " + partialAppList.size());
-
-                AppProcessorThread threadWorker = new AppProcessorThread(
-                        appListProcessorFactory, partialAppList, newUsers, report);
-
-                Thread t = new Thread(threadWorker, "AppProcessorThread" + i);
-                t.setUncaughtExceptionHandler(new WorkerThreadExceptionHandler());
-                logger.info("Starting thread " + t.getName());
-                t.start();
-                startedThreads.add(t);
-            }
-
-            // Now wait for all threads to finish
-            for (Thread startedThread : startedThreads) {
-                logger.info("Waiting for thread " + startedThread.getName());
-                startedThread.join();
-            }
-            logger.info("Done waiting for threads.");
-
-            if (threadExceptionThrown) {
-                report.addRecord("<all>", "", false, null, null, null,
-                        THREAD_FAILED_ERROR_MESSAGE);
-            }
+            adjustApps(numThreads, fullAppList);
         }
 
-        logger.info("Deactivating users");
-        List<UserStatus> usersDeactivated = appUserAdjuster.deActivateUsers(config.getAppIdentifierUserListMap().getBarrenUsers());
-        // TODO: Get results into report
+        List<UserStatus> usersDeActivated = appUserAdjuster.deActivateUsers(config.getAppIdentifierUserListMap().getBarrenUsers());
+        addDeActivatedUsersToReport(report, usersDeActivated);
 
         report.write();
         if (threadExceptionThrown) {
             throw new Exception(THREAD_FAILED_ERROR_MESSAGE);
+        }
+    }
+
+    private void addDeActivatedUsersToReport(UserAdjustmentReport report, List<UserStatus> usersDeActivated) throws Exception {
+        for (UserStatus userDeActivated : usersDeActivated) {
+            if (userDeActivated.isOk()) {
+                report.addRecord(null, null, true, null, null, null, userDeActivated.getUsername(), null);
+            } else {
+                report.addRecord(null, null, false, null, null, null, userDeActivated.getUsername(), userDeActivated.getMessage());
+            }
+        }
+
+    }
+
+    private void adjustApps(int numThreads, List<ApplicationPojo> fullAppList) throws InterruptedException, Exception {
+        ListDistributor distrib = new ListDistributor(numThreads,
+                fullAppList.size());
+
+        // Launch a bunch of threads to process apps
+        List<Thread> startedThreads = new ArrayList<Thread>(
+                distrib.getNumThreads());
+        for (int i = 0; i < distrib.getNumThreads(); i++) {
+            int fromIndex = distrib.getFromListIndex(i);
+            int toIndex = distrib.getToListIndex(i);
+            logger.info("partialAppList indices: " + fromIndex + ", " + toIndex);
+            List<ApplicationPojo> partialAppList = fullAppList.subList(fromIndex,
+                    toIndex);
+            logger.info("partialAppList.size(): " + partialAppList.size());
+
+            AppProcessorThread threadWorker = new AppProcessorThread(
+                    appListProcessorFactory, partialAppList, newUsers, report);
+
+            Thread t = new Thread(threadWorker, "AppProcessorThread" + i);
+            t.setUncaughtExceptionHandler(new WorkerThreadExceptionHandler());
+            logger.info("Starting thread " + t.getName());
+            t.start();
+            startedThreads.add(t);
+        }
+
+        // Now wait for all threads to finish
+        for (Thread startedThread : startedThreads) {
+            logger.info("Waiting for thread " + startedThread.getName());
+            startedThread.join();
+        }
+        logger.info("Done waiting for threads.");
+
+        if (threadExceptionThrown) {
+            report.addRecord("<all>", null, false, null, null, null, null,
+                    THREAD_FAILED_ERROR_MESSAGE);
         }
     }
 

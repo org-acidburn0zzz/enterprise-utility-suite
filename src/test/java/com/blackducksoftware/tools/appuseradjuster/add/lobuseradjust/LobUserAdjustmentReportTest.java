@@ -66,13 +66,13 @@ public class LobUserAdjustmentReportTest {
         createdUserList.add("userCreated2");
         report.addRecord("testAppName1", "testAppVersion1", true,
                 createdUserList, listify("addedUser1"),
-                userStatusListify("removedUser1"), "");
+                userStatusListify("removedUser1"), null, null);
 
         List<UserStatus> removedUserList = new ArrayList<UserStatus>();
         removedUserList.add(new UserStatus("removedUser1", true, null));
         removedUserList.add(new UserStatus("removedUser2", true, null));
         report.addRecord("testAppName2", "testAppVersion2", false, null,
-                listify("addedUser1"), removedUserList, "test message");
+                listify("addedUser1"), removedUserList, null, "test message");
 
         DataTable table = report.getDataTable();
         DataSetWriter writer = new DataSetWriterStdOut();
@@ -117,14 +117,14 @@ public class LobUserAdjustmentReportTest {
         createdUserList.add("userCreated2");
         report.addRecord("testAppName1", "testAppVersion1", true,
                 createdUserList, listify("addedUser1"),
-                userStatusListify("removedUser1"), "");
+                userStatusListify("removedUser1"), "", "");
 
         List<UserStatus> removedUserList = new ArrayList<UserStatus>();
         removedUserList
                 .add(new UserStatus("removedUser1", false, "testMessage"));
         removedUserList.add(new UserStatus("removedUser2", true, null));
         report.addRecord("testAppName2", "testAppVersion2", false, null,
-                listify("addedUser1"), removedUserList, "test message");
+                listify("addedUser1"), removedUserList, null, "test message");
 
         DataTable table = report.getDataTable();
         DataSetWriter writer = new DataSetWriterStdOut();

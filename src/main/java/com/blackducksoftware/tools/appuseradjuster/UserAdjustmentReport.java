@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.appuseradjuster;
@@ -67,6 +67,8 @@ public class UserAdjustmentReport {
                 "Users added to app"));
         fields.add(new FieldDef("usersRemoved", FieldType.STRING,
                 "Users removed from app"));
+        fields.add(new FieldDef("usersDeActivated", FieldType.STRING,
+                "User accounts de-activated"));
         fields.add(new FieldDef("message", FieldType.STRING, "Error message"));
 
         recordDef = new RecordDef(fields);
@@ -90,7 +92,7 @@ public class UserAdjustmentReport {
      */
     public synchronized void addRecord(String appName, String appVersion,
             boolean ok, List<String> usersCreated, List<String> usersAdded,
-            List<UserStatus> usersRemoved, String message) throws Exception {
+            List<UserStatus> usersRemoved, String userDeActivated, String message) throws Exception {
         // Add a record to the dataset
         Record record = new Record(recordDef);
         if (ok) {
@@ -105,6 +107,9 @@ public class UserAdjustmentReport {
         }
         if (appVersion == null) {
             appVersion = "";
+        }
+        if (userDeActivated == null) {
+            userDeActivated = "";
         }
         if (message == null) {
             message = "";
@@ -125,7 +130,7 @@ public class UserAdjustmentReport {
         }
         String removedUserListString = successfulList(usersRemoved);
         record.setFieldValue("usersRemoved", removedUserListString);
-
+        record.setFieldValue("usersDeActivated", userDeActivated);
         record.setFieldValue("message", message);
         dataTable.add(record);
     }

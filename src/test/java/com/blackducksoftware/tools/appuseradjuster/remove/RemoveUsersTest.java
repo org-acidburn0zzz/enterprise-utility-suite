@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -26,6 +27,10 @@ import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppList
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.MultiThreadedUserAdjusterAppIdentifiersPerUser;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.remove.AppUserRemover;
+import com.blackducksoftware.tools.commonframework.standard.datatable.DataTable;
+import com.blackducksoftware.tools.commonframework.standard.datatable.Record;
+import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
+import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStdOut;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 
 public class RemoveUsersTest {
@@ -280,6 +285,21 @@ public class RemoveUsersTest {
         // In this test, userId == userName
         assertEquals(Boolean.FALSE, activeStatusChangedUsers.get(DEACTIVATED_USER_ID1));
         assertEquals(Boolean.FALSE, activeStatusChangedUsers.get(DEACTIVATED_USER_ID2));
+
+        DataTable report = adjuster.getReport();
+        DataSetWriter writer = new DataSetWriterStdOut();
+        writer.write(report);
+
+        Iterator<Record> iter = report.iterator();
+        iter.next(); // Get header
+        Record record = iter.next(); // Get first data row
+        assertEquals(DEACTIVATED_USER_ID1, record.getStringFieldValue("usersDeActivated"));
+        assertEquals("", record.getStringFieldValue("status"));
+        assertEquals("", record.getStringFieldValue("message"));
+        record = iter.next(); // Get second data row
+        assertEquals(DEACTIVATED_USER_ID2, record.getStringFieldValue("usersDeActivated"));
+        assertEquals("", record.getStringFieldValue("status"));
+        assertEquals("", record.getStringFieldValue("message"));
     }
 
     @Test

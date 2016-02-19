@@ -56,27 +56,27 @@ public class AppListIdentifiersPerUserTest {
     };
 
     private static String[] expectedReport = {
-            "|<all>|||||||",
-            "|444-App0-PROD-CURRENT|v100|||f444555|||",
-            "|444-App2-PROD-CURRENT|v100|||f444555|||",
-            "|444-App1-PROD-CURRENT|v100|||f444555|||",
-            "|444-App3-PROD-CURRENT|v100|||f444555|||",
-            "|222-App0-PROD-CURRENT|v100|||f111222|||",
-            "|222-App1-PROD-CURRENT|v100|||f111222|||",
-            "|222-App2-PROD-CURRENT|v100|||f111222|||",
-            "|222-App3-PROD-CURRENT|v100|||f111222|||",
-            "|111-App0-PROD-CURRENT|v100|||f566884, a000000|||",
-            "|111-App1-PROD-CURRENT|v100|||f566884, a000000|||",
-            "|111-App2-PROD-CURRENT|v100|||f566884, a000000|||",
-            "|111-App3-PROD-CURRENT|v100|||f566884, a000000|||",
-            "|333-App2-PROD-CURRENT|v100|||f111222|||",
-            "|333-App3-PROD-CURRENT|v100|||f111222|||",
-            "|555-App0-PROD-CURRENT|v100|||f444555|||",
-            "|555-App1-PROD-CURRENT|v100|||f444555|||",
-            "|555-App2-PROD-CURRENT|v100|||f444555|||",
-            "|555-App3-PROD-CURRENT|v100|||f444555|||",
-            "|333-App0-PROD-CURRENT|v100|||f111222|||",
-            "|333-App1-PROD-CURRENT|v100|||f111222|||"
+            "|<all>||||||||",
+            "|444-App0-PROD-CURRENT|v100|||f444555||||",
+            "|444-App2-PROD-CURRENT|v100|||f444555||||",
+            "|444-App1-PROD-CURRENT|v100|||f444555||||",
+            "|444-App3-PROD-CURRENT|v100|||f444555||||",
+            "|222-App0-PROD-CURRENT|v100|||f111222||||",
+            "|222-App1-PROD-CURRENT|v100|||f111222||||",
+            "|222-App2-PROD-CURRENT|v100|||f111222||||",
+            "|222-App3-PROD-CURRENT|v100|||f111222||||",
+            "|111-App0-PROD-CURRENT|v100|||f566884, a000000||||",
+            "|111-App1-PROD-CURRENT|v100|||f566884, a000000||||",
+            "|111-App2-PROD-CURRENT|v100|||f566884, a000000||||",
+            "|111-App3-PROD-CURRENT|v100|||f566884, a000000||||",
+            "|333-App2-PROD-CURRENT|v100|||f111222||||",
+            "|333-App3-PROD-CURRENT|v100|||f111222||||",
+            "|555-App0-PROD-CURRENT|v100|||f444555||||",
+            "|555-App1-PROD-CURRENT|v100|||f444555||||",
+            "|555-App2-PROD-CURRENT|v100|||f444555||||",
+            "|555-App3-PROD-CURRENT|v100|||f444555||||",
+            "|333-App0-PROD-CURRENT|v100|||f111222||||",
+            "|333-App1-PROD-CURRENT|v100|||f111222||||"
     };
 
     @BeforeClass
@@ -186,7 +186,7 @@ public class AppListIdentifiersPerUserTest {
         writer.write(report);
 
         assertEquals(21, report.size());
-        assertTrue(reportStrings.contains("|<all>|||a000000, f566884, f111222, f444555||||"));
+        assertTrue(reportStrings.contains("|<all>|||a000000, f566884, f111222, f444555|||||"));
         MockCodeCenterUserManager mockUserMgr = (MockCodeCenterUserManager) codeCenterServerWrapper.getUserManager();
         List<String> createdUsers = mockUserMgr.getCreatedUsers();
         assertTrue(createdUsers.contains("a000000"));
