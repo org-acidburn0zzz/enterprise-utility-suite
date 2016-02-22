@@ -18,22 +18,21 @@
 
 package com.blackducksoftware.tools.teamsync;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.application.data.ApplicationNameVersionToken;
-import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
-import com.blackducksoftware.sdk.codecenter.role.data.RoleNameOrIdToken;
-import com.blackducksoftware.sdk.codecenter.user.data.UserNameOrIdToken;
 import com.blackducksoftware.tools.common.EntAppName;
 import com.blackducksoftware.tools.common.cc.AppIdentifierApps;
 import com.blackducksoftware.tools.common.cc.AppList;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
 
 /**
  * For each application in the given list, figure out what team it should have
@@ -47,7 +46,7 @@ public class TeamSyncProcessor {
     private final Logger log = LoggerFactory.getLogger(this.getClass()
             .getName());
 
-    private final CodeCenterServerWrapper ccServerWrapper;
+    private final ICodeCenterServerWrapper ccServerWrapper;
 
     private final TeamSyncConfig config;
 
@@ -55,7 +54,7 @@ public class TeamSyncProcessor {
 
     private final Map<String, AppIdentifierApps> teamCache = new HashMap<>();
 
-    public TeamSyncProcessor(CodeCenterServerWrapper ccServerWrapper,
+    public TeamSyncProcessor(ICodeCenterServerWrapper ccServerWrapper,
             TeamSyncConfig config) {
         this.ccServerWrapper = ccServerWrapper;
         this.config = config;
@@ -116,31 +115,40 @@ public class TeamSyncProcessor {
      * @throws Exception
      */
     private void updateTeam(AppTeam appTeam,
-            List<ApplicationRoleAssignment> newTeam) throws Exception {
-        for (ApplicationRoleAssignment roleAssignment : newTeam) {
+            List<ApplicationUserPojo> newTeam) throws Exception {
+        for (ApplicationUserPojo roleAssignment : newTeam) {
 
             if (appTeam.containsRoleAssignment(roleAssignment)) {
-                log.info("Skipping assignment of "
-                        + roleAssignment.getUserNameToken().getName()
+                log.info("Skipping assignment of user "
+                        + roleAssignment.getUserName()
                         + "; this user/role is already assigned.");
                 continue;
             }
 
             log.info("Adding user "
-                    + roleAssignment.getUserNameToken().getName() + " / role "
-                    + roleAssignment.getRoleNameToken().getName() + " to app "
+                    + roleAssignment.getUserName() + " / role "
+                    + roleAssignment.getRoleName() + " to app "
                     + appTeam.getAppName());
-            List<UserNameOrIdToken> userTokens = new ArrayList<UserNameOrIdToken>(
-                    1);
-            userTokens.add(roleAssignment.getUserIdToken());
-            List<RoleNameOrIdToken> roleTokens = new ArrayList<RoleNameOrIdToken>(
-                    1);
-            roleTokens.add(roleAssignment.getRoleIdToken());
-            ApplicationNameVersionToken appToken = new ApplicationNameVersionToken();
-            appToken.setName(appTeam.getAppName());
-            appToken.setVersion(config.getAppVersion());
-            ccServerWrapper.getInternalApiWrapper().getApplicationApi()
-                    .addUserToApplicationTeam(appToken, userTokens, roleTokens);
+
+            // TODO remove:
+            // List<UserNameOrIdToken> userTokens = new ArrayList<UserNameOrIdToken>(
+            // 1);
+            // userTokens.add(roleAssignment.getUserIdToken());
+            // List<RoleNameOrIdToken> roleTokens = new ArrayList<RoleNameOrIdToken>(
+            // 1);
+            // roleTokens.add(roleAssignment.getRoleIdToken());
+            // ApplicationNameVersionToken appToken = new ApplicationNameVersionToken();
+            // appToken.setName(appTeam.getAppName());
+            // appToken.setVersion(config.getAppVersion());
+            // ccServerWrapper.getInternalApiWrapper().getApplicationApi()
+            // .addUserToApplicationTeam(appToken, userTokens, roleTokens);
+            ApplicationPojo app = ccServerWrapper.getApplicationManager().getApplicationByNameVersion(appTeam.getAppName(), config.getAppVersion());
+            Set<String> userNames = new HashSet<>();
+            userNames.add(roleAssignment.getUserName());
+            Set<String> roleNames = new HashSet<>();
+            roleNames.add(roleAssignment.getRoleName());
+            ccServerWrapper.getApplicationManager().addUsersByNameToApplicationTeam(app.getId(), userNames, roleNames, false);
+            // TODO: Would be More efficient to collect them and make one call to manager
         }
     }
 }

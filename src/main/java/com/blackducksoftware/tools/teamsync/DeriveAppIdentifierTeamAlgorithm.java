@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 package com.blackducksoftware.tools.teamsync;
 
@@ -23,7 +23,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
 
 /**
  * Derives an appIdentifier's team, given the set of teams from all its
@@ -34,17 +34,17 @@ import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
  */
 public class DeriveAppIdentifierTeamAlgorithm {
     private static final Logger log = LoggerFactory
-	    .getLogger(DeriveAppIdentifierTeamAlgorithm.class.getName());
+            .getLogger(DeriveAppIdentifierTeamAlgorithm.class.getName());
 
-    public static List<ApplicationRoleAssignment> deriveTeam(
-	    List<AppTeam> appTeams) {
-	List<ApplicationRoleAssignment> appIdentifierTeam = new ArrayList<ApplicationRoleAssignment>();
-	for (AppTeam appTeam : appTeams) {
-	    addTo(appIdentifierTeam, appTeam.getTeam());
+    public static List<ApplicationUserPojo> deriveTeam(
+            List<AppTeam> appTeams) {
+        List<ApplicationUserPojo> appIdentifierTeam = new ArrayList<ApplicationUserPojo>();
+        for (AppTeam appTeam : appTeams) {
+            addTo(appIdentifierTeam, appTeam.getTeam());
 
-	}
-	log.info("AppIdentifier Team size: " + appIdentifierTeam.size());
-	return appIdentifierTeam;
+        }
+        log.info("AppIdentifier Team size: " + appIdentifierTeam.size());
+        return appIdentifierTeam;
     }
 
     /**
@@ -53,13 +53,13 @@ public class DeriveAppIdentifierTeamAlgorithm {
      * @param combinedList
      * @param listToAdd
      */
-    private static void addTo(List<ApplicationRoleAssignment> combinedList,
-	    List<ApplicationRoleAssignment> listToAdd) {
-	for (ApplicationRoleAssignment assignment : listToAdd) {
-	    if (!contains(combinedList, assignment)) {
-		combinedList.add(assignment);
-	    }
-	}
+    private static void addTo(List<ApplicationUserPojo> combinedList,
+            List<ApplicationUserPojo> listToAdd) {
+        for (ApplicationUserPojo assignment : listToAdd) {
+            if (!contains(combinedList, assignment)) {
+                combinedList.add(assignment);
+            }
+        }
     }
 
     /**
@@ -71,15 +71,15 @@ public class DeriveAppIdentifierTeamAlgorithm {
      * @return
      */
     private static boolean contains(
-	    List<ApplicationRoleAssignment> assignmentList,
-	    ApplicationRoleAssignment assignment) {
-	for (ApplicationRoleAssignment assignmentFromList : assignmentList) {
-	    if (assignmentFromList.getUserNameToken().getName()
-		    .equals(assignment.getUserNameToken().getName())) {
-		return true;
-	    }
-	}
-	return false;
+            List<ApplicationUserPojo> assignmentList,
+            ApplicationUserPojo assignment) {
+        for (ApplicationUserPojo assignmentFromList : assignmentList) {
+            if (assignmentFromList.getUserId()
+                    .equals(assignment.getUserId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

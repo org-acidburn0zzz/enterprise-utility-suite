@@ -8,23 +8,23 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.teamsync;
 
 import java.util.List;
 
-import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
 import com.blackducksoftware.tools.common.EntAppName;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
 
 /**
- * An application team (the list of ApplicationRoleAssignments for the
+ * An application team (the list of ApplicationUserPojos for the
  * application).
  *
  * @author sbillings
@@ -32,61 +32,61 @@ import com.blackducksoftware.tools.common.EntAppName;
  */
 public class AppTeam {
     private final String appName;
+
     private final String appIdentifier;
-    private final List<ApplicationRoleAssignment> team;
 
-    public AppTeam(List<ApplicationRoleAssignment> team,
-	    EntAppName newAppNameObject) throws Exception {
+    private final List<ApplicationUserPojo> team;
 
-	appName = newAppNameObject.getAppName();
-	appIdentifier = newAppNameObject.getAppIdentifier();
+    public AppTeam(List<ApplicationUserPojo> team,
+            EntAppName newAppNameObject) throws Exception {
 
-	this.team = team;
+        appName = newAppNameObject.getAppName();
+        appIdentifier = newAppNameObject.getAppIdentifier();
+
+        this.team = team;
     }
 
     public String getAppName() {
-	return appName;
+        return appName;
     }
 
     public String getAppIdentifier() {
-	return appIdentifier;
+        return appIdentifier;
     }
 
-    public List<ApplicationRoleAssignment> getTeam() {
-	return team;
+    public List<ApplicationUserPojo> getTeam() {
+        return team;
     }
 
     public int getTeamSize() {
-	return team.size();
+        return team.size();
     }
 
     /**
      * Returns true if this team already contains the given
-     * ApplicationRoleAssignment.
-     * 
+     * ApplicationUserPojo.
+     *
      * @param newRoleAssignment
      * @return
      */
     public boolean containsRoleAssignment(
-	    ApplicationRoleAssignment newRoleAssignment) {
-	for (ApplicationRoleAssignment existingRoleAssignment : team) {
-	    if (newRoleAssignment.getUserIdToken().getId()
-		    .equals(existingRoleAssignment.getUserIdToken().getId())) {
-		if (newRoleAssignment
-			.getRoleIdToken()
-			.getId()
-			.equals(existingRoleAssignment.getRoleIdToken().getId())) {
-		    return true;
-		}
-	    }
-	}
-	return false;
+            ApplicationUserPojo newRoleAssignment) {
+        for (ApplicationUserPojo existingRoleAssignment : team) {
+            if (newRoleAssignment.getUserId()
+                    .equals(existingRoleAssignment.getUserId())) {
+                if (newRoleAssignment.getRoleId()
+                        .equals(existingRoleAssignment.getRoleId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public String toString() {
-	return "AppTeam [appName=" + appName + ", appIdentifier="
-		+ appIdentifier + ", team size=" + team.size() + "]";
+        return "AppTeam [appName=" + appName + ", appIdentifier="
+                + appIdentifier + ", team size=" + team.size() + "]";
     }
 
 }

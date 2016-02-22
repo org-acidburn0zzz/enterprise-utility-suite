@@ -24,11 +24,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.blackducksoftware.sdk.codecenter.role.data.ApplicationRoleAssignment;
 import com.blackducksoftware.tools.common.EntAppName;
 import com.blackducksoftware.tools.common.EntAppNameConfigurationManager;
-import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
+import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
 import com.blackducksoftware.tools.teamsync.AppTeam;
 import com.blackducksoftware.tools.teamsync.CodeCenterUtils;
 import com.blackducksoftware.tools.teamsync.DeriveAppIdentifierTeamAlgorithm;
@@ -50,7 +50,7 @@ public class AppIdentifierApps {
     // existing apps
 
     public AppIdentifierApps(EntAppNameConfigurationManager config,
-            CodeCenterServerWrapper ccServerWrapper, AppTeam newAppTeam)
+            ICodeCenterServerWrapper ccServerWrapper, AppTeam newAppTeam)
             throws Exception {
         appIdentifier = newAppTeam.getAppIdentifier();
         List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, appIdentifier);
@@ -85,7 +85,7 @@ public class AppIdentifierApps {
 
     /**
      * Get the appIdentifier.
-     * 
+     *
      * @return
      */
     public String getAppIdentifier() {
@@ -97,7 +97,7 @@ public class AppIdentifierApps {
      *
      * @return
      */
-    public List<ApplicationRoleAssignment> getTeam() {
+    public List<ApplicationUserPojo> getTeam() {
         return DeriveAppIdentifierTeamAlgorithm.deriveTeam(appTeams);
     }
 
