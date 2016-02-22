@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.common.cc;
@@ -43,6 +43,8 @@ public class AppIdentifierApps {
     private final Logger log = LoggerFactory.getLogger(this.getClass()
             .getName());
 
+    private final String appIdentifier;
+
     private final List<AppTeam> appTeams; // The AppIdentifier's list of
 
     // existing apps
@@ -50,21 +52,20 @@ public class AppIdentifierApps {
     public AppIdentifierApps(EntAppNameConfigurationManager config,
             CodeCenterServerWrapper ccServerWrapper, AppTeam newAppTeam)
             throws Exception {
-
-        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, newAppTeam.getAppIdentifier());
+        appIdentifier = newAppTeam.getAppIdentifier();
+        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, appIdentifier);
 
         appTeams = new ArrayList<>(apps.size());
         for (ApplicationPojo app : apps) {
 
             if (!app.getName()
-                    .startsWith(
-                            newAppTeam.getAppIdentifier()
-                                    + config.getSeparatorString())) {
-                log.info("AppIdentifier: " + newAppTeam.getAppIdentifier()
+                    .startsWith(appIdentifier
+                            + config.getSeparatorString())) {
+                log.info("AppIdentifier: " + appIdentifier
                         + ": skipping false match on app " + app.getName());
                 continue;
             }
-            log.info("AppIdentifier: " + newAppTeam.getAppIdentifier()
+            log.info("AppIdentifier: " + appIdentifier
                     + ": matching app " + app.getName());
             EntAppName newAppNameObject = new EntAppName(config, app.getName());
 
@@ -80,6 +81,15 @@ public class AppIdentifierApps {
                     newAppNameObject);
             appTeams.add(appTeam);
         }
+    }
+
+    /**
+     * Get the appIdentifier.
+     * 
+     * @return
+     */
+    public String getAppIdentifier() {
+        return appIdentifier;
     }
 
     /**
