@@ -16,9 +16,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.MockApplicationManager;
-import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
-import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterUserManager;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.lobuseradjust.applist.AppListProcessorFactory;
@@ -32,6 +29,9 @@ import com.blackducksoftware.tools.commonframework.standard.datatable.Record;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriter;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStdOut;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.mocks.MockApplicationManager;
+import com.blackducksoftware.tools.mocks.MockCodeCenterServerWrapper;
+import com.blackducksoftware.tools.mocks.MockCodeCenterUserManager;
 
 public class RemoveUsersTest {
     private static final String DEACTIVATED_USER_NAME1 = "f123456";

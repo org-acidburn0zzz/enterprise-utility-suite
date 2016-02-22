@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.mocks;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +22,8 @@ public class MockApplicationManager implements IApplicationManager {
     private final SortedSet<String> operations;
 
     private final boolean returnSomeApps;
+
+    private int numberOfUsersToReturn = 1;
 
     public MockApplicationManager(boolean returnSomeApps) {
         operations = new TreeSet<>();
@@ -58,8 +60,10 @@ public class MockApplicationManager implements IApplicationManager {
 
     @Override
     public ApplicationPojo getApplicationByNameVersion(String name, String version) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+        ApplicationPojo app = new ApplicationPojo(name, name, version,
+                null,
+                ApprovalStatus.APPROVED, false, "u000000");
+        return app;
     }
 
     @Override
@@ -83,8 +87,17 @@ public class MockApplicationManager implements IApplicationManager {
 
     @Override
     public List<ApplicationUserPojo> getAllUsersAssignedToApplication(String appId) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+        List<ApplicationUserPojo> roles = new ArrayList<>();
+
+        for (int i = 0; i < numberOfUsersToReturn; i++) {
+            String username = "u00000" + i;
+            ApplicationUserPojo role = new ApplicationUserPojo("testAppName", "Unspecified", appId,
+                    username, username, "Application Developer", "appDev");
+            roles.add(role);
+        }
+
+        numberOfUsersToReturn++;
+        return roles;
     }
 
     @Override

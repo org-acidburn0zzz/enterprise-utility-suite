@@ -13,9 +13,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.MockApplicationManager;
-import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
-import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterUserManager;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
 import com.blackducksoftware.tools.appuseradjuster.add.AddUser;
@@ -28,6 +25,9 @@ import com.blackducksoftware.tools.commonframework.standard.datatable.writer.Dat
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStdOut;
 import com.blackducksoftware.tools.commonframework.standard.datatable.writer.DataSetWriterStringList;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.mocks.MockApplicationManager;
+import com.blackducksoftware.tools.mocks.MockCodeCenterServerWrapper;
+import com.blackducksoftware.tools.mocks.MockCodeCenterUserManager;
 
 public class AppListIdentifiersPerUserTest {
     private static String APPLICATION_VERSION = "v100";

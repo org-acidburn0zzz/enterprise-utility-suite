@@ -120,7 +120,7 @@ public class TeamSyncProcessor {
 
             if (appTeam.containsRoleAssignment(roleAssignment)) {
                 log.info("Skipping assignment of user "
-                        + roleAssignment.getUserName()
+                        + roleAssignment.getUserName() + " to app " + appTeam.getAppName()
                         + "; this user/role is already assigned.");
                 continue;
             }

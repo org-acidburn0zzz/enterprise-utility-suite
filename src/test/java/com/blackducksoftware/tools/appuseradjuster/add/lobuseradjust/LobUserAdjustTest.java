@@ -31,7 +31,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.MockUserAdder;
 import com.blackducksoftware.tools.appuseradjuster.MultiThreadedUserAdjuster;
 import com.blackducksoftware.tools.appuseradjuster.TestUtils;
@@ -48,6 +47,7 @@ import com.blackducksoftware.tools.commonframework.standard.datatable.writer.Dat
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 import com.blackducksoftware.tools.connector.common.ApprovalStatus;
+import com.blackducksoftware.tools.mocks.MockCodeCenterServerWrapper;
 
 public class LobUserAdjustTest {
 

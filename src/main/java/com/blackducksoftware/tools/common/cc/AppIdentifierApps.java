@@ -53,7 +53,7 @@ public class AppIdentifierApps {
             ICodeCenterServerWrapper ccServerWrapper, AppTeam newAppTeam)
             throws Exception {
         appIdentifier = newAppTeam.getAppIdentifier();
-        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, appIdentifier);
+        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, appIdentifier + config.getSeparatorString());
 
         appTeams = new ArrayList<>(apps.size());
         for (ApplicationPojo app : apps) {

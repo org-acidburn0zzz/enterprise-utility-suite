@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.appuseradjuster;
+package com.blackducksoftware.tools.mocks;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -11,12 +11,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.blackducksoftware.tools.appuseradjuster.MockApplicationManager;
-import com.blackducksoftware.tools.appuseradjuster.MockCodeCenterServerWrapper;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.remove.AppUserRemover;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.user.UserStatus;
+import com.blackducksoftware.tools.mocks.MockApplicationManager;
+import com.blackducksoftware.tools.mocks.MockCodeCenterServerWrapper;
 
 public class AppUserRemoverTest {
 
