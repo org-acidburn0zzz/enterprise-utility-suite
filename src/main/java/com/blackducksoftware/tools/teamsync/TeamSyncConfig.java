@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.teamsync;
@@ -36,8 +36,9 @@ import com.blackducksoftware.tools.commonframework.core.config.ConfigurationMana
  *
  */
 public class TeamSyncConfig extends ConfigurationManager implements
-	EntAppNameConfigurationManager {
+        EntAppNameConfigurationManager {
     private static final String APP_VERSION_PROPERTY = "app.version";
+
     private static final String APP_VERSION_DEFAULT = "Unspecified";
 
     private static final String NEW_APP_LIST_FILENAME_PROPERTY = "new.app.list.filename";
@@ -45,107 +46,116 @@ public class TeamSyncConfig extends ConfigurationManager implements
     private EntAppNameConfigMgrDelegate entAppNameConfigMgrDelegate;
 
     private String appVersion = APP_VERSION_DEFAULT;
+
     private AppList newAppList;
 
     public TeamSyncConfig(Properties props) throws IOException {
-	super(props, APPLICATION.CODECENTER);
-	loadAdditionalProperties();
+        super(props, APPLICATION.CODECENTER);
+        loadAdditionalProperties();
     }
 
     public TeamSyncConfig(InputStream in) throws IOException {
-	super(in, APPLICATION.CODECENTER);
-	loadAdditionalProperties();
+        super(in, APPLICATION.CODECENTER);
+        loadAdditionalProperties();
     }
 
     public TeamSyncConfig(String configFilename) throws IOException {
-	super(configFilename, APPLICATION.CODECENTER);
-	loadAdditionalProperties();
+        super(configFilename, APPLICATION.CODECENTER);
+        loadAdditionalProperties();
     }
 
     public TeamSyncConfig(File configFile) throws IOException {
-	super(configFile.toString(), APPLICATION.CODECENTER);
-	loadAdditionalProperties();
+        super(configFile.toString(), APPLICATION.CODECENTER);
+        loadAdditionalProperties();
     }
 
     private void loadAdditionalProperties() throws IOException {
 
-	entAppNameConfigMgrDelegate = new EntAppNameConfigMgrDelegate(
-		getProps());
+        entAppNameConfigMgrDelegate = new EntAppNameConfigMgrDelegate(
+                getProps());
 
-	String newAppListFilename = getProperty(NEW_APP_LIST_FILENAME_PROPERTY);
-	newAppList = new AppList(newAppListFilename);
+        String newAppListFilename = getOptionalProperty(NEW_APP_LIST_FILENAME_PROPERTY);
+        if (newAppListFilename != null) {
+            newAppList = new AppList(newAppListFilename);
+        } else {
+            newAppList = null;
+        }
 
-	appVersion = getOptionalProperty(APP_VERSION_PROPERTY,
-		APP_VERSION_DEFAULT, String.class);
+        appVersion = getOptionalProperty(APP_VERSION_PROPERTY,
+                APP_VERSION_DEFAULT, String.class);
+    }
+
+    public String getNewAppListFilenamePropertyName() {
+        return NEW_APP_LIST_FILENAME_PROPERTY;
     }
 
     public AppList getNewAppList() {
-	return newAppList;
+        return newAppList;
     }
 
     public String getAppVersion() {
-	return appVersion;
+        return appVersion;
     }
 
     @Override
     public String getSeparatorString() {
-	return entAppNameConfigMgrDelegate.getSeparatorString();
+        return entAppNameConfigMgrDelegate.getSeparatorString();
     }
 
     @Override
     public String getWithoutDescriptionFormatPatternString() {
-	return entAppNameConfigMgrDelegate
-		.getWithoutDescriptionFormatPatternString();
+        return entAppNameConfigMgrDelegate
+                .getWithoutDescriptionFormatPatternString();
     }
 
     @Override
     public String getWithDescriptionFormatPatternString() {
-	return entAppNameConfigMgrDelegate
-		.getWithDescriptionFormatPatternString();
+        return entAppNameConfigMgrDelegate
+                .getWithDescriptionFormatPatternString();
     }
 
     @Override
     public String getAppIdentifierPatternString() {
-	return entAppNameConfigMgrDelegate.getAppIdentifierPatternString();
+        return entAppNameConfigMgrDelegate.getAppIdentifierPatternString();
     }
 
     @Override
     public String getFollowsDescriptionPatternString() {
-	return entAppNameConfigMgrDelegate.getFollowsDescriptionPatternString();
+        return entAppNameConfigMgrDelegate.getFollowsDescriptionPatternString();
     }
 
     @Override
     public int getNumSuffixes() {
-	return entAppNameConfigMgrDelegate.getNumSuffixes();
+        return entAppNameConfigMgrDelegate.getNumSuffixes();
     }
 
     @Override
     public String getSuffixPatternString(int suffixIndex) {
-	return entAppNameConfigMgrDelegate.getSuffixPatternString(suffixIndex);
+        return entAppNameConfigMgrDelegate.getSuffixPatternString(suffixIndex);
     }
 
     @Override
     public Pattern getAppIdentifierPattern() {
-	return entAppNameConfigMgrDelegate.getAppIdentifierPattern();
+        return entAppNameConfigMgrDelegate.getAppIdentifierPattern();
     }
 
     @Override
     public Pattern getFollowsDescriptionPattern() {
-	return entAppNameConfigMgrDelegate.getFollowsDescriptionPattern();
+        return entAppNameConfigMgrDelegate.getFollowsDescriptionPattern();
     }
 
     @Override
     public Pattern getWithoutDescriptionFormatPattern() {
-	return entAppNameConfigMgrDelegate.getWithoutDescriptionFormatPattern();
+        return entAppNameConfigMgrDelegate.getWithoutDescriptionFormatPattern();
     }
 
     @Override
     public Pattern getWithDescriptionFormatPattern() {
-	return entAppNameConfigMgrDelegate.getWithDescriptionFormatPattern();
+        return entAppNameConfigMgrDelegate.getWithDescriptionFormatPattern();
     }
 
     @Override
     public Pattern getSuffixPattern(int suffixIndex) {
-	return entAppNameConfigMgrDelegate.getSuffixPattern(suffixIndex);
+        return entAppNameConfigMgrDelegate.getSuffixPattern(suffixIndex);
     }
 }
