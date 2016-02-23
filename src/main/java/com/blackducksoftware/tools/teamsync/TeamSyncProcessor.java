@@ -75,7 +75,7 @@ public class TeamSyncProcessor {
             // Create an AppName object for the new app
             EntAppName newAppNameObject = new EntAppName(config, newAppName);
 
-            // Skip snapshots
+            // Skip non-conforming apps
             if (!newAppNameObject.isConformant()) {
                 log.info("Skipping app " + newAppName
                         + " (the name does not conform to the specified pattern)");
@@ -103,7 +103,7 @@ public class TeamSyncProcessor {
             // Create an AppName object for the new app
             EntAppName newAppNameObject = new EntAppName(config, appName);
 
-            // Skip snapshots
+            // Skip non-conforming apps
             if (!newAppNameObject.isConformant()) {
                 log.info("Skipping app " + appName
                         + " (the name does not conform to the specified pattern)");
