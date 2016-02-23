@@ -79,6 +79,7 @@ public class AppIdentifierApps {
             AppTeam appTeam = new AppTeam(CodeCenterUtils.getAppUserRoles(
                     ccServerWrapper, app.getName(), app.getVersion()),
                     newAppNameObject);
+            log.debug("App team: " + appTeam);
             appTeams.add(appTeam);
         }
     }

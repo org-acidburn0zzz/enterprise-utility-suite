@@ -85,8 +85,7 @@ public class AppTeam {
 
     @Override
     public String toString() {
-        return "AppTeam [appName=" + appName + ", appIdentifier="
-                + appIdentifier + ", team size=" + team.size() + "]";
+        return "AppTeam [appName=" + appName + ", appIdentifier=" + appIdentifier + ", team=" + team + "]";
     }
 
 }

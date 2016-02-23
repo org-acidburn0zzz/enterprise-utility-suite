@@ -43,7 +43,7 @@ public class DeriveAppIdentifierTeamAlgorithm {
             addTo(appIdentifierTeam, appTeam.getTeam());
 
         }
-        log.info("AppIdentifier Team size: " + appIdentifierTeam.size());
+        log.debug("AppIdentifier Team: " + appIdentifierTeam);
         return appIdentifierTeam;
     }
 

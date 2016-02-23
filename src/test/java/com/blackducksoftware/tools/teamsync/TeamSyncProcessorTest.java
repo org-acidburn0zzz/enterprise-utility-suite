@@ -1,15 +1,32 @@
 package com.blackducksoftware.tools.teamsync;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 import java.util.Properties;
+import java.util.SortedSet;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
+import com.blackducksoftware.tools.mocks.MockApplicationManager;
 import com.blackducksoftware.tools.mocks.MockCodeCenterServerWrapper;
 
 public class TeamSyncProcessorTest {
+
+    private static String[] expectedOperations = {
+            "add: 333333-PROD-CURRENT: [u000001]",
+            "add: 333333-PROD-CURRENT: [u000002]",
+            "add: 333333-PROD-CURRENT: [u000003]",
+            "add: 333333-PROD-CURRENT: [u000004]",
+            "add: 444444-test app-PROD-CURRENT: [u000006]",
+            "add: 444444-test app-PROD-CURRENT: [u000007]",
+            "add: 444444-test app-PROD-CURRENT: [u000008]",
+            "add: 444444-test app-PROD-CURRENT: [u000009]"
+    };
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -27,7 +44,7 @@ public class TeamSyncProcessorTest {
         props.setProperty("cc.password", "password");
         props.setProperty("cc.password.isplaintext", "true");
         props.setProperty("new.app.list.filename",
-                "src/test/resources/teamsync/newAppNames_sisters.txt");
+                "src/test/resources/teamsync/newAppNames_complex.txt");
         setAppNameProperties(props);
         TeamSyncConfig config = new TeamSyncConfig(props);
         ICodeCenterServerWrapper ccServerWrapper = new MockCodeCenterServerWrapper(true, true);
@@ -38,6 +55,16 @@ public class TeamSyncProcessorTest {
         processor.execute();
 
         // TODO: Verify
+
+        MockApplicationManager mockAppMgr = (MockApplicationManager) ccServerWrapper.getApplicationManager();
+        SortedSet<String> ops = mockAppMgr.getOperations();
+        System.out.println("Operations:");
+        for (String op : ops) {
+            System.out.println("\t" + op);
+        }
+
+        assertEquals(8, ops.size());
+        assertTrue(ops.containsAll(Arrays.asList(expectedOperations)));
     }
 
     private void setAppNameProperties(Properties props) {
