@@ -51,7 +51,7 @@ public class TeamSync extends CommonHarness {
 	    CodeCenterServerWrapper ccServerWrapper = initCcServerWrapper(config);
 	    TeamSyncProcessor teamSyncProcessor = new TeamSyncProcessor(
 		    ccServerWrapper, config);
-	    teamSyncProcessor.execute();
+	    teamSyncProcessor.updateNewAppsTeams();
 
 	    System.out
 		    .println("TeamSyncProcessor utility has completed successfully.");

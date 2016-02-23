@@ -18,6 +18,7 @@
 
 package com.blackducksoftware.tools.teamsync;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import com.blackducksoftware.tools.common.EntAppName;
 import com.blackducksoftware.tools.common.cc.AppIdentifierApps;
 import com.blackducksoftware.tools.common.cc.AppList;
+import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationPojo;
 import com.blackducksoftware.tools.connector.codecenter.application.ApplicationUserPojo;
@@ -50,62 +52,113 @@ public class TeamSyncProcessor {
 
     private final TeamSyncConfig config;
 
-    private final AppList newAppNames;
-
     private final Map<String, AppIdentifierApps> teamCache = new HashMap<>();
 
     public TeamSyncProcessor(ICodeCenterServerWrapper ccServerWrapper,
             TeamSyncConfig config) {
         this.ccServerWrapper = ccServerWrapper;
         this.config = config;
-        newAppNames = config.getNewAppList();
     }
 
     /**
-     * For each application in the given list, figure out what team it should
+     * For each application in the "new app" list, figure out what team it should
      * have by aggregating the teams of other apps with the same appIdentifier,
      * and then update the application's team to be that aggregated team.
      *
      * @throws Exception
      */
-    public void execute() throws Exception {
-
+    public void updateNewAppsTeams() throws Exception {
+        AppList newAppNames = config.getNewAppList();
         for (String newAppName : newAppNames) {
             log.info("Looking at app " + newAppName);
 
             // Create an AppName object for the new app
             EntAppName newAppNameObject = new EntAppName(config, newAppName);
+
             // Skip snapshots
             if (!newAppNameObject.isConformant()) {
-                log.info("Skipping app "
-                        + newAppName
+                log.info("Skipping app " + newAppName
                         + " (the name does not conform to the specified pattern)");
                 continue;
             }
 
-            // Create a team object for the new app
-            AppTeam newAppTeam = new AppTeam(CodeCenterUtils.getAppUserRoles(
-                    ccServerWrapper, newAppNameObject.getAppName(),
-                    config.getAppVersion()), newAppNameObject);
-
-            String appIdentifier = newAppNameObject.getAppIdentifier();
-            log.info("AppIdentifier: " + appIdentifier);
-            AppIdentifierApps appIdentifierApps;
-            if (!teamCache.containsKey(appIdentifier)) {
-                // Create a AppIdentifierApps object for the AppIdentifier to which
-                // the new app
-                // belongs
-                appIdentifierApps = new AppIdentifierApps(config,
-                        ccServerWrapper, newAppTeam);
-                teamCache.put(appIdentifier, appIdentifierApps);
-            } else {
-                log.info("Pulling team from cache for appIdentifier " + appIdentifier);
-                appIdentifierApps = teamCache.get(appIdentifier);
-            }
+            AppIdentifierApps fullTeam = getFullTeamForAppIdentifier(newAppNameObject.getAppIdentifier());
 
             // Assign the AppIdentifier team to the new app
-            updateTeam(newAppTeam, appIdentifierApps.getTeam());
+            updateAppTeam(newAppNameObject, fullTeam.getTeam());
         }
+    }
+
+    /**
+     * Derive a map of <username>:<appIdentifier list>
+     *
+     * @throws Exception
+     */
+    public Map<String, Set<String>> generateUserMembershipDirectory() throws Exception {
+        Map<String, Set<String>> userMembershipDirectory = new HashMap<>();
+        AppList allAppNames = getAllApplications();
+        for (String appName : allAppNames) {
+            log.info("Looking at app " + appName);
+
+            // Create an AppName object for the new app
+            EntAppName newAppNameObject = new EntAppName(config, appName);
+
+            // Skip snapshots
+            if (!newAppNameObject.isConformant()) {
+                log.info("Skipping app " + appName
+                        + " (the name does not conform to the specified pattern)");
+                continue;
+            }
+
+            AppIdentifierApps fullTeam = getFullTeamForAppIdentifier(newAppNameObject.getAppIdentifier());
+
+            // Incorporate this fullTeam into the <username>:<appIdentifier list> map
+            addTeamToUserMembershipDirectory(userMembershipDirectory, fullTeam);
+        }
+        return userMembershipDirectory;
+    }
+
+    private AppList getAllApplications() throws IOException, CommonFrameworkException {
+        AppList allAppNames = new AppList();
+
+        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE);
+        for (ApplicationPojo app : apps) {
+            allAppNames.add(app.getName());
+        }
+        return allAppNames;
+    }
+
+    private void addTeamToUserMembershipDirectory(Map<String, Set<String>> usernameToAppIdListMap, AppIdentifierApps team) {
+        for (ApplicationUserPojo user : team.getTeam()) {
+            String username = user.getUserName();
+            Set<String> appIdentifiers;
+            if (usernameToAppIdListMap.containsKey(username)) {
+                appIdentifiers = usernameToAppIdListMap.get(username);
+            } else {
+                appIdentifiers = new HashSet<>();
+            }
+            appIdentifiers.add(team.getAppIdentifier()); // Add this AppId to this user's set of appIds
+            usernameToAppIdListMap.put(username, appIdentifiers); // update user's entry in the directory w/ updated set
+                                                                  // of appIds
+        }
+    }
+
+    private AppIdentifierApps getFullTeamForAppIdentifier(String appIdentifier) throws Exception {
+
+        log.info("AppIdentifier: " + appIdentifier);
+        AppIdentifierApps fullTeam;
+        if (!teamCache.containsKey(appIdentifier)) {
+            // Create a AppIdentifierApps object (includes teams) for the AppIdentifier to which
+            // the new app
+            // belongs
+            fullTeam = new AppIdentifierApps(config,
+                    ccServerWrapper, appIdentifier);
+            teamCache.put(appIdentifier, fullTeam);
+        } else {
+            log.info("Pulling team from cache for appIdentifier " + appIdentifier);
+            fullTeam = teamCache.get(appIdentifier);
+        }
+        return fullTeam;
     }
 
     /**
@@ -114,13 +167,19 @@ public class TeamSyncProcessor {
      * @param newTeam
      * @throws Exception
      */
-    private void updateTeam(AppTeam appTeam,
+    private void updateAppTeam(EntAppName appNameObject,
             List<ApplicationUserPojo> newTeam) throws Exception {
+
+        // Create a team object for the new app
+        AppTeam newAppTeam = new AppTeam(CodeCenterUtils.getAppUserRoles(
+                ccServerWrapper, appNameObject.getAppName(),
+                config.getAppVersion()), appNameObject);
+
         for (ApplicationUserPojo roleAssignment : newTeam) {
 
-            if (appTeam.containsRoleAssignment(roleAssignment)) {
+            if (newAppTeam.containsRoleAssignment(roleAssignment)) {
                 log.info("Skipping assignment of user "
-                        + roleAssignment.getUserName() + " to app " + appTeam.getAppName()
+                        + roleAssignment.getUserName() + " to app " + newAppTeam.getAppName()
                         + "; this user/role is already assigned.");
                 continue;
             }
@@ -128,7 +187,7 @@ public class TeamSyncProcessor {
             log.info("Adding user "
                     + roleAssignment.getUserName() + " / role "
                     + roleAssignment.getRoleName() + " to app "
-                    + appTeam.getAppName());
+                    + newAppTeam.getAppName());
 
             // TODO remove:
             // List<UserNameOrIdToken> userTokens = new ArrayList<UserNameOrIdToken>(
@@ -142,7 +201,7 @@ public class TeamSyncProcessor {
             // appToken.setVersion(config.getAppVersion());
             // ccServerWrapper.getInternalApiWrapper().getApplicationApi()
             // .addUserToApplicationTeam(appToken, userTokens, roleTokens);
-            ApplicationPojo app = ccServerWrapper.getApplicationManager().getApplicationByNameVersion(appTeam.getAppName(), config.getAppVersion());
+            ApplicationPojo app = ccServerWrapper.getApplicationManager().getApplicationByNameVersion(newAppTeam.getAppName(), config.getAppVersion());
             Set<String> userNames = new HashSet<>();
             userNames.add(roleAssignment.getUserName());
             Set<String> roleNames = new HashSet<>();

@@ -3,7 +3,9 @@ package com.blackducksoftware.tools.mocks;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -23,11 +25,28 @@ public class MockApplicationManager implements IApplicationManager {
 
     private final boolean returnSomeApps;
 
-    private int numberOfUsersToReturn = 1;
+    // private int numberOfUsersToReturn = 1;
+    private Map<String, Integer> numberOfUsersByAppId;
+
+    private static final List<ApplicationPojo> apps = new ArrayList<>();
 
     public MockApplicationManager(boolean returnSomeApps) {
         operations = new TreeSet<>();
         this.returnSomeApps = returnSomeApps;
+        numberOfUsersByAppId = new HashMap<>();
+        numberOfUsersByAppId.put("333333-PROD-CURRENT", 1);
+        numberOfUsersByAppId.put("333333-test app-RC1-CURRENT", 1);
+        numberOfUsersByAppId.put("444444-test app-PROD-CURRENT", 1);
+        numberOfUsersByAppId.put("000000-App3-PROD-CURRENT", 7);
+        numberOfUsersByAppId.put("100000-App2-PROD-CURRENT", 3);
+        for (int i = 0; i < 4; i++) {
+            numberOfUsersByAppId.put("333333-App" + i + "-PROD-CURRENT", i + 2);
+        }
+        for (int i = 0; i < 4; i++) {
+            numberOfUsersByAppId.put("444444-App" + i + "-PROD-CURRENT", i + 2);
+        }
+
+        apps.add(new ApplicationPojo("app1", "app1", "Unspecified", null, ApprovalStatus.APPROVED, false, "ownerId"));
     }
 
     public synchronized SortedSet<String> getOperations() {
@@ -37,16 +56,22 @@ public class MockApplicationManager implements IApplicationManager {
     @Override
     public List<ApplicationPojo> getApplications(int firstRow, int lastRow, String searchString) throws CommonFrameworkException {
 
+        List<ApplicationPojo> apps = generateApps(searchString);
+        return apps;
+    }
+
+    private List<ApplicationPojo> generateApps(String prefix) {
         List<ApplicationPojo> apps = new ArrayList<>(4);
         if (!returnSomeApps) {
             return apps; // return none
         }
 
         for (int i = 0; i < 4; i++) {
-            String appName = searchString + "App" + i + "-PROD-CURRENT";
+            String appName = prefix + "App" + i + "-PROD-CURRENT";
             ApplicationPojo app = new ApplicationPojo(appName, appName, "v100",
                     null,
                     ApprovalStatus.APPROVED, false, "testOwnerId");
+            System.out.println("Mocking app: " + app);
             apps.add(app);
         }
         return apps;
@@ -54,8 +79,11 @@ public class MockApplicationManager implements IApplicationManager {
 
     @Override
     public List<ApplicationPojo> getApplications(int firstRow, int lastRow) throws CommonFrameworkException {
-        // TODO Auto-generated function stub
-        return null;
+        List<ApplicationPojo> apps = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            apps.addAll(generateApps("" + i + "00000-"));
+        }
+        return apps;
     }
 
     @Override
@@ -89,6 +117,13 @@ public class MockApplicationManager implements IApplicationManager {
     public List<ApplicationUserPojo> getAllUsersAssignedToApplication(String appId) throws CommonFrameworkException {
         List<ApplicationUserPojo> roles = new ArrayList<>();
 
+        int numberOfUsersToReturn;
+
+        if (numberOfUsersByAppId.containsKey(appId)) {
+            numberOfUsersToReturn = numberOfUsersByAppId.get(appId);
+        } else {
+            numberOfUsersToReturn = 1;
+        }
         for (int i = 0; i < numberOfUsersToReturn; i++) {
             String username = "u00000" + i;
             ApplicationUserPojo role = new ApplicationUserPojo("testAppName", "Unspecified", appId,
@@ -96,7 +131,7 @@ public class MockApplicationManager implements IApplicationManager {
             roles.add(role);
         }
 
-        numberOfUsersToReturn++;
+        System.out.println("getAllUsersAssignedToApplication(" + appId + "): " + roles.size());
         return roles;
     }
 

@@ -50,9 +50,9 @@ public class AppIdentifierApps {
     // existing apps
 
     public AppIdentifierApps(EntAppNameConfigurationManager config,
-            ICodeCenterServerWrapper ccServerWrapper, AppTeam newAppTeam)
+            ICodeCenterServerWrapper ccServerWrapper, String appIdentifier)
             throws Exception {
-        appIdentifier = newAppTeam.getAppIdentifier();
+        this.appIdentifier = appIdentifier;
         List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE, appIdentifier + config.getSeparatorString());
 
         appTeams = new ArrayList<>(apps.size());
