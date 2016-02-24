@@ -82,6 +82,14 @@
 			</includes>
 	    </fileSet>
 	    
+	    <fileSet>
+	       <directory>${project.basedir}/src/main/resources/useraccessextractor</directory>
+	       	<outputDirectory>/properties/useraccessextractor</outputDirectory>
+	       	<includes>
+				<include>*</include>
+			</includes>
+	    </fileSet>
+	    
 		<fileSet> 
 			<directory>${project.build.directory}/deploy/bin</directory> 
 			<outputDirectory>/bin</outputDirectory>

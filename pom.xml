@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blackducksoftware.tools</groupId>
 	<artifactId>enterprise-utility-suite</artifactId>
-	<version>1.5.5-SNAPSHOT</version>
+	<version>1.5.5</version>
 	<name>Enterprise Utility Suite</name>
 	<packaging>jar</packaging>
 
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>com.blackducksoftware.tools</groupId>
 			<artifactId>cf-7x-connector</artifactId>
-			<version>1.4.5</version>
+			<version>1.4.6</version>
 		</dependency>
 		
 	    <dependency>
@@ -101,6 +101,7 @@
 					<assembleDirectory>${project.build.directory}/deploy</assembleDirectory>
 					<repositoryLayout>flat</repositoryLayout>
 					<repositoryName>lib</repositoryName>
+					<useWildcardClassPath>true</useWildcardClassPath>
 					<programs>
 						<!-- ADD New Utility Programs here -->
 						<program>
@@ -134,6 +135,10 @@
 						<program>
 							<mainClass>com.blackducksoftware.tools.teamsync.TeamSync</mainClass>
 							<name>TeamSync</name>
+						</program>
+						<program>
+							<mainClass>com.blackducksoftware.tools.teamsync.membership.TeamSyncReport</mainClass>
+							<name>UserAccessExtractor</name>
 						</program>
 					</programs>
 					<extraJvmArguments>-Xmx1024m -Xms1024M</extraJvmArguments>
