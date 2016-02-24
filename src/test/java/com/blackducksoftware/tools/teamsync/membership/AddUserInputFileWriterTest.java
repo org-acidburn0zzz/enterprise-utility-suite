@@ -1,4 +1,4 @@
-package com.blackducksoftware.tools.teamsync.directory;
+package com.blackducksoftware.tools.teamsync.membership;
 
 import static org.junit.Assert.assertEquals;
 

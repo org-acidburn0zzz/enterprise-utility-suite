@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 /**
- * Classes for the TeamSync utility, which brings the Teams of new applications
+ * Classes for the TeamSyncReport utility, which brings the Teams of new applications
  * up-to-date with existing applications with the same appIdentifier.
  *
  * @author Steve Billings

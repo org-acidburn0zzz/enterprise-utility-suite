@@ -16,12 +16,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
-package com.blackducksoftware.tools.teamsync;
+package com.blackducksoftware.tools.teamsync.membership;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.Map;
+import java.util.Set;
 
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
+import com.blackducksoftware.tools.teamsync.TeamSyncConfig;
+import com.blackducksoftware.tools.teamsync.TeamSyncProcessor;
 
 /**
  * The Main class for the TeamSyncReport utility.
@@ -29,17 +36,22 @@ import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
  * @author sbillings
  *
  */
-public class TeamSync extends CommonHarness {
-    private static final String USAGE = "Expecting -config <path to config file>";
+public class TeamSyncReport extends CommonHarness {
+    private static final String USAGE = "Expecting -config <path to config file> <output filename>";
 
     public static void main(String[] args) {
+        File outputFile = null;
 
-        if (args.length != 2) {
+        if (args.length != 3) {
             usage(USAGE);
             System.exit(1);
         }
         try {
             args = processConfig(args);
+
+            outputFile = new File(args[0]);
+            outputFile.delete();
+            System.out.println("Output file: " + outputFile.getAbsolutePath());
         } catch (Exception e1) {
             System.err.println(e1.getMessage());
             System.exit(1);
@@ -48,24 +60,20 @@ public class TeamSync extends CommonHarness {
         try {
             TeamSyncConfig config = new TeamSyncConfig(getConfigFile());
 
-            /**
-             * Need to enforce one required property here, since it's not required
-             * for the report mode/utility.
-             */
-            if (config.getNewAppList() == null) {
-                System.err.println("Error: Property " + config.getNewAppListFilenamePropertyName() + " is required");
-                System.exit(1);
-            }
-
             CodeCenterServerWrapper ccServerWrapper = initCcServerWrapper(config);
             TeamSyncProcessor teamSyncProcessor = new TeamSyncProcessor(
                     ccServerWrapper, config);
-            teamSyncProcessor.updateNewAppsTeams();
+            Map<String, Set<String>> userMembershipDirectory = teamSyncProcessor.generateUserMembershipDirectory();
+
+            PrintStream ps = new PrintStream(outputFile);
+
+            DirectoryWriter writer = new AddUserInputFileWriter(ps);
+            writer.write(userMembershipDirectory);
 
             System.out
-                    .println("TeamSyncProcessor utility has completed successfully.");
+                    .println("Completed successfully.");
         } catch (Exception e) {
-            System.err.println("TeamSyncProcessor utility has failed: "
+            System.err.println("Error: "
                     + e.getMessage());
             System.exit(2);
         }

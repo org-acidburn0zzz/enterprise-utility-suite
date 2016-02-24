@@ -30,7 +30,7 @@ import com.blackducksoftware.tools.common.cc.AppList;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 
 /**
- * The configuration manager for the TeamSync utility.
+ * The configuration manager for the TeamSyncReport utility.
  *
  * @author sbillings
  *
