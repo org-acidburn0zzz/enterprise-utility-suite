@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 /**
@@ -50,35 +50,36 @@ import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
  */
 public class HighSevProcessor {
     private final Logger log = LoggerFactory.getLogger(this.getClass()
-	    .getName());
+            .getName());
 
     private final HighSevConfigManager config;
+
     private final CodeCenterServerWrapper ccWrapper;
 
     // Map to assist sorting
     private static final HashMap<String, Integer> VULNERABILITY_SEVERITY_MAP = new HashMap<String, Integer>();
 
     private final List<String> failedComponents = new ArrayList<String>();
+
     private Integer totalComponents = 0;
 
     public HighSevProcessor(File file) throws Exception {
-	try {
+        try {
 
-	    config = new HighSevConfigManager(file);
-	    ccWrapper = new CodeCenterServerWrapper(config.getServerBean(),
-		    config);
+            config = new HighSevConfigManager(file);
+            ccWrapper = new CodeCenterServerWrapper(config);
 
-	    VULNERABILITY_SEVERITY_MAP.put("low",
-		    HighSevConstants.SEV_VALUE_LOW);
-	    VULNERABILITY_SEVERITY_MAP.put("medium",
-		    HighSevConstants.SEV_VALUE_MED);
-	    VULNERABILITY_SEVERITY_MAP.put("high",
-		    HighSevConstants.SEV_VALUE_HIGH);
+            VULNERABILITY_SEVERITY_MAP.put("low",
+                    HighSevConstants.SEV_VALUE_LOW);
+            VULNERABILITY_SEVERITY_MAP.put("medium",
+                    HighSevConstants.SEV_VALUE_MED);
+            VULNERABILITY_SEVERITY_MAP.put("high",
+                    HighSevConstants.SEV_VALUE_HIGH);
 
-	} catch (Exception e) {
-	    throw new Exception("Could not process configuration file: "
-		    + e.getMessage());
-	}
+        } catch (Exception e) {
+            throw new Exception("Could not process configuration file: "
+                    + e.getMessage());
+        }
     }
 
     /**
@@ -90,32 +91,32 @@ public class HighSevProcessor {
      */
     public void process() throws Exception {
 
-	try {
-	    AbstractAttribute userCustomAttribute = getCustomAttribute();
+        try {
+            AbstractAttribute userCustomAttribute = getCustomAttribute();
 
-	    log.info("Getting all catalog components...");
+            log.info("Getting all catalog components...");
 
-	    ComponentPageFilter cpf = new ComponentPageFilter();
-	    cpf.setFirstRowIndex(0);
-	    cpf.setLastRowIndex(Integer.MAX_VALUE);
+            ComponentPageFilter cpf = new ComponentPageFilter();
+            cpf.setFirstRowIndex(0);
+            cpf.setLastRowIndex(Integer.MAX_VALUE);
 
-	    List<Component> components = ccWrapper.getInternalApiWrapper()
-		    .getColaApi().searchCatalogComponents("", cpf);
+            List<Component> components = ccWrapper.getInternalApiWrapper()
+                    .getColaApi().searchCatalogComponents("", cpf);
 
-	    log.info("Found {} components", components.size());
-	    totalComponents = components.size();
+            log.info("Found {} components", components.size());
+            totalComponents = components.size();
 
-	    if (components.size() > 0) {
-		setAttributeBasedOnSeverity(components, userCustomAttribute);
-		displaySummary();
-	    } else {
-		log.warn("No catalog components found, exiting...");
-		return;
-	    }
+            if (components.size() > 0) {
+                setAttributeBasedOnSeverity(components, userCustomAttribute);
+                displaySummary();
+            } else {
+                log.warn("No catalog components found, exiting...");
+                return;
+            }
 
-	} catch (Exception e) {
-	    throw new Exception("Unable to process: " + e.getMessage());
-	}
+        } catch (Exception e) {
+            throw new Exception("Unable to process: " + e.getMessage());
+        }
     }
 
     /**
@@ -126,31 +127,31 @@ public class HighSevProcessor {
      * @throws Exception
      */
     private AbstractAttribute getCustomAttribute() throws Exception {
-	String attribName = config.getCustomAttributeName();
+        String attribName = config.getCustomAttributeName();
 
-	log.info("Verifying custom attribute with name: " + attribName);
+        log.info("Verifying custom attribute with name: " + attribName);
 
-	try {
+        try {
 
-	    AttributeNameToken attribToken = new AttributeNameToken();
+            AttributeNameToken attribToken = new AttributeNameToken();
 
-	    attribToken.setName(attribName);
+            attribToken.setName(attribName);
 
-	    AbstractAttribute abstractAttribute = ccWrapper
-		    .getInternalApiWrapper().getAttributeApi()
-		    .getAttribute(attribToken);
+            AbstractAttribute abstractAttribute = ccWrapper
+                    .getInternalApiWrapper().getAttributeApi()
+                    .getAttribute(attribToken);
 
-	    if (abstractAttribute == null) {
-		throw new Exception(
-			"Unable to find custom attribute with name: "
-				+ attribName);
-	    }
+            if (abstractAttribute == null) {
+                throw new Exception(
+                        "Unable to find custom attribute with name: "
+                                + attribName);
+            }
 
-	    return abstractAttribute;
+            return abstractAttribute;
 
-	} catch (SdkFault e) {
-	    throw new Exception("Unable to verify custom attribute presence", e);
-	}
+        } catch (SdkFault e) {
+            throw new Exception("Unable to verify custom attribute presence", e);
+        }
 
     }
 
@@ -159,53 +160,53 @@ public class HighSevProcessor {
      * @param userCustomAttribute
      */
     private void setAttributeBasedOnSeverity(List<Component> components,
-	    AbstractAttribute userCustomAttribute) {
-	int counter = 1;
-	for (Component component : components) {
-	    log.info("[{}/{}] Processing component: {}", counter,
-		    components.size(), component.getName());
-	    String componentName = component.getName();
-	    String componentVersion = component.getVersion();
-	    List<VulnerabilitySummary> vulns = new ArrayList<VulnerabilitySummary>();
-	    try {
+            AbstractAttribute userCustomAttribute) {
+        int counter = 1;
+        for (Component component : components) {
+            log.info("[{}/{}] Processing component: {}", counter,
+                    components.size(), component.getName());
+            String componentName = component.getName();
+            String componentVersion = component.getVersion();
+            List<VulnerabilitySummary> vulns = new ArrayList<VulnerabilitySummary>();
+            try {
 
-		log.debug("Collecting vulnerabilities for component {} : {}",
-			componentName, componentVersion);
-		VulnerabilityPageFilter vpf = new VulnerabilityPageFilter();
-		vpf.setFirstRowIndex(0);
-		vpf.setLastRowIndex(Integer.MAX_VALUE);
+                log.debug("Collecting vulnerabilities for component {} : {}",
+                        componentName, componentVersion);
+                VulnerabilityPageFilter vpf = new VulnerabilityPageFilter();
+                vpf.setFirstRowIndex(0);
+                vpf.setLastRowIndex(Integer.MAX_VALUE);
 
-		vulns = ccWrapper
-			.getInternalApiWrapper()
-			.getVulnerabilityApi()
-			.searchDirectMatchedVulnerabilitiesByCatalogComponent(
-				component.getId(), vpf);
-	    } catch (Exception e) {
-		log.error("Unable to get vulnerabilities for component: "
-			+ componentName, e);
-		continue;
-	    }
+                vulns = ccWrapper
+                        .getInternalApiWrapper()
+                        .getVulnerabilityApi()
+                        .searchDirectMatchedVulnerabilitiesByCatalogComponent(
+                                component.getId(), vpf);
+            } catch (Exception e) {
+                log.error("Unable to get vulnerabilities for component: "
+                        + componentName, e);
+                continue;
+            }
 
-	    if (vulns.size() == 0) {
-		log.info(
-			"No vulnerabilities found for component {} : {}, resetting",
-			componentName, componentVersion);
-		updateComponent("", component, userCustomAttribute);
-	    } else {
-		log.info(
-			"Sorting through '{}' vulnerabilities for component {} : {}",
-			vulns.size(), componentName, componentVersion);
+            if (vulns.size() == 0) {
+                log.info(
+                        "No vulnerabilities found for component {} : {}, resetting",
+                        componentName, componentVersion);
+                updateComponent("", component, userCustomAttribute);
+            } else {
+                log.info(
+                        "Sorting through '{}' vulnerabilities for component {} : {}",
+                        vulns.size(), componentName, componentVersion);
 
-		// If we get to this, find the highest severity
-		// The logic is as follows: Keep looking for the highest, if the
-		// highest is found (which is 'High', then exit)
-		String highestSeverity = findHighestSev(vulns);
+                // If we get to this, find the highest severity
+                // The logic is as follows: Keep looking for the highest, if the
+                // highest is found (which is 'High', then exit)
+                String highestSeverity = findHighestSev(vulns);
 
-		updateComponent(highestSeverity, component, userCustomAttribute);
-	    }
+                updateComponent(highestSeverity, component, userCustomAttribute);
+            }
 
-	    counter++;
-	}
+            counter++;
+        }
     }
 
     /**
@@ -217,35 +218,35 @@ public class HighSevProcessor {
      * @param userCustomAttribute
      */
     private void updateComponent(String highestSeverity, Component component,
-	    AbstractAttribute userCustomAttribute) {
-	try {
-	    log.debug("Updating component {} : {}", component.getName(),
-		    component.getVersion());
+            AbstractAttribute userCustomAttribute) {
+        try {
+            log.debug("Updating component {} : {}", component.getName(),
+                    component.getVersion());
 
-	    AttributeValue av = new AttributeValue();
-	    av.setAttributeId(userCustomAttribute.getId());
-	    av.getValues().add(highestSeverity);
+            AttributeValue av = new AttributeValue();
+            av.setAttributeId(userCustomAttribute.getId());
+            av.getValues().add(highestSeverity);
 
-	    ComponentUpdate update = new ComponentUpdate();
-	    update.setId(component.getId());
-	    List<AttributeValue> updateAttributeList = update
-		    .getAttributeValues();
-	    updateAttributeList.add(av);
+            ComponentUpdate update = new ComponentUpdate();
+            update.setId(component.getId());
+            List<AttributeValue> updateAttributeList = update
+                    .getAttributeValues();
+            updateAttributeList.add(av);
 
-	    ccWrapper.getInternalApiWrapper().getColaApi()
-		    .updateCatalogComponent(update);
+            ccWrapper.getInternalApiWrapper().getColaApi()
+                    .updateCatalogComponent(update);
 
-	    log.info("Updating component {} : {} with highest severity of: {}",
-		    component.getName(), component.getVersion(),
-		    highestSeverity);
+            log.info("Updating component {} : {} with highest severity of: {}",
+                    component.getName(), component.getVersion(),
+                    highestSeverity);
 
-	} catch (SdkFault e) {
-	    log.error("Failed to update component {}, cause: {}",
-		    component.getName(), e.getMessage());
+        } catch (SdkFault e) {
+            log.error("Failed to update component {}, cause: {}",
+                    component.getName(), e.getMessage());
 
-	    failedComponents.add(component.getName() + ":"
-		    + component.getVersion());
-	}
+            failedComponents.add(component.getName() + ":"
+                    + component.getVersion());
+        }
     }
 
     /**
@@ -258,51 +259,51 @@ public class HighSevProcessor {
      * @return
      */
     private String findHighestSev(List<VulnerabilitySummary> vulns) {
-	String highestSevName = null;
-	Integer sevValue = 0;
-	try {
-	    for (VulnerabilitySummary vs : vulns) {
-		String severityName = vs.getSeverity().value();
-		// Grab the value of this current severity
-		Integer tempValue = VULNERABILITY_SEVERITY_MAP.get(severityName
-			.toLowerCase());
+        String highestSevName = null;
+        Integer sevValue = 0;
+        try {
+            for (VulnerabilitySummary vs : vulns) {
+                String severityName = vs.getSeverity().value();
+                // Grab the value of this current severity
+                Integer tempValue = VULNERABILITY_SEVERITY_MAP.get(severityName
+                        .toLowerCase());
 
-		// If it is higher than what we have, then:
-		// - Remember the value
-		// - Remember the name
-		if (tempValue > sevValue) {
-		    sevValue = tempValue;
-		    highestSevName = severityName;
-		}
+                // If it is higher than what we have, then:
+                // - Remember the value
+                // - Remember the name
+                if (tempValue > sevValue) {
+                    sevValue = tempValue;
+                    highestSevName = severityName;
+                }
 
-		// This is to short-circuit this entire loop
-		// If we reach the highest severity, then break out
-		if (sevValue == HighSevConstants.SEV_VALUE_HIGH) {
-		    break;
-		}
+                // This is to short-circuit this entire loop
+                // If we reach the highest severity, then break out
+                if (sevValue == HighSevConstants.SEV_VALUE_HIGH) {
+                    break;
+                }
 
-	    }
-	} catch (Exception e) {
-	    log.error("Unable to determine highest severity", e);
-	}
+            }
+        } catch (Exception e) {
+            log.error("Unable to determine highest severity", e);
+        }
 
-	return highestSevName;
+        return highestSevName;
     }
 
     /**
      * Write to the log a summary of what the process() method did.
      */
     public void displaySummary() {
-	log.info("Total components processed: " + totalComponents);
-	log.info("Total components failed to update: "
-		+ failedComponents.size());
+        log.info("Total components processed: " + totalComponents);
+        log.info("Total components failed to update: "
+                + failedComponents.size());
 
-	if (failedComponents.size() > 0) {
-	    log.info("List of failed components: ");
-	    for (String fc : failedComponents) {
-		log.info(fc);
-	    }
-	}
+        if (failedComponents.size() > 0) {
+            log.info("List of failed components: ");
+            for (String fc : failedComponents) {
+                log.info(fc);
+            }
+        }
     }
 
 }

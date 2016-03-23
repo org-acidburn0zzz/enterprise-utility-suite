@@ -38,7 +38,6 @@ import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.MultiTh
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.remove.AppUserRemover;
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.common.EntAppName;
-import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
@@ -177,9 +176,7 @@ public class RemoveUsers {
 
     private static CodeCenterServerWrapper connectToCodeCenter(
             RemoveUsersConfig configProcessor) throws Exception {
-        ServerBean serverBean = configProcessor.getServerBean();
-        CodeCenterServerWrapper codeCenterServerWrapper = new CodeCenterServerWrapper(
-                serverBean, configProcessor);
+        CodeCenterServerWrapper codeCenterServerWrapper = new CodeCenterServerWrapper(configProcessor);
         return codeCenterServerWrapper;
     }
 }

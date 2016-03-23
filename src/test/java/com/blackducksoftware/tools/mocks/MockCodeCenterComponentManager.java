@@ -36,7 +36,7 @@ public class MockCodeCenterComponentManager implements
     /**
      * Call this when setting up a test to create a scenario where an attachment
      * already exists.
-     * 
+     *
      * @param filename
      */
     public void addAttachment(String filename) {
@@ -258,6 +258,12 @@ public class MockCodeCenterComponentManager implements
         }
 
         return componentPojo;
+    }
+
+    @Override
+    public <T extends CodeCenterComponentPojo> T getComponentById(Class<T> pojoClass, String componentId) throws CommonFrameworkException {
+        // TODO Auto-generated function stub
+        return null;
     }
 
 }

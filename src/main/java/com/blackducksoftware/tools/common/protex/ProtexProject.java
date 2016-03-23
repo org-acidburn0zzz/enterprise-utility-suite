@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 
 package com.blackducksoftware.tools.common.protex;
@@ -35,6 +35,7 @@ import com.blackducksoftware.sdk.protex.project.Project;
 import com.blackducksoftware.sdk.protex.project.ProjectApi;
 import com.blackducksoftware.sdk.protex.project.ProjectRequest;
 import com.blackducksoftware.sdk.protex.project.RapidIdentificationMode;
+import com.blackducksoftware.tools.commonframework.core.config.ConfigConstants.APPLICATION;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.commonframework.standard.common.ProjectOrApp;
@@ -65,11 +66,10 @@ public class ProtexProject implements ProjectOrApp {
         this.config = config;
 
         try {
-            wrapper = new ProtexServerWrapper<ProtexProjectPojo>(
-                    config.getServerBean(), config, true);
+            wrapper = new ProtexServerWrapper<ProtexProjectPojo>(config, true);
         } catch (Exception e) {
             throw new SnapshotException("Error connecting to: "
-                    + config.getServerBean().getServerName() + "; "
+                    + config.getServerBean(APPLICATION.PROTEX).getServerName() + "; "
                     + e.getMessage());
         }
 

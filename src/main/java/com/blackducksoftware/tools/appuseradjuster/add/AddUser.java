@@ -8,12 +8,12 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License version 2
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *******************************************************************************/
 package com.blackducksoftware.tools.appuseradjuster.add;
 
@@ -52,7 +52,7 @@ import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.AppUser
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.MultiThreadedUserAdjusterAppIdentifiersPerUser;
 import com.blackducksoftware.tools.appuseradjuster.appidentifiersperuser.add.AppUserAdder;
 import com.blackducksoftware.tools.common.CommonHarness;
-import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
+import com.blackducksoftware.tools.commonframework.core.config.ConfigConstants.APPLICATION;
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 import com.blackducksoftware.tools.connector.codecenter.ICodeCenterServerWrapper;
@@ -313,13 +313,13 @@ public class AddUser implements UserAdder {
      */
     public boolean applyDefaultsFromConfig() {
         if (server.isEmpty()) {
-            server = configProcessor.getServerBean().getServerName();
+            server = configProcessor.getServerBean(APPLICATION.CODECENTER).getServerName();
         }
         if (username.isEmpty()) {
-            username = configProcessor.getServerBean().getUserName();
+            username = configProcessor.getServerBean(APPLICATION.CODECENTER).getUserName();
         }
         if (password.isEmpty()) {
-            password = configProcessor.getServerBean().getPassword();
+            password = configProcessor.getServerBean(APPLICATION.CODECENTER).getPassword();
         }
         if (appName.isEmpty()) {
             appName = configProcessor.getApplicationName();
@@ -720,9 +720,8 @@ public class AddUser implements UserAdder {
 
     private static CodeCenterServerWrapper connectToCodeCenter(
             AddUserConfig configProcessor) throws Exception {
-        ServerBean serverBean = configProcessor.getServerBean();
-        CodeCenterServerWrapper codeCenterServerWrapper = new CodeCenterServerWrapper(
-                serverBean, configProcessor);
+
+        CodeCenterServerWrapper codeCenterServerWrapper = new CodeCenterServerWrapper(configProcessor);
         return codeCenterServerWrapper;
     }
 

@@ -11,6 +11,7 @@ import com.blackducksoftware.tools.connector.codecenter.attribute.IAttributeDefi
 import com.blackducksoftware.tools.connector.codecenter.component.ICodeCenterComponentManager;
 import com.blackducksoftware.tools.connector.codecenter.externalId.IExternalIdManager;
 import com.blackducksoftware.tools.connector.codecenter.protexservers.IProtexServerManager;
+import com.blackducksoftware.tools.connector.codecenter.request.IRequestManager;
 import com.blackducksoftware.tools.connector.codecenter.user.ICodeCenterUserManager;
 import com.blackducksoftware.tools.connector.common.ILicenseManager;
 import com.blackducksoftware.tools.connector.common.LicensePojo;
@@ -93,6 +94,12 @@ public class MockCodeCenterServerWrapper implements ICodeCenterServerWrapper {
     @Override
     public ICodeCenterUserManager getUserManager() {
         return mockCodeCenterUserManager;
+    }
+
+    @Override
+    public IRequestManager getRequestManager() {
+        // TODO Auto-generated function stub
+        return null;
     }
 
 }

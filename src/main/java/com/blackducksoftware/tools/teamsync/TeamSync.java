@@ -20,7 +20,6 @@ package com.blackducksoftware.tools.teamsync;
 
 import com.blackducksoftware.tools.common.CommonHarness;
 import com.blackducksoftware.tools.commonframework.core.config.ConfigurationManager;
-import com.blackducksoftware.tools.commonframework.core.config.server.ServerBean;
 import com.blackducksoftware.tools.connector.codecenter.CodeCenterServerWrapper;
 
 /**
@@ -74,9 +73,7 @@ public class TeamSync extends CommonHarness {
 
     private static CodeCenterServerWrapper initCcServerWrapper(
             ConfigurationManager config) throws Exception {
-        ServerBean serverBean = config.getServerBean();
-        CodeCenterServerWrapper ccServerWrapper = new CodeCenterServerWrapper(
-                serverBean, config);
+        CodeCenterServerWrapper ccServerWrapper = new CodeCenterServerWrapper(config);
         return ccServerWrapper;
     }
 
