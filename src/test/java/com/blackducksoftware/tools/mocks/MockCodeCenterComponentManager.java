@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.blackducksoftware.tools.commonframework.core.exception.CommonFrameworkException;
 import com.blackducksoftware.tools.connector.codecenter.common.AttachmentDetails;
@@ -264,6 +265,13 @@ public class MockCodeCenterComponentManager implements
     public <T extends CodeCenterComponentPojo> T getComponentById(Class<T> pojoClass, String componentId) throws CommonFrameworkException {
         // TODO Auto-generated function stub
         return null;
+    }
+
+    @Override
+    public <T extends CodeCenterComponentPojo> void updateAttributeValues(Class<T> pojoClass, String compId, Set<AttributeValuePojo> changedAttrValues)
+            throws CommonFrameworkException {
+        // TODO Auto-generated function stub
+
     }
 
 }

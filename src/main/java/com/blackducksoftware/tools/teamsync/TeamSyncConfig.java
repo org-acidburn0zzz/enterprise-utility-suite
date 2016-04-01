@@ -43,9 +43,13 @@ public class TeamSyncConfig extends ConfigurationManager implements
 
     private static final String NEW_APP_LIST_FILENAME_PROPERTY = "new.app.list.filename";
 
+    private static final String APP_FETCH_CHUNK_SIZE_PROPERTY = "app.fetch.chunk.size";
+
     private EntAppNameConfigMgrDelegate entAppNameConfigMgrDelegate;
 
     private String appVersion = APP_VERSION_DEFAULT;
+
+    private int appFetchChunkSize = -1;
 
     private AppList newAppList;
 
@@ -83,6 +87,15 @@ public class TeamSyncConfig extends ConfigurationManager implements
 
         appVersion = getOptionalProperty(APP_VERSION_PROPERTY,
                 APP_VERSION_DEFAULT, String.class);
+
+        String appFetchChunkSizeString = getOptionalProperty(APP_FETCH_CHUNK_SIZE_PROPERTY);
+        if (appFetchChunkSizeString != null) {
+            appFetchChunkSize = Integer.parseInt(appFetchChunkSizeString);
+        }
+    }
+
+    public int getAppFetchChunkSize() {
+        return appFetchChunkSize;
     }
 
     public String getNewAppListFilenamePropertyName() {

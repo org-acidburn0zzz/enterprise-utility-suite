@@ -121,7 +121,7 @@ public class TeamSyncProcessor {
     private AppList getAllApplications() throws IOException, CommonFrameworkException {
         AppList allAppNames = new AppList();
 
-        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getApplications(0, Integer.MAX_VALUE);
+        List<ApplicationPojo> apps = ccServerWrapper.getApplicationManager().getAllApplications(config.getAppFetchChunkSize());
         for (ApplicationPojo app : apps) {
             allAppNames.add(app.getName());
         }
