@@ -2,3 +2,8 @@ logs
 target
 *.xlsx
 *.log*
+.classpath
+.project
+.settings
+*.xlsx
+addusers_input_twoapps.txt
