@@ -41,3 +41,4 @@ The utilities also support the concept of a Line Of Business (LOB), which is an 
  - RemediationDataLoader: Bulk loads remediation metadata from a spread sheet.
  - Snapshot: Creates a backup of a (Protex) project / (Code Center) application pair.
  - TeamSync: Brings the team assignments for new applications up-to-date with the team assigned to other applications with the same AppIdentifier.
+ - UserAccessExtractor: Generate, by looking at the current user access on qualifying applications, a report that shows which applications (by AppIdentifier) each user currently has access to. The report consisting of lines like: <username>;<AppIdentifier>;<AppIdentifier>...)
