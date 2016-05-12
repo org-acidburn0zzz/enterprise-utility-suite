@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>com.blackducksoftware.tools</groupId>
 			<artifactId>cf-7x-connector</artifactId>
-			<version>1.4.10-SNAPSHOT</version>
+			<version>1.4.12</version>
 		</dependency>
 		
 	    <dependency>
@@ -280,21 +280,24 @@
 			<name>BDS Bintray</name>
 			<url>http://dl.bintray.com/bds/tools</url>
 		</repository>
+		<repository>
+			<id>bds-int-public</id>
+			<name>BDS Integration</name>
+			<url>https://updates.suite.blackducksoftware.com/integrations</url>
+		</repository>
 	</repositories>
 	
-	<!-- Push artifact to internal Black Duck repo for integration testing -->
+	<!-- Install archives into Black Duck repo -->
+
 	<distributionManagement>
 		<repository>
-			<id>artifactory.blackducksoftware.com</id>
-			<name>artifactory.blackducksoftware.com-releases</name>
-			<url>http://artifactory.blackducksoftware.com:8081/artifactory/soleng</url>
+			<id>bds-int-public</id>
+			<url>https://updates.suite.blackducksoftware.com/integrations</url>
 		</repository>
 		<snapshotRepository>
-			<id>artifactory.blackducksoftware.com</id>
-			<name>artifactory.blackducksoftware.com-snapshots</name>
-			<url>http://artifactory.blackducksoftware.com:8081/artifactory/soleng</url>
+			<id>bds-int-public</id>
+			<url>https://updates.suite.blackducksoftware.com/integrations</url>
 		</snapshotRepository>
-
 	</distributionManagement>
 
 </project>
