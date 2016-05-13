@@ -3,6 +3,11 @@
 
 The Enterprise Utility Suite is a set of Protex and Code Center utilities that can be useful in an enterprise deployment of Protex and Code Center.
 
+## Build ##
+
+[![Build Status](https://travis-ci.org/blackducksoftware/enterprise-utility-suite.svg?branch=master)](https://travis-ci.org/blackducksoftware/enterprise-utility-suite)
+[![Coverage Status](https://coveralls.io/repos/github/blackducksoftware/enterprise-utility-suite/badge.svg?branch=master)](https://coveralls.io/github/blackducksoftware/enterprise-utility-suite?branch=master)
+
 ## Where can I get the latest release?
 
 You can download the latest source from GitHub: https://github.com/blackducksoftware/enterprise-utility-suite.

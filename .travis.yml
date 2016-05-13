@@ -1,0 +1,17 @@
+language: java
+
+cache:
+  directories:
+    -$HOME/.m2
+
+notifications:
+  email:
+    recipients:
+      - akamen@blackducksoftware.com
+      - sbillings@blackducksoftware.com
+
+install: true
+script:
+  - mvn clean package
+after_success:
+  - mvn test jacoco:report coveralls:report
