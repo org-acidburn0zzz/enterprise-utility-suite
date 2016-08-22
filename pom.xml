@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>com.blackducksoftware.tools</groupId>
 			<artifactId>cf-7x-connector</artifactId>
-			<version>1.4.12</version>
+			<version>1.5.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<!-- This helps avoid a conflict over different xerces library versions 
