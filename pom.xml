@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blackducksoftware.tools</groupId>
 	<artifactId>enterprise-utility-suite</artifactId>
-	<version>1.5.6-SNAPSHOT</version>
+	<version>1.5.6</version>
 	<name>Enterprise Utility Suite</name>
 	<packaging>jar</packaging>
 
@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>com.blackducksoftware.tools</groupId>
 			<artifactId>cf-7x-connector</artifactId>
-			<version>1.5.2-SNAPSHOT</version>
+			<version>1.5.2</version>
 		</dependency>
 		<dependency>
 			<!-- This helps avoid a conflict over different xerces library versions 
